@@ -1,3 +1,4 @@
+import { Colors } from '@/app/styles/variables'
 import * as React from 'react'
 import Svg, { Path } from 'react-native-svg'
 
@@ -8,7 +9,7 @@ interface Props {
 export function ThumbDownIcon({ active }: Props) {
 	return (
 		<Svg
-			fill={active ? 'red' : '#000'}
+			fill={active ? Colors.alert : Colors.background}
 			width={16}
 			height={16}
 			viewBox='0 0 24 24'

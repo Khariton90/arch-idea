@@ -5,10 +5,11 @@ export const Root = {
 
 export const Colors = {
 	background: '#27212e',
-	lightGrey: '#4D4D4D',
+	lightGrey: '#151b23',
 	btnGrey: '#9B9B9B',
 	success: '#2e8b57',
 	primary: '#cd853f',
 	alert: '#a52a2a',
 	white: '#fff',
+	colorMuted: '#9198a1',
 }

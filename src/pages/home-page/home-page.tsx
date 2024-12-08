@@ -27,7 +27,7 @@ const Container = styled.View`
 
 const Header = styled.View`
 	padding: 20px;
-	background-color: #333;
+	background-color: ${Colors.lightGrey};
 	border-bottom-left-radius: ${Root.radius20};
 	border-bottom-right-radius: ${Root.radius20};
 	position: fixed;
