@@ -1,6 +1,5 @@
 import { Colors, Root } from '@/app/styles/variables'
-import { Dimensions, Text, TouchableOpacityProps, View } from 'react-native'
-import { TextProps } from 'react-native-svg'
+import { Dimensions, TouchableOpacityProps } from 'react-native'
 import styled from 'styled-components/native'
 
 const Container = styled.View`
@@ -65,7 +64,6 @@ const BtnGroup = styled.View`
 
 export function NewIdeaPage({ route }: any): JSX.Element {
 	const width = Dimensions.get('window').width
-
 	const smallBtnWidth = width / 3 - 20
 	return (
 		<Container>

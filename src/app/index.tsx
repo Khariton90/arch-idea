@@ -2,6 +2,7 @@ import React from 'react'
 import { Navigation } from './navigation/navigation'
 import { Provider } from 'react-redux'
 import store from './store'
+import { SafeAreaView, ScrollView } from 'react-native'
 
 export default function App() {
 	return (

@@ -7,6 +7,7 @@ import { ThumbUpIcon } from '@/shared/ui/thumb-up-icon'
 import { ThumbDownIcon } from '@/shared/ui/thumb-down-icon'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { useAppSelector } from '@/shared/hooks/hooks'
+import { AddToWishlist } from '@/features/wishlist/add-to-wishlist/add-to-wishlist'
 
 // export interface Idea {
 // 	id: number
@@ -51,20 +52,28 @@ const Description = styled.Text`
 	color: ${Colors.white};
 `
 
+const FavoriteBox = styled.View`
+	align-self: flex-end;
+`
+
 interface Props {
 	idea: Idea
 	likeDislikeSlot: ReactNode
+	wishlistSlot: ReactNode
 	navigation: NativeStackNavigationProp<any, any, any>
 }
 
 export function IdeaCard({
 	idea,
 	likeDislikeSlot,
+	wishlistSlot,
 	navigation,
 }: Props): JSX.Element {
 	return (
 		<TouchableOpacity onPress={() => navigation.navigate('Details', idea)}>
 			<IdeaItem status={idea.status}>
+				<FavoriteBox>{wishlistSlot}</FavoriteBox>
+
 				<Title>{idea.title}</Title>
 				<Description ellipsizeMode='tail' numberOfLines={2}>
 					{idea.description}

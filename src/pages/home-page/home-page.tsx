@@ -2,6 +2,7 @@ import { Colors, Root } from '@/app/styles/variables'
 import { IdeaCard } from '@/entities/idea'
 import { mockIdeas } from '@/entities/idea/api/__mock__/mock-idea-list'
 import { LikeDislikeButtons } from '@/features/vote/like-dislike-buttons/like-dislike-buttons'
+import { AddToWishlist } from '@/features/wishlist/add-to-wishlist/add-to-wishlist'
 import { LampIcon } from '@/shared/ui/lamp-icon'
 import { PetLogo } from '@/shared/ui/pet-logo'
 import { EmptyIdeasList } from '@/widgets/empty-ideas-list/empty-ideas-list'
@@ -178,6 +179,7 @@ export function HomePage({ navigation }: Props): JSX.Element {
 											key={idea.id}
 											idea={idea}
 											likeDislikeSlot={<LikeDislikeButtons />}
+											wishlistSlot={<AddToWishlist />}
 										/>
 									))}
 								</>

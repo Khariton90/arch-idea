@@ -1,8 +1,9 @@
 import { Colors, Root } from '@/app/styles/variables'
 import { LikeDislikeButtons } from '@/features/vote/like-dislike-buttons/like-dislike-buttons'
+import { AddToWishlist } from '@/features/wishlist/add-to-wishlist/add-to-wishlist'
 import { CommentsIcon } from '@/shared/ui/comments-icon'
 import { useEffect } from 'react'
-import { Text, TextProps, View } from 'react-native'
+import { SafeAreaView, ScrollView, Text, TextProps, View } from 'react-native'
 import styled from 'styled-components/native'
 
 const Container = styled.View`
@@ -81,6 +82,12 @@ const CommentBox = styled.TouchableOpacity`
 	gap: 6px;
 `
 
+const FavoriteBox = styled.View`
+	position: absolute;
+	right: 10px;
+	top: 10px;
+`
+
 export function IdeaDetailsPage({ route, navigation }: any): JSX.Element {
 	const { title } = route.params
 
@@ -90,69 +97,76 @@ export function IdeaDetailsPage({ route, navigation }: any): JSX.Element {
 		})
 	})
 	return (
-		<Container>
-			<Card>
-				<CardHeader>
-					<Title>Идея от 27 ноября</Title>
-					<Row>
-						<SmallText color={Colors.colorMuted}>Cтатус: </SmallText>
-						<SmallText>В работе</SmallText>
-					</Row>
-				</CardHeader>
+		<SafeAreaView style={{ flex: 1 }}>
+			<ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+				<Container>
+					<Card>
+						<CardHeader>
+							<FavoriteBox>
+								<AddToWishlist />
+							</FavoriteBox>
+							<Title>Идея от 27 ноября</Title>
+							<Row>
+								<SmallText color={Colors.colorMuted}>Cтатус: </SmallText>
+								<SmallText>В работе</SmallText>
+							</Row>
+						</CardHeader>
+						<CardContent>
+							<AuthorBox>
+								<View>
+									<SmallText color={Colors.colorMuted}>Автор</SmallText>
+									<SmallText>Evgeniy</SmallText>
+								</View>
+								<Avatar>
+									<SmallText>E</SmallText>
+								</Avatar>
+							</AuthorBox>
 
-				<CardContent>
-					<AuthorBox>
-						<View>
-							<SmallText color={Colors.colorMuted}>Автор</SmallText>
-							<SmallText>Evgeniy</SmallText>
-						</View>
-						<Avatar>
-							<SmallText>E</SmallText>
-						</Avatar>
-					</AuthorBox>
+							<Row>
+								<SmallText color={Colors.colorMuted}>Категория: </SmallText>
+								<SmallText>Склад</SmallText>
+							</Row>
 
-					<Row>
-						<SmallText color={Colors.colorMuted}>Категория: </SmallText>
-						<SmallText>Склад</SmallText>
-					</Row>
+							<Row>
+								<SmallText color={Colors.colorMuted}>Приоритет: </SmallText>
+								<SmallText>Высокий</SmallText>
+							</Row>
 
-					<Row>
-						<SmallText color={Colors.colorMuted}>Приоритет: </SmallText>
-						<SmallText>Высокий</SmallText>
-					</Row>
-
-					<Title>Оформление рабочего места кладовщика</Title>
-					<SmallText>
-						В твоём мозгу неправильный шаблон. You've got the wrong template
-						your mind. Хотя допускаются символы-шаблоны, его рекомендуется как
-						можно точнее ограничить доступ к серверам. Although wildcards are
-						permitted, it is recommended to be as specific as possible to
-						restrict access to the servers. А, один вопрос... мы заменяем
-						контрольные шаблоны в автомобильных коленвалах, но должны ли мы
-						калибровать их под валы Панцеров или Рено? Ah, one thing... we are
-						replacing the test gauges in the automobile crank shafts, but should
-						we calibrate for the Panzer shafts or the Renault FT? В твоём мозгу
-						неправильный шаблон. You've got the wrong template your mind. Хотя
-						допускаются символы-шаблоны, его рекомендуется как можно точнее
-						ограничить доступ к серверам. Although wildcards are permitted, it
-						is recommended to be as specific as possible to restrict access to
-						the servers. А, один вопрос... мы заменяем контрольные шаблоны в
-						автомобильных коленвалах, но должны ли мы калибровать их под валы
-						Панцеров или Рено? Ah, one thing... we are replacing the test gauges
-						in the automobile crank shafts, but should we calibrate for the
-						Panzer shafts or the Renault FT?
-					</SmallText>
-				</CardContent>
-
-				<CardFooter>
-					<CommentBox>
-						<CommentsIcon />
-						<SmallText color={Colors.background}>Комментарии 41</SmallText>
-					</CommentBox>
-
-					<LikeDislikeButtons />
-				</CardFooter>
-			</Card>
-		</Container>
+							<Title>Оформление рабочего места кладовщика</Title>
+							<SmallText>
+								Lorem ipsum dolor sit amet consectetur adipisicing elit.
+								Doloremque accusantium velit amet accusamus autem corrupti,
+								distinctio consequatur sed quis eius impedit asperiores fuga,
+								nemo, quas nam suscipit? Similique, at harum! Eos ea alias
+								commodi velit expedita dolor dolorem numquam porro, animi
+								aliquam cupiditate voluptatum tenetur? Neque praesentium unde
+								aliquid soluta assumenda? Blanditiis rem quia ad debitis id odit
+								temporibus eaque. Commodi labore doloremque ea numquam maiores
+								laudantium provident, impedit cumque eos praesentium cupiditate,
+								repellendus et. Reiciendis a cum saepe id in odio sunt,
+								excepturi officia ratione tempore incidunt qui est? Possimus
+								consectetur cum quam! Voluptatum, amet minus minima perspiciatis
+								illo magni! Dolores cumque voluptate eos minus cupiditate vero
+								deserunt aspernatur, quo maxime quod modi maiores nihil.
+								Laboriosam cupiditate accusamus voluptas. Voluptatibus sed
+								minima porro adipisci ab tempora blanditiis eaque exercitationem
+								nemo, incidunt maxime repellendus temporibus quasi officiis
+								facilis autem nostrum itaque culpa quaerat mollitia id
+								accusantium assumenda quo? Molestiae, distinctio? Qui nulla
+								temporibus nostrum necessitatibus nesciunt, minus doloribus est
+								ipsa magnam ad harum?
+							</SmallText>
+						</CardContent>
+						<CardFooter>
+							<CommentBox>
+								<CommentsIcon />
+								<SmallText color={Colors.background}>Комментарии 41</SmallText>
+							</CommentBox>
+							<LikeDislikeButtons />
+						</CardFooter>
+					</Card>
+				</Container>
+			</ScrollView>
+		</SafeAreaView>
 	)
 }
