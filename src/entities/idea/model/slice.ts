@@ -27,7 +27,7 @@ export const ideaSlice = createSlice({
 			state.ideaList = action.payload
 		},
 		addOneIdea: (state, action: PayloadAction<Idea>) => {
-			state.ideaList.push(action.payload)
+			state.ideaList.unshift(action.payload)
 		},
 		addLike: (state, action: PayloadAction<number>) => {
 			const item = state.ideaList.findIndex(item => item.id === action.payload)

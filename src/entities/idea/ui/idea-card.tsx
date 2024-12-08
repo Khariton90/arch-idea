@@ -1,10 +1,10 @@
-import Colors from '@/app/styles/Colors'
-import Root from '@/app/styles/Root'
 import { TouchableOpacity, ViewProps } from 'react-native'
-import styled from 'styled-components/native'
 import { Idea, IdeaStatus } from '../model/types'
 import { ReactNode } from 'react'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import styled from 'styled-components/native'
+import Colors from '@/app/styles/Colors'
+import Root from '@/app/styles/Root'
 
 const StatusColors = {
 	[IdeaStatus.New]: Colors.success,
@@ -13,17 +13,14 @@ const StatusColors = {
 	[IdeaStatus.UnderReview]: Colors.success,
 }
 
-interface IdeaItemProps extends ViewProps {
-	status: IdeaStatus
-}
-
-const IdeaItem = styled.View<IdeaItemProps>`
-	min-height: 100px;
+const IdeaItem = styled.View<ViewProps & { status: IdeaStatus }>`
+	height: 100%;
+	max-height: 200px;
 	background-color: ${({ status }: { status: IdeaStatus }) =>
 		StatusColors[status]};
 	border-radius: ${Root.radius10};
 	flex: 1;
-	padding: 10px 10px 50px;
+	padding: 10px 10px 60px;
 `
 
 const Title = styled.Text`
@@ -59,7 +56,9 @@ export function IdeaCard({
 		<TouchableOpacity onPress={() => navigation.navigate('Details', idea)}>
 			<IdeaItem status={idea.status}>
 				<FavoriteBox>{wishlistSlot}</FavoriteBox>
-				<Title>{idea.title}</Title>
+				<Title ellipsizeMode='tail' numberOfLines={1}>
+					{idea.title}
+				</Title>
 				<Description ellipsizeMode='tail' numberOfLines={2}>
 					{idea.description}
 				</Description>

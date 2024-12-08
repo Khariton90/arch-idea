@@ -1,10 +1,10 @@
+import { Category, Idea, IdeaStatus, addOneIdea } from '@/entities/idea'
+import { useAppDispatch } from '@/shared/hooks/hooks'
+import { useState } from 'react'
+import { Dimensions, TouchableOpacityProps, Keyboard } from 'react-native'
+import styled from 'styled-components/native'
 import Colors from '@/app/styles/Colors'
 import Root from '@/app/styles/Root'
-import { generateOneMockIdea } from '@/entities/idea/api/__mock__/mock-one-idea'
-import { addOneIdea } from '@/entities/idea/model/slice'
-import { useAppDispatch } from '@/shared/hooks/hooks'
-import { Dimensions, TouchableOpacityProps } from 'react-native'
-import styled from 'styled-components/native'
 
 const Container = styled.View`
 	flex: 1;
@@ -40,6 +40,7 @@ const TextArea = styled.TextInput`
 	border: 1px solid #fff;
 	padding: 10px;
 	color: #fff;
+	border-radius: ${Root.radius10};
 `
 
 const Input = styled.TextInput`
@@ -47,6 +48,7 @@ const Input = styled.TextInput`
 	border: 1px solid #fff;
 	padding: 10px;
 	color: #fff;
+	border-radius: ${Root.radius10};
 `
 
 const Button = styled.TouchableOpacity<
@@ -55,7 +57,7 @@ const Button = styled.TouchableOpacity<
 	justify-content: center;
 	align-items: center;
 	background-color: ${Colors.success};
-	padding: 16px 10px;
+	padding: 10px;
 	border-radius: ${Root.radius10};
 	width: ${({ width }) => width};
 `
@@ -64,12 +66,55 @@ const BtnGroup = styled.View`
 	flex-direction: row;
 	justify-content: space-between;
 	width: 100%;
+	margin-bottom: 20px;
 `
 
+function generateUniqueId() {
+	return Math.floor(Math.random() * 100000000)
+}
+
 export function NewIdeaPage({ route }: any): JSX.Element {
+	const [form, setForm] = useState<Idea>({
+		id: generateUniqueId(),
+		title: '',
+		description: '',
+		category: Category.CommercialDepartment,
+		priority: 'High',
+		status: IdeaStatus.New,
+		creationDate: '',
+		likes: 0,
+		disLakes: 0,
+	})
+
 	const dispatch = useAppDispatch()
 	const width = Dimensions.get('window').width
 	const smallBtnWidth = `${Math.ceil(width / 3 - 20)}px`
+
+	const handleChange = (key: keyof Idea, value: any) => {
+		setForm({ ...form, [key]: value })
+	}
+
+	const handleSubmit = () => {
+		dispatch(addOneIdea(form))
+		setForm(
+			state =>
+				(state = {
+					id: generateUniqueId(),
+					title: '',
+					description: '',
+					category: Category.CommercialDepartment,
+					priority: 'High',
+					status: IdeaStatus.New,
+					creationDate: '',
+					likes: 0,
+					disLakes: 0,
+				})
+		)
+	}
+
+	const handleBlurAndDismiss = () => {
+		Keyboard.dismiss()
+	}
 
 	return (
 		<Container>
@@ -78,6 +123,9 @@ export function NewIdeaPage({ route }: any): JSX.Element {
 				<Label>
 					<TextLabel>Заголовок</TextLabel>
 					<Input
+						value={form.title}
+						onChangeText={text => handleChange('title', text)}
+						onBlur={handleBlurAndDismiss}
 						placeholderTextColor={Colors.btnGrey}
 						placeholder='Заголовок...'
 					/>
@@ -86,6 +134,9 @@ export function NewIdeaPage({ route }: any): JSX.Element {
 				<Label>
 					<TextLabel>Описание</TextLabel>
 					<TextArea
+						value={form.description}
+						onChangeText={text => handleChange('description', text)}
+						onBlur={handleBlurAndDismiss}
 						placeholderTextColor={Colors.btnGrey}
 						placeholder='Описание...'
 						multiline
@@ -122,10 +173,7 @@ export function NewIdeaPage({ route }: any): JSX.Element {
 					</BtnGroup>
 				</Label>
 
-				<Button
-					width={`${Math.ceil(width - 40)}px`}
-					onPress={() => dispatch(addOneIdea(generateOneMockIdea()))}
-				>
+				<Button width={`${Math.ceil(width - 40)}px`} onPress={handleSubmit}>
 					<TextLabel>Создать</TextLabel>
 				</Button>
 			</Form>

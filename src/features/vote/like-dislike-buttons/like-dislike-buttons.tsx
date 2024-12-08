@@ -1,11 +1,11 @@
-import Colors from '@/app/styles/Colors'
-import Root from '@/app/styles/Root'
 import { addDisLike, addLike } from '@/entities/idea/model/slice'
 import { useAppDispatch } from '@/shared/hooks/hooks'
 import { ThumbDownIcon } from '@/shared/ui/thumb-down-icon'
 import { ThumbUpIcon } from '@/shared/ui/thumb-up-icon'
 import { useState } from 'react'
 import styled from 'styled-components/native'
+import Colors from '@/app/styles/Colors'
+import Root from '@/app/styles/Root'
 
 const Box = styled.View`
 	position: absolute;
