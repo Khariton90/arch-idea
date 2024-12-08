@@ -2,21 +2,19 @@ import { HomePage } from '@/pages/home-page/home-page'
 import { IdeaDetailsPage } from '@/pages/idea-details-page/idea-details-page'
 import { NewIdeaPage } from '@/pages/new-idea-page/new-idea-page'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { ReactNode } from 'react'
-import { StyleSheet, View, Text } from 'react-native'
-import { Colors } from '../styles/variables'
+import Colors from '../styles/Colors'
 
 const Stack = createNativeStackNavigator()
 
 const styles = {
 	headerStyle: {
-		backgroundColor: Colors.background,
+		backgroundColor: Colors.lightGrey,
 	},
 	headerTitleStyle: {
 		color: Colors.white,
 	},
 }
-export function Navigation() {
+export default function Navigation() {
 	return (
 		<Stack.Navigator>
 			<Stack.Screen

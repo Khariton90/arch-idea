@@ -1,4 +1,7 @@
-import { Colors, Root } from '@/app/styles/variables'
+import Colors from '@/app/styles/Colors'
+import Root from '@/app/styles/Root'
+import { addDisLike, addLike } from '@/entities/idea/model/slice'
+import { useAppDispatch } from '@/shared/hooks/hooks'
 import { ThumbDownIcon } from '@/shared/ui/thumb-down-icon'
 import { ThumbUpIcon } from '@/shared/ui/thumb-up-icon'
 import { useState } from 'react'
@@ -27,33 +30,40 @@ const ButtonText = styled.Text`
 	color: #000;
 `
 
-export function LikeDislikeButtons(): JSX.Element {
+interface Props {
+	id: number
+	likes: number
+	disLakes: number
+}
+
+export function LikeDislikeButtons({
+	id,
+	likes,
+	disLakes,
+}: Props): JSX.Element {
 	const [like, setLike] = useState(false)
 	const [disLike, setDislike] = useState(false)
+	const dispatch = useAppDispatch()
 
 	const handleLike = () => {
-		if (disLike) {
-			setDislike(state => false)
-		}
-		setLike(state => !state)
+		dispatch(addLike(id))
+		setLike(state => true)
 	}
 
 	const handleDislike = () => {
-		if (like) {
-			setLike(state => false)
-		}
-		setDislike(state => !state)
+		dispatch(addDisLike(id))
+		setDislike(state => true)
 	}
 
 	return (
 		<Box>
 			<Button onPress={handleLike}>
 				<ThumbUpIcon active={like} />
-				<ButtonText>100</ButtonText>
+				<ButtonText>{likes}</ButtonText>
 			</Button>
 			<Button onPress={handleDislike}>
 				<ThumbDownIcon active={disLike} />
-				<ButtonText>100</ButtonText>
+				<ButtonText>{disLakes}</ButtonText>
 			</Button>
 		</Box>
 	)

@@ -14,13 +14,15 @@ export const generateMockIdeaList = (): Idea[] => {
 			category: Category.CommercialDepartment,
 			priority: 'High',
 			status: status,
-			creationDate: new Date(),
+			creationDate: faker.date.anytime.toString(),
+			likes: 0,
+			disLakes: 0,
 		}
 
 		list.push(item)
 	}
 
-	return list
+	return []
 }
 
 export const mockIdeas = generateMockIdeaList()

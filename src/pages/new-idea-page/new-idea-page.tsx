@@ -1,4 +1,8 @@
-import { Colors, Root } from '@/app/styles/variables'
+import Colors from '@/app/styles/Colors'
+import Root from '@/app/styles/Root'
+import { generateOneMockIdea } from '@/entities/idea/api/__mock__/mock-one-idea'
+import { addOneIdea } from '@/entities/idea/model/slice'
+import { useAppDispatch } from '@/shared/hooks/hooks'
 import { Dimensions, TouchableOpacityProps } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -46,14 +50,14 @@ const Input = styled.TextInput`
 `
 
 const Button = styled.TouchableOpacity<
-	TouchableOpacityProps & { width: number }
+	TouchableOpacityProps & { width: string }
 >`
 	justify-content: center;
 	align-items: center;
 	background-color: ${Colors.success};
-	padding: 10px;
+	padding: 16px 10px;
 	border-radius: ${Root.radius10};
-	width: ${(props: { width: number }) => props.width};
+	width: ${({ width }) => width};
 `
 
 const BtnGroup = styled.View`
@@ -63,8 +67,10 @@ const BtnGroup = styled.View`
 `
 
 export function NewIdeaPage({ route }: any): JSX.Element {
+	const dispatch = useAppDispatch()
 	const width = Dimensions.get('window').width
-	const smallBtnWidth = width / 3 - 20
+	const smallBtnWidth = `${Math.ceil(width / 3 - 20)}px`
+
 	return (
 		<Container>
 			<Title>Создать новую идею</Title>
@@ -116,7 +122,10 @@ export function NewIdeaPage({ route }: any): JSX.Element {
 					</BtnGroup>
 				</Label>
 
-				<Button width={width - 40}>
+				<Button
+					width={`${Math.ceil(width - 40)}px`}
+					onPress={() => dispatch(addOneIdea(generateOneMockIdea()))}
+				>
 					<TextLabel>Создать</TextLabel>
 				</Button>
 			</Form>

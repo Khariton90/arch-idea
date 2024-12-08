@@ -1,4 +1,5 @@
-import { Colors, Root } from '@/app/styles/variables'
+import Colors from '@/app/styles/Colors'
+import Root from '@/app/styles/Root'
 import { LikeDislikeButtons } from '@/features/vote/like-dislike-buttons/like-dislike-buttons'
 import { AddToWishlist } from '@/features/wishlist/add-to-wishlist/add-to-wishlist'
 import { CommentsIcon } from '@/shared/ui/comments-icon'
@@ -89,7 +90,7 @@ const FavoriteBox = styled.View`
 `
 
 export function IdeaDetailsPage({ route, navigation }: any): JSX.Element {
-	const { title } = route.params
+	const { title, id, likes, disLakes } = route.params
 
 	useEffect(() => {
 		navigation.setOptions({
@@ -103,7 +104,7 @@ export function IdeaDetailsPage({ route, navigation }: any): JSX.Element {
 					<Card>
 						<CardHeader>
 							<FavoriteBox>
-								<AddToWishlist />
+								<AddToWishlist id={id} />
 							</FavoriteBox>
 							<Title>Идея от 27 ноября</Title>
 							<Row>
@@ -162,7 +163,7 @@ export function IdeaDetailsPage({ route, navigation }: any): JSX.Element {
 								<CommentsIcon />
 								<SmallText color={Colors.background}>Комментарии 41</SmallText>
 							</CommentBox>
-							<LikeDislikeButtons />
+							<LikeDislikeButtons id={id} likes={likes} disLakes={disLakes} />
 						</CardFooter>
 					</Card>
 				</Container>

@@ -1,24 +1,10 @@
-import { Colors, Root } from '@/app/styles/variables'
+import Colors from '@/app/styles/Colors'
+import Root from '@/app/styles/Root'
 import { TouchableOpacity, ViewProps } from 'react-native'
 import styled from 'styled-components/native'
 import { Idea, IdeaStatus } from '../model/types'
 import { ReactNode } from 'react'
-import { ThumbUpIcon } from '@/shared/ui/thumb-up-icon'
-import { ThumbDownIcon } from '@/shared/ui/thumb-down-icon'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { useAppSelector } from '@/shared/hooks/hooks'
-import { AddToWishlist } from '@/features/wishlist/add-to-wishlist/add-to-wishlist'
-
-// export interface Idea {
-// 	id: number
-// 	title: string
-// 	description: string
-// 	category: Category
-// 	priority: Priority
-// 	status: Status
-// 	creationDate: Date
-// 	author: User
-// }
 
 const StatusColors = {
 	[IdeaStatus.New]: Colors.success,
@@ -73,12 +59,10 @@ export function IdeaCard({
 		<TouchableOpacity onPress={() => navigation.navigate('Details', idea)}>
 			<IdeaItem status={idea.status}>
 				<FavoriteBox>{wishlistSlot}</FavoriteBox>
-
 				<Title>{idea.title}</Title>
 				<Description ellipsizeMode='tail' numberOfLines={2}>
 					{idea.description}
 				</Description>
-
 				{likeDislikeSlot}
 			</IdeaItem>
 		</TouchableOpacity>

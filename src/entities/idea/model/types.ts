@@ -28,6 +28,8 @@ export interface Idea {
 	category: Category
 	priority: Priority
 	status: IdeaStatus
-	creationDate: Date
+	creationDate: string
 	author?: User
+	likes: number
+	disLakes: number
 }

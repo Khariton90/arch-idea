@@ -1,9 +1,4 @@
-export const Root = {
-	radius20: '20px',
-	radius10: '10px',
-}
-
-export const Colors = {
+const Colors = {
 	background: '#27212e',
 	lightGrey: '#151b23',
 	btnGrey: '#9B9B9B',
@@ -13,3 +8,5 @@ export const Colors = {
 	white: '#fff',
 	colorMuted: '#9198a1',
 }
+
+export default Colors
