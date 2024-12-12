@@ -15,17 +15,14 @@ const FilterItem = styled.TouchableOpacity<
 	TouchableOpacityProps & {
 		background?: string
 		width: string
-		border?: boolean
 	}
 >`
-	background-color: ${({ background }) => background ?? Colors.lightGrey};
+	background-color: ${Colors.background};
 	padding: 6px;
 	border-radius: ${Root.radius10};
 	justify-content: center;
 	align-items: center;
 	width: ${({ width }) => width};
-	box-shadow: ${({ border }) =>
-		border ? `0px 2px 2px ${Colors.success};` : '0px 2px 2px transparent;'};
 `
 
 const FilterItemText = styled.Text`
@@ -45,7 +42,7 @@ export function Filter({ onPressFilter, queryFilter }: Props): JSX.Element {
 	}
 
 	const width = Dimensions.get('window').width
-	const smallBtnWidth = Math.ceil(width / 3 - 20)
+	const smallBtnWidth = Math.ceil(width / 4 - 20)
 	const widthValue = `${smallBtnWidth}px`
 
 	return (
@@ -53,7 +50,6 @@ export function Filter({ onPressFilter, queryFilter }: Props): JSX.Element {
 			<FilterItem
 				background={Colors.success}
 				width={widthValue}
-				border={queryFilter === IdeaStatus.New}
 				onPress={() => handlePress(IdeaStatus.New)}
 			>
 				<FilterItemText>Новые</FilterItemText>
@@ -62,8 +58,7 @@ export function Filter({ onPressFilter, queryFilter }: Props): JSX.Element {
 			<FilterItem
 				background={Colors.primary}
 				width={widthValue}
-				border={queryFilter === IdeaStatus.Approved}
-				onPress={() => handlePress(IdeaStatus.Approved)}
+				onPress={() => handlePress(IdeaStatus.InProgress)}
 			>
 				<FilterItemText>В работе</FilterItemText>
 			</FilterItem>
@@ -71,10 +66,17 @@ export function Filter({ onPressFilter, queryFilter }: Props): JSX.Element {
 			<FilterItem
 				background={Colors.alert}
 				width={widthValue}
-				border={queryFilter === IdeaStatus.Rejected}
-				onPress={() => handlePress(IdeaStatus.Rejected)}
+				onPress={() => handlePress(IdeaStatus.Completed)}
 			>
 				<FilterItemText>Завершены</FilterItemText>
+			</FilterItem>
+
+			<FilterItem
+				background={Colors.alert}
+				width={widthValue}
+				onPress={() => handlePress(IdeaStatus.Canceled)}
+			>
+				<FilterItemText>Отменены</FilterItemText>
 			</FilterItem>
 		</FilterList>
 	)

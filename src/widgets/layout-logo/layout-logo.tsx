@@ -1,6 +1,5 @@
 import Colors from '@/app/styles/Colors'
 import { LampIcon } from '@/shared/ui/lamp-icon'
-import { PetLogo } from '@/shared/ui/pet-logo'
 import styled from 'styled-components/native'
 
 const Logo = styled.View`
@@ -12,8 +11,8 @@ const Logo = styled.View`
 
 const Title = styled.Text`
 	font-size: 32px;
-	color: ${Colors.success};
-	font-weight: 700;
+	color: ${Colors.white};
+	font-weight: 500;
 	text-align: center;
 	letter-spacing: -1.9px;
 	text-transform: uppercase;
@@ -22,7 +21,7 @@ const Title = styled.Text`
 export function LayoutLogo(): JSX.Element {
 	return (
 		<Logo>
-			<PetLogo />
+			<Title>Arch</Title>
 			<LampIcon />
 			<Title>Idea</Title>
 		</Logo>

@@ -1,10 +1,19 @@
-import { Category, Idea, IdeaStatus, addOneIdea } from '@/entities/idea'
+import {
+	Category,
+	Idea,
+	IdeaStatus,
+	Priority,
+	addOneIdea,
+} from '@/entities/idea'
 import { useAppDispatch } from '@/shared/hooks/hooks'
 import { useState } from 'react'
-import { Dimensions, TouchableOpacityProps, Keyboard } from 'react-native'
+import { Dimensions, TouchableOpacityProps, Keyboard, Text } from 'react-native'
 import styled from 'styled-components/native'
 import Colors from '@/app/styles/Colors'
 import Root from '@/app/styles/Root'
+import { generateUniqueId } from '@/shared/lib/genearte-unique-id'
+import { CloseIcon } from '@/shared/ui/close-icon'
+import dayjs from 'dayjs'
 
 const Container = styled.View`
 	flex: 1;
@@ -36,7 +45,7 @@ const TextLabel = styled.Text`
 `
 
 const TextArea = styled.TextInput`
-	width: 100%;
+	flex: 1;
 	border: 1px solid #fff;
 	padding: 10px;
 	color: #fff;
@@ -44,7 +53,7 @@ const TextArea = styled.TextInput`
 `
 
 const Input = styled.TextInput`
-	width: 100%;
+	flex: 1;
 	border: 1px solid #fff;
 	padding: 10px;
 	color: #fff;
@@ -69,21 +78,32 @@ const BtnGroup = styled.View`
 	margin-bottom: 20px;
 `
 
-function generateUniqueId() {
-	return Math.floor(Math.random() * 100000000)
-}
+const InputField = styled.View`
+	flex-direction: row;
+	gap: 10px;
+	align-items: center;
+`
+
+const CloseButton = styled.TouchableOpacity`
+	height: 36px;
+	border-radius: ${Root.radius10};
+	justify-content: center;
+	align-items: center;
+	padding: 0 10px;
+`
 
 export function NewIdeaPage({ route }: any): JSX.Element {
 	const [form, setForm] = useState<Idea>({
 		id: generateUniqueId(),
 		title: '',
 		description: '',
-		category: Category.CommercialDepartment,
-		priority: 'High',
+		subDepartmentId: Category.CommercialDepartment,
+		priority: Priority.Low,
 		status: IdeaStatus.New,
-		creationDate: '',
 		likes: 0,
 		disLakes: 0,
+		createdAt: dayjs().toISOString(),
+		updatedAt: dayjs().toISOString(),
 	})
 
 	const dispatch = useAppDispatch()
@@ -102,12 +122,13 @@ export function NewIdeaPage({ route }: any): JSX.Element {
 					id: generateUniqueId(),
 					title: '',
 					description: '',
-					category: Category.CommercialDepartment,
-					priority: 'High',
+					subDepartmentId: Category.CommercialDepartment,
+					priority: Priority.Low,
 					status: IdeaStatus.New,
-					creationDate: '',
 					likes: 0,
 					disLakes: 0,
+					createdAt: dayjs().toISOString(),
+					updatedAt: dayjs().toISOString(),
 				})
 		)
 	}
@@ -122,25 +143,35 @@ export function NewIdeaPage({ route }: any): JSX.Element {
 			<Form>
 				<Label>
 					<TextLabel>Заголовок</TextLabel>
-					<Input
-						value={form.title}
-						onChangeText={text => handleChange('title', text)}
-						onBlur={handleBlurAndDismiss}
-						placeholderTextColor={Colors.btnGrey}
-						placeholder='Заголовок...'
-					/>
+
+					<InputField>
+						<Input
+							value={form.title}
+							onChangeText={text => handleChange('title', text)}
+							placeholderTextColor={Colors.btnGrey}
+							placeholder='Заголовок...'
+						/>
+						<CloseButton onPress={handleBlurAndDismiss}>
+							<CloseIcon />
+						</CloseButton>
+					</InputField>
 				</Label>
 
 				<Label>
 					<TextLabel>Описание</TextLabel>
-					<TextArea
-						value={form.description}
-						onChangeText={text => handleChange('description', text)}
-						onBlur={handleBlurAndDismiss}
-						placeholderTextColor={Colors.btnGrey}
-						placeholder='Описание...'
-						multiline
-					/>
+					<InputField>
+						<TextArea
+							value={form.description}
+							onChangeText={text => handleChange('description', text)}
+							onBlur={handleBlurAndDismiss}
+							placeholderTextColor={Colors.btnGrey}
+							placeholder='Описание...'
+							multiline
+						/>
+						<CloseButton onPress={handleBlurAndDismiss}>
+							<CloseIcon />
+						</CloseButton>
+					</InputField>
 				</Label>
 
 				<Label>

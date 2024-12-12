@@ -1,10 +1,8 @@
-export type Priority = 'High' | 'Medium' | 'Low'
-
 export enum IdeaStatus {
-	New = 'New',
-	UnderReview = 'UnderReview',
-	Approved = 'Approved',
-	Rejected = 'Rejected',
+	New = 'new',
+	InProgress = 'inProgress',
+	Completed = 'completed',
+	Canceled = 'canceled',
 }
 
 export interface User {
@@ -21,15 +19,22 @@ export enum Category {
 	Warehouse = 'Warehouse',
 }
 
+export enum Priority {
+	Low = 'low',
+	Medium = 'medium',
+	High = 'high',
+}
+
 export interface Idea {
 	id: number
 	title: string
 	description: string
-	category: Category
 	priority: Priority
+	subDepartmentId: Category
 	status: IdeaStatus
-	creationDate: string
 	author?: User
 	likes: number
 	disLakes: number
+	createdAt: string
+	updatedAt: string
 }

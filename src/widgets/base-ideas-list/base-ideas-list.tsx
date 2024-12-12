@@ -1,10 +1,9 @@
-import { IdeaCard, IdeaStatus } from '@/entities/idea'
+import { IdeaCard, IdeaStatus, mockIdeas } from '@/entities/idea'
 import { LikeDislikeButtons } from '@/features/vote'
 import { AddToWishlist } from '@/features/wishlist'
 import { useAppSelector } from '@/shared/hooks/hooks'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { ReactNode } from 'react'
-import { View } from 'react-native'
 
 interface Props {
 	queryFilter: IdeaStatus | string
@@ -22,13 +21,13 @@ export function BaseIdeasList({
 		queryFilter ? item.status === queryFilter : item
 	)
 
-	if (!filteredIdeaList.length) {
-		return <>{emptySlot}</>
-	}
+	// if (!filteredIdeaList.length) {
+	// 	return <>{emptySlot}</>
+	// }
 
 	return (
 		<>
-			{filteredIdeaList.map(idea => (
+			{mockIdeas.map(idea => (
 				<IdeaCard
 					navigation={navigation}
 					key={idea.id}
