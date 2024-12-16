@@ -17,27 +17,27 @@ export function BaseIdeasList({
 	emptySlot,
 }: Props): JSX.Element {
 	const ideasList = useAppSelector(({ idea }) => idea.ideaList)
-	const filteredIdeaList = ideasList.filter(item =>
-		queryFilter ? item.status === queryFilter : item
-	)
+	// const filteredIdeaList = ideasList.filter(item =>
+	// 	queryFilter ? item.status === queryFilter : item
+	// )
 
-	// if (!filteredIdeaList.length) {
-	// 	return <>{emptySlot}</>
-	// }
-
+	if (!ideasList.length) {
+		return <>{emptySlot}</>
+	}
 	return (
 		<>
-			{mockIdeas.map(idea => (
+			{ideasList.map(idea => (
 				<IdeaCard
 					navigation={navigation}
 					key={idea.id}
 					idea={idea}
 					likeDislikeSlot={
-						<LikeDislikeButtons
-							id={idea.id}
-							likes={idea.likes}
-							disLakes={idea.disLakes}
-						/>
+						<></>
+						// <LikeDislikeButtons
+						// 	id={idea.id}
+						// 	likes={idea.likes}
+						// 	disLakes={idea.disLakes}
+						// />
 					}
 					wishlistSlot={<AddToWishlist id={idea.id} />}
 				/>

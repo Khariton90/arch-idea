@@ -8,23 +8,15 @@ export const generateMockIdeaList = (): Idea[] => {
 
 	for (let i = 0; i <= 100; i++) {
 		const status = statusArray[Math.floor(Math.random() * statusArray.length)]
-		const item: Idea = {
-			id: i,
-			title: faker.commerce.product.name,
-			description: faker.commerce.productDescription(),
-			subDepartmentId: Category.CommercialDepartment,
-			priority: Priority.Low,
-			status: status,
-			likes: 0,
-			disLakes: 0,
-			createdAt: dayjs().toISOString(),
-			updatedAt: dayjs().toISOString(),
-		}
+		// const item: Idea = {
+		// 	title: faker.commerce.product.name,
+		// 	description: faker.commerce.productDescription(),
+		// }
 
-		list.push(item)
+		// list.push(item)
 	}
 
-	return list
+	return []
 }
 
 export const mockIdeas = generateMockIdeaList()

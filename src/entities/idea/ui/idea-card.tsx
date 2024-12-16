@@ -1,5 +1,5 @@
 import { TouchableOpacity, ViewProps } from 'react-native'
-import { Idea } from '../model/types'
+import { Idea, IdeaRdo } from '../model/types'
 import { ReactNode } from 'react'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import styled from 'styled-components/native'
@@ -50,7 +50,7 @@ const DateText = styled.Text<TextProps & { bottom?: number }>`
 `
 
 interface Props {
-	idea: Idea
+	idea: IdeaRdo
 	likeDislikeSlot: ReactNode
 	wishlistSlot: ReactNode
 	navigation: NativeStackNavigationProp<any, any, any>
@@ -65,7 +65,7 @@ export function IdeaCard({
 	return (
 		<TouchableOpacity onPress={() => navigation.navigate('Details', idea)}>
 			<IdeaItem>
-				<StatusText top={16}>Статус: {idea.status}</StatusText>
+				{/* <StatusText top={16}>Статус: {idea.status}</StatusText> */}
 				<FavoriteBox>{wishlistSlot}</FavoriteBox>
 				<Title ellipsizeMode='tail' numberOfLines={1}>
 					{idea.title}
@@ -75,9 +75,9 @@ export function IdeaCard({
 				</Description>
 				{likeDislikeSlot}
 
-				<DateText bottom={10}>
+				{/* <DateText bottom={10}>
 					{dayjs(idea.createdAt).format('DD.MM.YYYY')}
-				</DateText>
+				</DateText> */}
 			</IdeaItem>
 		</TouchableOpacity>
 	)

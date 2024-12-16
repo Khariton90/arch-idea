@@ -3,6 +3,7 @@ import { IdeaDetailsPage } from '@/pages/idea-details-page/idea-details-page'
 import { NewIdeaPage } from '@/pages/new-idea-page/new-idea-page'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Colors from '../styles/Colors'
+import { LoginPage } from '@/pages/login-page/login-page'
 
 const Stack = createNativeStackNavigator()
 
@@ -18,13 +19,20 @@ export default function Navigation() {
 	return (
 		<Stack.Navigator>
 			<Stack.Screen
-				name='Home'
-				component={HomePage}
+				name='Login'
+				component={LoginPage}
 				options={{
-					title: 'Главная',
-					...styles,
+					headerBackVisible: false,
+					headerShown: false,
 				}}
 			/>
+
+			<Stack.Screen
+				name='Home'
+				component={HomePage}
+				options={{ title: 'Главная', ...styles, headerBackVisible: false }}
+			/>
+
 			<Stack.Screen
 				name='Details'
 				component={IdeaDetailsPage}

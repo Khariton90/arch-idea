@@ -26,15 +26,12 @@ export enum Priority {
 }
 
 export interface Idea {
-	id: number
 	title: string
 	description: string
-	priority: Priority
-	subDepartmentId: Category
-	status: IdeaStatus
-	author?: User
-	likes: number
-	disLakes: number
-	createdAt: string
-	updatedAt: string
+	userId: string
+	department: string
+}
+
+export interface IdeaRdo extends Idea {
+	id: string
 }

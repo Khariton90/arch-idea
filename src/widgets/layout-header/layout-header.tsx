@@ -44,12 +44,53 @@ const NavLinkSmallText = styled.Text<TextProps & { color?: string }>`
 	font-size: 12px;
 `
 
+const WrapperProfile = styled.TouchableOpacity`
+	padding: 10px;
+	flex: 1;
+	flex-direction: row;
+	margin-bottom: 10px;
+	gap: 10px;
+	align-items: center;
+`
+
+const ProfileIcon = styled.View`
+	width: 36px;
+	height: 36px;
+	border-radius: ${Root.radius10};
+	background-color: ${Colors.success};
+	justify-content: center;
+	align-items: center;
+`
+
+const ProfileIconLetter = styled.Text`
+	color: ${Colors.white};
+	font-weight: 600;
+`
+
+const ProfileUserName = styled.View`
+	gap: 2px;
+`
+
+const TextGrey = styled.Text`
+	color: ${Colors.colorMuted};
+	font-size: 12px;
+`
+
 export function LayoutHeader(): JSX.Element {
 	const wishList = useAppSelector(({ idea }) => idea.wishList)
 	const wishListLength = Object.keys(wishList).length
 
 	return (
 		<Header>
+			<WrapperProfile>
+				<ProfileIcon>
+					<ProfileIconLetter>A</ProfileIconLetter>
+				</ProfileIcon>
+				<ProfileUserName>
+					<ProfileIconLetter>Аноним</ProfileIconLetter>
+					<TextGrey>Перейти к профилю</TextGrey>
+				</ProfileUserName>
+			</WrapperProfile>
 			<NavList>
 				<NavLink>
 					<FavoriteIcon active={true} />

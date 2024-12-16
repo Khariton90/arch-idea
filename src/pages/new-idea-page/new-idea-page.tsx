@@ -6,7 +6,7 @@ import {
 	addOneIdea,
 } from '@/entities/idea'
 import { useAppDispatch } from '@/shared/hooks/hooks'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Dimensions, TouchableOpacityProps, Keyboard, Text } from 'react-native'
 import styled from 'styled-components/native'
 import Colors from '@/app/styles/Colors'
@@ -14,6 +14,9 @@ import Root from '@/app/styles/Root'
 import { generateUniqueId } from '@/shared/lib/genearte-unique-id'
 import { CloseIcon } from '@/shared/ui/close-icon'
 import dayjs from 'dayjs'
+import { useCreateIdeaMutation } from '@/entities/idea/api/__mock__'
+import { LoadingIndicator } from '@/shared/ui/loading-indicator'
+import { delay } from '@/shared/lib/delay'
 
 const Container = styled.View`
 	flex: 1;
@@ -93,48 +96,49 @@ const CloseButton = styled.TouchableOpacity`
 `
 
 export function NewIdeaPage({ route }: any): JSX.Element {
-	const [form, setForm] = useState<Idea>({
-		id: generateUniqueId(),
-		title: '',
-		description: '',
-		subDepartmentId: Category.CommercialDepartment,
-		priority: Priority.Low,
-		status: IdeaStatus.New,
-		likes: 0,
-		disLakes: 0,
-		createdAt: dayjs().toISOString(),
-		updatedAt: dayjs().toISOString(),
-	})
-
-	const dispatch = useAppDispatch()
 	const width = Dimensions.get('window').width
 	const smallBtnWidth = `${Math.ceil(width / 3 - 20)}px`
+	const [isDelay, setIsDelay] = useState(false)
+	const [form, setForm] = useState<Idea>({
+		title: '',
+		description: '',
+		userId: '',
+		department: '',
+	})
 
-	const handleChange = (key: keyof Idea, value: any) => {
+	const [createIdea, { isError, isLoading, isSuccess, data }] =
+		useCreateIdeaMutation()
+
+	const handleChange = (key: keyof Idea, value: string) => {
 		setForm({ ...form, [key]: value })
 	}
 
-	const handleSubmit = () => {
-		dispatch(addOneIdea(form))
-		setForm(
-			state =>
-				(state = {
-					id: generateUniqueId(),
-					title: '',
-					description: '',
-					subDepartmentId: Category.CommercialDepartment,
-					priority: Priority.Low,
-					status: IdeaStatus.New,
-					likes: 0,
-					disLakes: 0,
-					createdAt: dayjs().toISOString(),
-					updatedAt: dayjs().toISOString(),
-				})
-		)
+	const handleSubmit = async () => {
+		setIsDelay(state => true)
+		await delay()
+		await createIdea(form)
+		setIsDelay(state => false)
 	}
 
 	const handleBlurAndDismiss = () => {
 		Keyboard.dismiss()
+	}
+
+	useEffect(() => {
+		if (data) {
+			setForm(state => ({
+				title: '',
+				description: '',
+				userId: '',
+				department: '',
+			}))
+		}
+	}, [isSuccess])
+
+	console.log('1')
+
+	if (isDelay || isLoading) {
+		return <LoadingIndicator />
 	}
 
 	return (
@@ -173,7 +177,7 @@ export function NewIdeaPage({ route }: any): JSX.Element {
 						</CloseButton>
 					</InputField>
 				</Label>
-
+				{/* 
 				<Label>
 					<TextLabel>Категория</TextLabel>
 					<BtnGroup>
@@ -187,9 +191,9 @@ export function NewIdeaPage({ route }: any): JSX.Element {
 							<TextLabel>Склад</TextLabel>
 						</Button>
 					</BtnGroup>
-				</Label>
+				</Label> */}
 
-				<Label>
+				{/* <Label>
 					<TextLabel>Приоритет</TextLabel>
 					<BtnGroup>
 						<Button width={smallBtnWidth}>
@@ -202,7 +206,7 @@ export function NewIdeaPage({ route }: any): JSX.Element {
 							<TextLabel>Низкий</TextLabel>
 						</Button>
 					</BtnGroup>
-				</Label>
+				</Label> */}
 
 				<Button width={`${Math.ceil(width - 40)}px`} onPress={handleSubmit}>
 					<TextLabel>Создать</TextLabel>

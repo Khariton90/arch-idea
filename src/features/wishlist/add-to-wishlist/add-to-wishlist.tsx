@@ -9,7 +9,7 @@ const WishlistButton = styled.TouchableOpacity`
 `
 
 interface Props {
-	id: number
+	id: string
 }
 
 export function AddToWishlist({ id }: Props): JSX.Element {

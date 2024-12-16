@@ -1,15 +1,20 @@
 import Colors from '@/app/styles/Colors'
 import Root from '@/app/styles/Root'
 import { IdeaStatus } from '@/entities/idea'
+import { useAccountQuery } from '@/entities/session/api'
+import { setUserId } from '@/entities/session/model/slice'
 import { AddNewIdeaButton, Filter } from '@/features/idea'
+import { useAppDispatch } from '@/shared/hooks/hooks'
+import { LoadingIndicator } from '@/shared/ui/loading-indicator'
 import {
 	BaseIdeasList,
 	LayoutLogo,
 	EmptyIdeasList,
 	LayoutHeader,
 } from '@/widgets'
+
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ScrollView, SafeAreaView } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -38,6 +43,8 @@ interface Props {
 
 export function HomePage({ navigation }: Props): JSX.Element {
 	const [queryFilter, setQueryFilter] = useState<IdeaStatus | string>('')
+	const { data, isLoading, isSuccess } = useAccountQuery()
+	const dispatch = useAppDispatch()
 
 	const onPressFilter = (query: IdeaStatus) => {
 		if (query === queryFilter) {
@@ -46,6 +53,16 @@ export function HomePage({ navigation }: Props): JSX.Element {
 		}
 
 		setQueryFilter(state => query)
+	}
+
+	useEffect(() => {
+		if (isSuccess && data) {
+			dispatch(setUserId(data.id))
+		}
+	}, [isSuccess])
+
+	if (isLoading) {
+		return <LoadingIndicator />
 	}
 
 	return (
