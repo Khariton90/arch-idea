@@ -28,10 +28,15 @@ export enum Priority {
 export interface Idea {
 	title: string
 	description: string
-	userId: string
 	department: string
+	subDepartment: string
+	priority: string
 }
 
 export interface IdeaRdo extends Idea {
 	id: string
+	userId: string
+	status: string
+	createdAt: string
+	updatedAt: string
 }

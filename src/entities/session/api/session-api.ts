@@ -4,7 +4,6 @@ import { AuthRdo } from '../model/types'
 const ACCESS_TOKEN = 'access_token'
 const REFRESH_TOKEN = 'refresh_token'
 
-// Сохранение access token
 export const saveAccessToken = async ({
 	access_token,
 	refresh_token,
@@ -17,7 +16,6 @@ export const saveAccessToken = async ({
 	}
 }
 
-// Получение access token
 export const getAccessToken = async () => {
 	try {
 		const token = await SecureStore.getItemAsync(ACCESS_TOKEN)
@@ -35,5 +33,15 @@ export const getRefreshToken = async () => {
 	} catch (error) {
 		console.error('Ошибка при получении токена:', error)
 		return ''
+	}
+}
+
+export const resetToken = async () => {
+	try {
+		await SecureStore.deleteItemAsync(ACCESS_TOKEN)
+		await SecureStore.deleteItemAsync(REFRESH_TOKEN)
+		return ''
+	} catch (error) {
+		console.error('Ошибка при удалении токена:', error)
 	}
 }

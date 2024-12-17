@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import Navigation from './navigation/navigation'
 import { Provider } from 'react-redux'
 import store from './store'
-import { getAccessToken } from '@/entities/session/api/session-api'
+import { getAccessToken, resetToken } from '@/entities/session/api/session-api'
 import { setIsAuthorized, setToken } from '@/entities/session/model/slice'
 import { delay } from '@/shared/lib/delay'
 

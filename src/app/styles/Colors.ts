@@ -7,6 +7,7 @@ const Colors = {
 	alert: '#a52a2a',
 	white: '#fff',
 	colorMuted: '#9198a1',
+	grey: '#9696a2',
 }
 
 export default Colors
