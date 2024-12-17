@@ -1,5 +1,5 @@
 import { baseApi } from '@/shared/api/base-api'
-import { Idea, IdeaRdo } from '../../model/types'
+import { Idea, IdeaQuery, IdeaRdo } from '../model/types'
 
 export const ideaApi = baseApi.injectEndpoints({
 	endpoints: build => ({
@@ -11,7 +11,14 @@ export const ideaApi = baseApi.injectEndpoints({
 				params: { delay: 2000 },
 			}),
 		}),
+		findIdeas: build.query<IdeaRdo[], IdeaQuery>({
+			query: queryParams => ({
+				url: '/idea',
+				method: 'GET',
+				params: { ...queryParams },
+			}),
+		}),
 	}),
 })
 
-export const { useCreateIdeaMutation } = ideaApi
+export const { useCreateIdeaMutation, useFindIdeasQuery } = ideaApi

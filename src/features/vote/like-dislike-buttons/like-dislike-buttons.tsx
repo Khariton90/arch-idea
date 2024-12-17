@@ -31,7 +31,7 @@ const ButtonText = styled.Text`
 `
 
 interface Props {
-	id: number
+	id: string
 	likes: number
 	disLakes: number
 }

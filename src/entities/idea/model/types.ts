@@ -40,3 +40,9 @@ export interface IdeaRdo extends Idea {
 	createdAt: string
 	updatedAt: string
 }
+
+export interface IdeaQuery {
+	page: number
+	limit: number
+	sortDirection: 'asc' | 'desc'
+}

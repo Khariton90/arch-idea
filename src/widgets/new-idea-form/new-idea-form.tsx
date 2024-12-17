@@ -150,6 +150,9 @@ export function NewIdeaForm(): JSX.Element {
 					content={item.content}
 				/>
 			))}
+			<Button disabled={disabled} onPress={handleSubmit}>
+				<TextButton>Создать</TextButton>
+			</Button>
 		</Form>
 	)
 }
