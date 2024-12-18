@@ -1,12 +1,7 @@
 import styled from 'styled-components/native'
 import Colors from '@/app/styles/Colors'
 import { NewIdeaForm } from '@/widgets/new-idea-form/new-idea-form'
-import {
-	KeyboardAvoidingView,
-	Platform,
-	SafeAreaView,
-	ScrollView,
-} from 'react-native'
+import { SafeAreaView, ScrollView } from 'react-native'
 
 const Container = styled.View`
 	flex: 1;
