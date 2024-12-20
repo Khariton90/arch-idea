@@ -1,5 +1,5 @@
 import { TouchableOpacity, ViewProps } from 'react-native'
-import { Idea, IdeaRdo } from '../model/types'
+import { IdeaRdo } from '../model/types'
 import { ReactNode } from 'react'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import styled from 'styled-components/native'
@@ -7,6 +7,10 @@ import Colors from '@/app/styles/Colors'
 import Root from '@/app/styles/Root'
 import { TextProps } from 'react-native-svg'
 import dayjs from 'dayjs'
+
+const CardWrapper = styled.TouchableOpacity`
+	margin: 10px 0;
+`
 
 const IdeaItem = styled.View<ViewProps>`
 	height: 100%;
@@ -63,10 +67,10 @@ export function IdeaCard({
 	navigation,
 }: Props): JSX.Element {
 	return (
-		<TouchableOpacity onPress={() => navigation.navigate('Details', idea)}>
+		<CardWrapper onPress={() => navigation.navigate('Details', idea)}>
 			<IdeaItem>
-				{/* <StatusText top={16}>Статус: {idea.status}</StatusText> */}
 				<FavoriteBox>{wishlistSlot}</FavoriteBox>
+				<StatusText top={16}>Статус: {idea.status}</StatusText>
 				<Title ellipsizeMode='tail' numberOfLines={1}>
 					{idea.title}
 				</Title>
@@ -75,10 +79,10 @@ export function IdeaCard({
 				</Description>
 				{likeDislikeSlot}
 
-				{/* <DateText bottom={10}>
+				<DateText bottom={10}>
 					{dayjs(idea.createdAt).format('DD.MM.YYYY')}
-				</DateText> */}
+				</DateText>
 			</IdeaItem>
-		</TouchableOpacity>
+		</CardWrapper>
 	)
 }

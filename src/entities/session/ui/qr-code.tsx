@@ -16,6 +16,7 @@ import { LayoutLogo } from '@/widgets'
 import { setIsAuthorized } from '../model/slice'
 import { saveAccessToken } from '../api/session-api'
 import { AuthRdo } from '../model/types'
+import { setWishlistCount } from '@/entities/wishlist/model/slice'
 
 const Container = styled.View`
 	flex: 1;
@@ -63,8 +64,10 @@ export function QrCode({ navigation }: any) {
 		({ sessionSlice }) => sessionSlice.isAuthorized
 	)
 
-	const [authByQrCode, { isLoading, isSuccess, isError, data, error }] =
-		useAuthByQrCodeMutation()
+	const [
+		authByQrCode,
+		{ data: account, isLoading, isSuccess, isError, data, error },
+	] = useAuthByQrCodeMutation()
 
 	const authUser = async (result: BarcodeScanningResult) => {
 		setResult(state => result.data)

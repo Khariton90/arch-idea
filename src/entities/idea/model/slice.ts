@@ -1,58 +1,28 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { Idea, IdeaRdo } from './types'
-
-interface WishListMap {
-	[key: string]: boolean
-}
+import { ideaApi } from '../api'
 
 interface State {
-	isLoading: boolean
-	count: number
-	ideaList: IdeaRdo[]
-	wishList: WishListMap
+	myIdeasCount: number
 }
 
 const initialState: State = {
-	isLoading: false,
-	count: 0,
-	ideaList: [],
-	wishList: {},
+	myIdeasCount: 0,
 }
 
 export const ideaSlice = createSlice({
-	name: 'idea',
+	name: 'ideaSlice',
 	initialState,
 	reducers: {
-		setIdeaList: (state, action: PayloadAction<IdeaRdo[]>) => {
-			state.ideaList = action.payload
+		setMyIdeasCount(state, action: PayloadAction<number>) {
+			state.myIdeasCount = action.payload
 		},
-		addOneIdea: (state, action: PayloadAction<IdeaRdo>) => {
-			state.ideaList.unshift(action.payload)
-		},
-		addLike: (state, action: PayloadAction<string>) => {
-			const item = state.ideaList.findIndex(item => item.id === action.payload)
-
-			// if (item !== -1) {
-			// 	state.ideaList[item].likes++
-			// }
-		},
-		addDisLike: (state, action: PayloadAction<string>) => {
-			const item = state.ideaList.findIndex(item => item.id === action.payload)
-
-			// if (item !== -1) {
-			// 	state.ideaList[item].disLakes++
-			// }
-		},
-		toggleWishList: (state, action: PayloadAction<string>) => {
-			const item = state.wishList[action.payload]
-			if (item) {
-				delete state.wishList[action.payload]
-			} else {
-				state.wishList[action.payload] = true
-			}
-		},
+	},
+	extraReducers: builder => {
+		builder.addMatcher(ideaApi.endpoints.createIdea.matchFulfilled, state => {
+			state.myIdeasCount += 1
+		})
 	},
 })
 
-export const { setIdeaList, addOneIdea, addLike, addDisLike, toggleWishList } =
-	ideaSlice.actions
+export const { setMyIdeasCount } = ideaSlice.actions

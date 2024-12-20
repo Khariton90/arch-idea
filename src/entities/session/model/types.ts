@@ -17,4 +17,6 @@ export type UserDto = {
 	lastName: string
 	status: string
 	department: string
+	favoriteIdeasCount: number
+	myIdeasCount: number
 }

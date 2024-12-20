@@ -6,6 +6,9 @@ import styled from 'styled-components/native'
 import Colors from '@/app/styles/Colors'
 import Root from '@/app/styles/Root'
 import { ReactNode } from 'react'
+import { useFindByIdeaIdQuery } from '../api'
+import React from 'react'
+import { LoadingIndicator } from '@/shared/ui/loading-indicator'
 
 const Card = styled.View`
 	background-color: ${Colors.lightGrey};
@@ -85,22 +88,22 @@ const FavoriteBox = styled.View`
 `
 
 interface Props {
-	title: string
-	id: number
+	id: string
 	likesDisLakesSlot: ReactNode
+	wishListSlot: ReactNode
+	title: string
 }
 
 export function IdeaDetailsCard({
-	title,
 	id,
 	likesDisLakesSlot,
+	wishListSlot,
+	title,
 }: Props): JSX.Element {
 	return (
 		<Card>
 			<CardHeader>
-				<FavoriteBox>
-					<AddToWishlist id={id} />
-				</FavoriteBox>
+				<FavoriteBox>{wishListSlot}</FavoriteBox>
 				<Title>{title}</Title>
 				<Row>
 					<SmallText color={Colors.colorMuted}>Cтатус: </SmallText>

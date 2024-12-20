@@ -46,7 +46,6 @@ const NavLinkSmallText = styled.Text<TextProps & { color?: string }>`
 
 const WrapperProfile = styled.TouchableOpacity`
 	padding: 10px;
-	flex: 1;
 	flex-direction: row;
 	margin-bottom: 10px;
 	gap: 10px;
@@ -77,8 +76,11 @@ const TextGrey = styled.Text`
 `
 
 export function LayoutHeader(): JSX.Element {
-	const wishList = useAppSelector(({ idea }) => idea.wishList)
-	const wishListLength = Object.keys(wishList).length
+	const wishlistCount = useAppSelector(
+		({ wishlistSlice }) => wishlistSlice.count
+	)
+
+	const myIdeasCount = useAppSelector(({ ideaSlice }) => ideaSlice.myIdeasCount)
 
 	return (
 		<Header>
@@ -88,7 +90,7 @@ export function LayoutHeader(): JSX.Element {
 				</ProfileIcon>
 				<ProfileUserName>
 					<ProfileIconLetter>Аноним</ProfileIconLetter>
-					<TextGrey>Перейти к профилю</TextGrey>
+					<TextGrey>Перейти к профил</TextGrey>
 				</ProfileUserName>
 			</WrapperProfile>
 			<NavList>
@@ -96,13 +98,15 @@ export function LayoutHeader(): JSX.Element {
 					<FavoriteIcon active={true} />
 					<NavLinkText>Избранное</NavLinkText>
 					<NavLinkSmallText color={Colors.btnGrey}>
-						{wishListLength} идей
+						{wishlistCount} идей
 					</NavLinkSmallText>
 				</NavLink>
 				<NavLink>
 					<IdeaIcon />
 					<NavLinkText>Мои идеи</NavLinkText>
-					<NavLinkSmallText color={Colors.btnGrey}>идеи</NavLinkSmallText>
+					<NavLinkSmallText color={Colors.btnGrey}>
+						{myIdeasCount} идеи
+					</NavLinkSmallText>
 				</NavLink>
 				<NavLink>
 					<ThumbUpIcon active={true} />

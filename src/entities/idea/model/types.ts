@@ -39,6 +39,9 @@ export interface IdeaRdo extends Idea {
 	status: string
 	createdAt: string
 	updatedAt: string
+	favoriteIdeasCount: number
+	dislikedIdeasCount: number
+	isFavorite: boolean
 }
 
 export interface IdeaQuery {
