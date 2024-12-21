@@ -8,7 +8,7 @@ import { TextProps, TouchableOpacityProps } from 'react-native'
 import styled from 'styled-components/native'
 
 const Header = styled.View`
-	padding: 20px;
+	padding: 10px 20px 0;
 	background-color: ${Colors.lightGrey};
 	border-bottom-left-radius: ${Root.radius20};
 	border-bottom-right-radius: ${Root.radius20};
@@ -45,7 +45,7 @@ const NavLinkSmallText = styled.Text<TextProps & { color?: string }>`
 `
 
 const WrapperProfile = styled.TouchableOpacity`
-	padding: 10px;
+	padding: 4px 10px;
 	flex-direction: row;
 	margin-bottom: 10px;
 	gap: 10px;
@@ -75,7 +75,7 @@ const TextGrey = styled.Text`
 	font-size: 12px;
 `
 
-export function LayoutHeader(): JSX.Element {
+export function LayoutHeader({ navigation }: any): JSX.Element {
 	const wishlistCount = useAppSelector(
 		({ wishlistSlice }) => wishlistSlice.count
 	)
@@ -84,13 +84,13 @@ export function LayoutHeader(): JSX.Element {
 
 	return (
 		<Header>
-			<WrapperProfile>
+			<WrapperProfile onPress={() => navigation.navigate('Profile')}>
 				<ProfileIcon>
 					<ProfileIconLetter>A</ProfileIconLetter>
 				</ProfileIcon>
 				<ProfileUserName>
 					<ProfileIconLetter>Аноним</ProfileIconLetter>
-					<TextGrey>Перейти к профил</TextGrey>
+					<TextGrey>Перейти к профилю</TextGrey>
 				</ProfileUserName>
 			</WrapperProfile>
 			<NavList>
@@ -108,11 +108,11 @@ export function LayoutHeader(): JSX.Element {
 						{myIdeasCount} идеи
 					</NavLinkSmallText>
 				</NavLink>
-				<NavLink>
+				{/* <NavLink>
 					<ThumbUpIcon active={true} />
 					<NavLinkText>С отзывами</NavLinkText>
 					<NavLinkSmallText color={Colors.btnGrey}>идеи</NavLinkSmallText>
-				</NavLink>
+				</NavLink> */}
 			</NavList>
 		</Header>
 	)

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { SafeAreaView, ScrollView } from 'react-native'
 import { IdeaDetailsCard } from '@/entities/idea'
 import { LikeDislikeButtons } from '@/features/vote'
@@ -12,14 +12,15 @@ import {
 	useAddToWishlistMutation,
 	useRemoveFromWishlistMutation,
 } from '@/entities/wishlist/api'
+import { ButtonToComments } from '@/entities/comment'
 
 const Container = styled.View`
 	flex: 1;
 	background-color: ${Colors.background};
 `
 
-export function IdeaDetailsPage({ route }: any): JSX.Element {
-	const { id, likes, disLakes, isFavorite } = route.params
+export function IdeaDetailsPage({ route, navigation }: any): JSX.Element {
+	const { id, likes, disLakes, isFavorite, title } = route.params
 
 	const [removeFromWishlist] = useRemoveFromWishlistMutation()
 	const [addToWishlist] = useAddToWishlistMutation()
@@ -40,6 +41,12 @@ export function IdeaDetailsPage({ route }: any): JSX.Element {
 	}
 
 	useEffect(() => {
+		navigation.setOptions({
+			title,
+		})
+	})
+
+	useEffect(() => {
 		refetch()
 	}, [isFavorite])
 
@@ -50,8 +57,7 @@ export function IdeaDetailsPage({ route }: any): JSX.Element {
 				{idea && (
 					<Container>
 						<IdeaDetailsCard
-							id={idea.id}
-							title={idea.title}
+							idea={idea}
 							likesDisLakesSlot={
 								<LikeDislikeButtons id={id} likes={likes} disLakes={disLakes} />
 							}
@@ -60,6 +66,11 @@ export function IdeaDetailsPage({ route }: any): JSX.Element {
 									active={idea.isFavorite}
 									add={handleAddToWishlist}
 									remove={handleRemoveFromWishlist}
+								/>
+							}
+							commentsSlot={
+								<ButtonToComments
+									onPress={() => navigation.navigate('Comments')}
 								/>
 							}
 						/>

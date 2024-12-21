@@ -9,24 +9,19 @@ import { useAppDispatch } from '@/shared/hooks/hooks'
 import { LoadingIndicator } from '@/shared/ui/loading-indicator'
 import {
 	BaseIdeasList,
-	LayoutLogo,
 	EmptyIdeasList,
 	LayoutHeader,
+	LayoutLogo,
 } from '@/widgets'
 
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { useEffect, useState } from 'react'
-import { ScrollView, SafeAreaView } from 'react-native'
-import { FlatList } from 'react-native-reanimated/lib/typescript/Animated'
+import { SafeAreaView } from 'react-native'
 import styled from 'styled-components/native'
-
-const Container = styled.View`
-	flex: 1;
-	background-color: ${Colors.background};
-`
+import React from 'react'
 
 const Main = styled.View`
-	gap: 20px;
+	gap: 10px;
 	flex: 1;
 `
 
@@ -61,18 +56,17 @@ export function HomePage({ navigation }: Props): JSX.Element {
 	}
 
 	return (
-		<Container>
-			<LayoutHeader />
+		<SafeAreaView style={{ flex: 1, backgroundColor: Colors.background }}>
 			<Main>
+				<LayoutHeader navigation={navigation} />
 				<LayoutLogo />
 				<AddNewIdeaButton navigation={navigation} />
-
 				<BaseIdeasList
 					emptySlot={<EmptyIdeasList />}
 					queryFilter={queryFilter}
 					navigation={navigation}
 				/>
 			</Main>
-		</Container>
+		</SafeAreaView>
 	)
 }

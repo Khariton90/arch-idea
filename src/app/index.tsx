@@ -1,4 +1,3 @@
-import React, { useEffect } from 'react'
 import Navigation from './navigation/navigation'
 import { Provider } from 'react-redux'
 import store from './store'
@@ -17,11 +16,9 @@ const getToken = async () => {
 	}
 }
 
-export default function App() {
-	useEffect(() => {
-		getToken()
-	}, [])
+getToken()
 
+export default function App() {
 	return (
 		<Provider store={store}>
 			<Navigation />

@@ -11,7 +11,7 @@ const Box = styled.View`
 const Button = styled.TouchableOpacity`
 	flex: 1;
 	color: #fff;
-	padding: 20px;
+	padding: 18px;
 	background-color: ${Colors.success};
 	border-radius: ${Root.radius10};
 	box-shadow: 0px 2px 6px ${Colors.lightGrey};

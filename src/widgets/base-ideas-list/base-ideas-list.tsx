@@ -27,7 +27,6 @@ const IdeasContainer = styled.View`
 	background: ${Colors.lightGrey};
 	padding: 20px;
 	border-radius: ${Root.radius20} ${Root.radius20} 0 0;
-	margin-top: 20px;
 `
 
 interface Props {
@@ -44,7 +43,7 @@ export function BaseIdeasList({
 	const [query, setQuery] = useState<IdeaQuery>({
 		page: 0,
 		sortDirection: 'desc',
-		limit: 3,
+		limit: 10,
 	})
 
 	const {

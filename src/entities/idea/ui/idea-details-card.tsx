@@ -1,14 +1,10 @@
-import { LikeDislikeButtons } from '@/features/vote'
-import { AddToWishlist } from '@/features/wishlist'
-import { CommentsIcon } from '@/shared/ui/comments-icon'
 import { TextProps, View } from 'react-native'
 import styled from 'styled-components/native'
 import Colors from '@/app/styles/Colors'
 import Root from '@/app/styles/Root'
 import { ReactNode } from 'react'
-import { useFindByIdeaIdQuery } from '../api'
 import React from 'react'
-import { LoadingIndicator } from '@/shared/ui/loading-indicator'
+import { IdeaRdo } from '../model/types'
 
 const Card = styled.View`
 	background-color: ${Colors.lightGrey};
@@ -72,15 +68,6 @@ const CardFooter = styled.View`
 	margin-top: auto;
 `
 
-const CommentBox = styled.TouchableOpacity`
-	flex-direction: row;
-	align-items: flex-start;
-	border-radius: ${Root.radius10};
-	background-color: ${Colors.btnGrey};
-	padding: 6px 12px;
-	gap: 6px;
-`
-
 const FavoriteBox = styled.View`
 	position: absolute;
 	right: 10px;
@@ -88,33 +75,33 @@ const FavoriteBox = styled.View`
 `
 
 interface Props {
-	id: string
+	idea: IdeaRdo
 	likesDisLakesSlot: ReactNode
 	wishListSlot: ReactNode
-	title: string
+	commentsSlot: ReactNode
 }
 
 export function IdeaDetailsCard({
-	id,
+	idea,
 	likesDisLakesSlot,
 	wishListSlot,
-	title,
+	commentsSlot,
 }: Props): JSX.Element {
 	return (
 		<Card>
 			<CardHeader>
 				<FavoriteBox>{wishListSlot}</FavoriteBox>
-				<Title>{title}</Title>
+				<Title>{idea.title}</Title>
 				<Row>
 					<SmallText color={Colors.colorMuted}>Cтатус: </SmallText>
-					<SmallText>В работе</SmallText>
+					<SmallText>{idea.status} </SmallText>
 				</Row>
 			</CardHeader>
 			<CardContent>
 				<AuthorBox>
 					<View>
 						<SmallText color={Colors.colorMuted}>Автор</SmallText>
-						<SmallText>Evgeniy</SmallText>
+						<SmallText>{idea.userId.slice(0, 6)}</SmallText>
 					</View>
 					<Avatar>
 						<SmallText>E</SmallText>
@@ -123,42 +110,19 @@ export function IdeaDetailsCard({
 
 				<Row>
 					<SmallText color={Colors.colorMuted}>Категория: </SmallText>
-					<SmallText>Склад</SmallText>
+					<SmallText>{idea.subDepartment}</SmallText>
 				</Row>
 
 				<Row>
 					<SmallText color={Colors.colorMuted}>Приоритет: </SmallText>
-					<SmallText>Высокий</SmallText>
+					<SmallText>{idea.priority}</SmallText>
 				</Row>
 
-				<Title>Оформление рабочего места кладовщика</Title>
-				<SmallText>
-					Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque
-					accusantium velit amet accusamus autem corrupti, distinctio
-					consequatur sed quis eius impedit asperiores fuga, nemo, quas nam
-					suscipit? Similique, at harum! Eos ea alias commodi velit expedita
-					dolor dolorem numquam porro, animi aliquam cupiditate voluptatum
-					tenetur? Neque praesentium unde aliquid soluta assumenda? Blanditiis
-					rem quia ad debitis id odit temporibus eaque. Commodi labore
-					doloremque ea numquam maiores laudantium provident, impedit cumque eos
-					praesentium cupiditate, repellendus et. Reiciendis a cum saepe id in
-					odio sunt, excepturi officia ratione tempore incidunt qui est?
-					Possimus consectetur cum quam! Voluptatum, amet minus minima
-					perspiciatis illo magni! Dolores cumque voluptate eos minus cupiditate
-					vero deserunt aspernatur, quo maxime quod modi maiores nihil.
-					Laboriosam cupiditate accusamus voluptas. Voluptatibus sed minima
-					porro adipisci ab tempora blanditiis eaque exercitationem nemo,
-					incidunt maxime repellendus temporibus quasi officiis facilis autem
-					nostrum itaque culpa quaerat mollitia id accusantium assumenda quo?
-					Molestiae, distinctio? Qui nulla temporibus nostrum necessitatibus
-					nesciunt, minus doloribus est ipsa magnam ad harum?
-				</SmallText>
+				<Title>{idea.title}</Title>
+				<SmallText>{idea.description}</SmallText>
 			</CardContent>
 			<CardFooter>
-				<CommentBox>
-					<CommentsIcon />
-					<SmallText color={Colors.background}>Комментарии 41</SmallText>
-				</CommentBox>
+				{commentsSlot}
 
 				{likesDisLakesSlot}
 			</CardFooter>
