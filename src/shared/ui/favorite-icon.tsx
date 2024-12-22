@@ -10,7 +10,7 @@ export function FavoriteIcon({ active }: Props) {
 	return (
 		<Svg
 			viewBox='0 0 24 24'
-			fill={active ? Colors.success : Colors.background}
+			fill={active ? Colors.success : Colors.transparent}
 			width={16}
 			height={16}
 			stroke={Colors.white}

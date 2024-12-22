@@ -8,7 +8,7 @@ const CommentBox = styled.TouchableOpacity`
 	flex-direction: row;
 	align-items: flex-start;
 	border-radius: ${Root.radius10};
-	background-color: ${Colors.btnGrey};
+	background-color: ${Colors.transparent};
 	padding: 6px 12px;
 	gap: 6px;
 `

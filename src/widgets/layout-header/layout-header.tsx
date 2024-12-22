@@ -97,25 +97,32 @@ export function LayoutHeader({ navigation }: any): JSX.Element {
 				</ProfileUserName>
 			</WrapperProfile>
 			<NavList>
-				<NavLink>
+				<NavLink
+					onPress={() =>
+						navigation.navigate(AppRoutes.ProfileIdeasPage, {
+							title: 'Избранное',
+						})
+					}
+				>
 					<FavoriteIcon active={!!wishlistCount} />
 					<NavLinkText>Избранное</NavLinkText>
 					<NavLinkSmallText color={Colors.btnGrey}>
 						{formatIdea(wishlistCount)}
 					</NavLinkSmallText>
 				</NavLink>
-				<NavLink>
-					<IdeaIcon />
+				<NavLink
+					onPress={() =>
+						navigation.navigate(AppRoutes.ProfileIdeasPage, {
+							title: 'Мои идеи',
+						})
+					}
+				>
+					<IdeaIcon active={!!myIdeasCount} />
 					<NavLinkText>Мои идеи</NavLinkText>
 					<NavLinkSmallText color={Colors.btnGrey}>
 						{formatIdea(myIdeasCount)}
 					</NavLinkSmallText>
 				</NavLink>
-				{/* <NavLink>
-					<ThumbUpIcon active={true} />
-					<NavLinkText>С отзывами</NavLinkText>
-					<NavLinkSmallText color={Colors.btnGrey}>идеи</NavLinkSmallText>
-				</NavLink> */}
 			</NavList>
 		</Header>
 	)

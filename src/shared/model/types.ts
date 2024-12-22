@@ -5,6 +5,7 @@ export enum AppRoutes {
 	NewIdeaPage = 'NewIdeaPage',
 	ProfilePage = 'ProfilePage',
 	CommentsPage = 'CommentsPage',
+	ProfileIdeasPage = 'ProfileIdeasPage',
 }
 
 export type RootStackParamList = {
@@ -21,5 +22,8 @@ export type RootStackParamList = {
 	[AppRoutes.ProfilePage]: {}
 	[AppRoutes.CommentsPage]: {
 		id: string
+	}
+	[AppRoutes.ProfileIdeasPage]: {
+		title: string
 	}
 }

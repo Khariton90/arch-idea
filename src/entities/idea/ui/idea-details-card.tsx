@@ -9,7 +9,7 @@ import dayjs from 'dayjs'
 
 const Card = styled.View`
 	background-color: ${Colors.lightGrey};
-	border-radius: ${Root.radius10};
+	border-radius: ${Root.radius20};
 	flex: 1;
 	margin: 40px 10px;
 	overflow: hidden;

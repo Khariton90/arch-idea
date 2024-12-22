@@ -1,3 +1,5 @@
+export type ReactionType = 'None' | 'Like' | 'Dislike'
+
 export enum IdeaStatus {
 	New = 'new',
 	InProgress = 'inProgress',
@@ -42,6 +44,9 @@ export interface IdeaRdo extends Idea {
 	favoriteIdeasCount: number
 	dislikedIdeasCount: number
 	isFavorite: boolean
+	likesCount: number
+	dislikesCount: number
+	reactionType: ReactionType
 }
 
 export interface IdeaQuery {

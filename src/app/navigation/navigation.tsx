@@ -7,6 +7,7 @@ import { LoginPage } from '@/pages/login-page/login-page'
 import { ProfilePage } from '@/pages/profile-page/profile-page'
 import { CommentsPage } from '@/pages/comments-page/comments-page'
 import { AppRoutes, RootStackParamList } from '@/shared/model/types'
+import { ProfileIdeasPage } from '@/pages/profile-ideas-page/profile-ideas-page'
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
@@ -55,6 +56,11 @@ export default function Navigation() {
 				name={AppRoutes.CommentsPage}
 				component={CommentsPage}
 				options={{ title: 'Комментарии', ...styles }}
+			/>
+			<Stack.Screen
+				name={AppRoutes.ProfileIdeasPage}
+				component={ProfileIdeasPage}
+				options={{ title: 'Идеи', ...styles }}
 			/>
 		</Stack.Navigator>
 	)

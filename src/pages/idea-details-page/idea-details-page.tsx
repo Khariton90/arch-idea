@@ -27,7 +27,7 @@ const Container = styled.View`
 `
 
 export function IdeaDetailsPage({ route, navigation }: Props): JSX.Element {
-	const { id, likes, disLikes, isFavorite, title } = route.params
+	const { id, isFavorite, title } = route.params
 
 	const [removeFromWishlist] = useRemoveFromWishlistMutation()
 	const [addToWishlist] = useAddToWishlistMutation()
@@ -66,7 +66,12 @@ export function IdeaDetailsPage({ route, navigation }: Props): JSX.Element {
 						<IdeaDetailsCard
 							idea={idea}
 							likesDisLakesSlot={
-								<LikeDislikeButtons id={id} likes={likes} disLikes={disLikes} />
+								<LikeDislikeButtons
+									reactionType={idea.reactionType}
+									id={id}
+									likes={idea.likesCount}
+									disLikes={idea.dislikesCount}
+								/>
 							}
 							wishListSlot={
 								<WishListToggle
