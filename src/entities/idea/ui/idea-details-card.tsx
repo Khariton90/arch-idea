@@ -5,6 +5,7 @@ import Root from '@/app/styles/Root'
 import { ReactNode } from 'react'
 import React from 'react'
 import { IdeaRdo } from '../model/types'
+import dayjs from 'dayjs'
 
 const Card = styled.View`
 	background-color: ${Colors.lightGrey};
@@ -91,7 +92,7 @@ export function IdeaDetailsCard({
 		<Card>
 			<CardHeader>
 				<FavoriteBox>{wishListSlot}</FavoriteBox>
-				<Title>{idea.title}</Title>
+				<Title>Идея от {dayjs(idea.createdAt).format('DD.MM.YYYY')}</Title>
 				<Row>
 					<SmallText color={Colors.colorMuted}>Cтатус: </SmallText>
 					<SmallText>{idea.status} </SmallText>
@@ -104,7 +105,7 @@ export function IdeaDetailsCard({
 						<SmallText>{idea.userId.slice(0, 6)}</SmallText>
 					</View>
 					<Avatar>
-						<SmallText>E</SmallText>
+						<SmallText>A</SmallText>
 					</Avatar>
 				</AuthorBox>
 

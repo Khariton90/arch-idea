@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { Idea, IdeaRdo } from './types'
 import { ideaApi } from '../api'
 
 interface State {

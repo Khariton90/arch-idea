@@ -1,4 +1,3 @@
-import { addDisLike, addLike } from '@/entities/idea/model/slice'
 import { useAppDispatch } from '@/shared/hooks/hooks'
 import { ThumbDownIcon } from '@/shared/ui/thumb-down-icon'
 import { ThumbUpIcon } from '@/shared/ui/thumb-up-icon'
@@ -33,25 +32,25 @@ const ButtonText = styled.Text`
 interface Props {
 	id: string
 	likes: number
-	disLakes: number
+	disLikes: number
 }
 
 export function LikeDislikeButtons({
 	id,
 	likes,
-	disLakes,
+	disLikes,
 }: Props): JSX.Element {
 	const [like, setLike] = useState(false)
 	const [disLike, setDislike] = useState(false)
 	const dispatch = useAppDispatch()
 
 	const handleLike = () => {
-		dispatch(addLike(id))
+		// dispatch(addLike(id))
 		setLike(state => true)
 	}
 
 	const handleDislike = () => {
-		dispatch(addDisLike(id))
+		// dispatch(addDisLike(id))
 		setDislike(state => true)
 	}
 
@@ -63,7 +62,7 @@ export function LikeDislikeButtons({
 			</Button>
 			<Button onPress={handleDislike}>
 				<ThumbDownIcon active={disLike} />
-				<ButtonText>{disLakes}</ButtonText>
+				<ButtonText>{disLikes}</ButtonText>
 			</Button>
 		</Box>
 	)

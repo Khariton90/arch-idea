@@ -23,7 +23,7 @@ export function ButtonToComments({ onPress }: Props): JSX.Element {
 	return (
 		<CommentBox onPress={onPress}>
 			<CommentsIcon />
-			<SmallText color={Colors.background}>Комментарии 41</SmallText>
+			<SmallText color={Colors.background}>Комментарии</SmallText>
 		</CommentBox>
 	)
 }

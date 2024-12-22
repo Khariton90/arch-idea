@@ -1,9 +1,10 @@
 import Colors from '@/app/styles/Colors'
 import Root from '@/app/styles/Root'
 import { useAppSelector } from '@/shared/hooks/hooks'
+import { formatIdea } from '@/shared/lib/format-idea'
+import { AppRoutes } from '@/shared/model/types'
 import { FavoriteIcon } from '@/shared/ui/favorite-icon'
 import { IdeaIcon } from '@/shared/ui/idea-icon'
-import { ThumbUpIcon } from '@/shared/ui/thumb-up-icon'
 import { TextProps, TouchableOpacityProps } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -84,7 +85,9 @@ export function LayoutHeader({ navigation }: any): JSX.Element {
 
 	return (
 		<Header>
-			<WrapperProfile onPress={() => navigation.navigate('Profile')}>
+			<WrapperProfile
+				onPress={() => navigation.navigate(AppRoutes.ProfilePage)}
+			>
 				<ProfileIcon>
 					<ProfileIconLetter>A</ProfileIconLetter>
 				</ProfileIcon>
@@ -95,17 +98,17 @@ export function LayoutHeader({ navigation }: any): JSX.Element {
 			</WrapperProfile>
 			<NavList>
 				<NavLink>
-					<FavoriteIcon active={true} />
+					<FavoriteIcon active={!!wishlistCount} />
 					<NavLinkText>Избранное</NavLinkText>
 					<NavLinkSmallText color={Colors.btnGrey}>
-						{wishlistCount} идей
+						{formatIdea(wishlistCount)}
 					</NavLinkSmallText>
 				</NavLink>
 				<NavLink>
 					<IdeaIcon />
 					<NavLinkText>Мои идеи</NavLinkText>
 					<NavLinkSmallText color={Colors.btnGrey}>
-						{myIdeasCount} идеи
+						{formatIdea(myIdeasCount)}
 					</NavLinkSmallText>
 				</NavLink>
 				{/* <NavLink>

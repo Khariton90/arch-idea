@@ -5,8 +5,10 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import Colors from '../styles/Colors'
 import { LoginPage } from '@/pages/login-page/login-page'
 import { ProfilePage } from '@/pages/profile-page/profile-page'
+import { CommentsPage } from '@/pages/comments-page/comments-page'
+import { AppRoutes, RootStackParamList } from '@/shared/model/types'
 
-const Stack = createNativeStackNavigator()
+const Stack = createNativeStackNavigator<RootStackParamList>()
 
 const styles = {
 	headerStyle: {
@@ -20,7 +22,7 @@ export default function Navigation() {
 	return (
 		<Stack.Navigator>
 			<Stack.Screen
-				name='Login'
+				name={AppRoutes.LoginPage}
 				component={LoginPage}
 				options={{
 					headerBackVisible: false,
@@ -29,29 +31,29 @@ export default function Navigation() {
 			/>
 
 			<Stack.Screen
-				name='Home'
+				name={AppRoutes.HomePage}
 				component={HomePage}
 				options={{ title: 'Главная', ...styles, headerBackVisible: false }}
 			/>
 
 			<Stack.Screen
-				name='Details'
+				name={AppRoutes.IdeaDetailsPage}
 				component={IdeaDetailsPage}
 				options={{ title: 'Главная', ...styles }}
 			/>
 			<Stack.Screen
-				name='New'
+				name={AppRoutes.NewIdeaPage}
 				component={NewIdeaPage}
 				options={{ title: 'Новая идея', ...styles }}
 			/>
 			<Stack.Screen
-				name='Profile'
+				name={AppRoutes.ProfilePage}
 				component={ProfilePage}
 				options={{ title: 'Профиль', ...styles }}
 			/>
 			<Stack.Screen
-				name='Comments'
-				component={ProfilePage}
+				name={AppRoutes.CommentsPage}
+				component={CommentsPage}
 				options={{ title: 'Комментарии', ...styles }}
 			/>
 		</Stack.Navigator>

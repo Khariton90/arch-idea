@@ -70,7 +70,7 @@ export function BaseIdeasList({
 						key={item.id}
 						idea={item}
 						likeDislikeSlot={
-							<LikeDislikeButtons id={item.id} likes={2} disLakes={2} />
+							<LikeDislikeButtons id={item.id} likes={2} disLikes={2} />
 						}
 						wishlistSlot={
 							<WishListToggle
@@ -81,7 +81,7 @@ export function BaseIdeasList({
 						}
 					/>
 				)}
-			></FlatList>
+			/>
 		</IdeasContainer>
 	)
 }

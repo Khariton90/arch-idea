@@ -73,7 +73,7 @@ const accordion = [
 		id: 3,
 		title: 'priority',
 		value: 'Приоритет',
-		content: ['Низкий', 'Средний', 'Высокий'],
+		content: ['Low', 'Medium', 'High'],
 	},
 ]
 

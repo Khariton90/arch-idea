@@ -1,4 +1,4 @@
-import { TouchableOpacity, ViewProps } from 'react-native'
+import { ViewProps } from 'react-native'
 import { IdeaRdo } from '../model/types'
 import { ReactNode } from 'react'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
@@ -7,6 +7,7 @@ import Colors from '@/app/styles/Colors'
 import Root from '@/app/styles/Root'
 import { TextProps } from 'react-native-svg'
 import dayjs from 'dayjs'
+import { AppRoutes } from '@/shared/model/types'
 
 const CardWrapper = styled.TouchableOpacity`
 	margin: 10px 0;
@@ -67,7 +68,9 @@ export function IdeaCard({
 	navigation,
 }: Props): JSX.Element {
 	return (
-		<CardWrapper onPress={() => navigation.navigate('Details', idea)}>
+		<CardWrapper
+			onPress={() => navigation.navigate(AppRoutes.IdeaDetailsPage, idea)}
+		>
 			<IdeaItem>
 				<FavoriteBox>{wishlistSlot}</FavoriteBox>
 				<StatusText top={16}>Статус: {idea.status}</StatusText>

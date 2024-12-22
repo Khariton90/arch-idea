@@ -8,6 +8,7 @@ import Root from '@/app/styles/Root'
 import { delay } from '@/shared/lib/delay'
 import { LoadingIndicator } from '@/shared/ui/loading-indicator'
 import { useAppSelector } from '@/shared/hooks/hooks'
+import { AppRoutes } from '@/shared/model/types'
 
 const Container = styled.View`
 	flex: 1;
@@ -51,7 +52,7 @@ export function LoginPage({ navigation }: any): JSX.Element {
 			<Container>
 				<LayoutLogo />
 				{token ? (
-					<Button onPress={() => navigation.replace('Home')}>
+					<Button onPress={() => navigation.replace(AppRoutes.HomePage)}>
 						<Text>Войти</Text>
 					</Button>
 				) : (

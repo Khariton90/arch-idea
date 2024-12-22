@@ -20,3 +20,10 @@ export type UserDto = {
 	favoriteIdeasCount: number
 	myIdeasCount: number
 }
+
+export type UserRdo = {
+	id: string
+	status: string
+	firstName: string
+	lastName: string
+}

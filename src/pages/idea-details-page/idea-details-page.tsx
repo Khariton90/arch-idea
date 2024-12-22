@@ -7,20 +7,27 @@ import Colors from '@/app/styles/Colors'
 import { useFindByIdeaIdQuery } from '@/entities/idea/api'
 import { LoadingIndicator } from '@/shared/ui/loading-indicator'
 import { WishListToggle } from '@/features/wishlist'
-
 import {
 	useAddToWishlistMutation,
 	useRemoveFromWishlistMutation,
 } from '@/entities/wishlist/api'
 import { ButtonToComments } from '@/entities/comment'
+import { RouteProp } from '@react-navigation/native'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { AppRoutes, RootStackParamList } from '@/shared/model/types'
+
+type Props = {
+	route: RouteProp<RootStackParamList, AppRoutes.IdeaDetailsPage>
+	navigation: NativeStackNavigationProp<RootStackParamList>
+}
 
 const Container = styled.View`
 	flex: 1;
 	background-color: ${Colors.background};
 `
 
-export function IdeaDetailsPage({ route, navigation }: any): JSX.Element {
-	const { id, likes, disLakes, isFavorite, title } = route.params
+export function IdeaDetailsPage({ route, navigation }: Props): JSX.Element {
+	const { id, likes, disLikes, isFavorite, title } = route.params
 
 	const [removeFromWishlist] = useRemoveFromWishlistMutation()
 	const [addToWishlist] = useAddToWishlistMutation()
@@ -59,7 +66,7 @@ export function IdeaDetailsPage({ route, navigation }: any): JSX.Element {
 						<IdeaDetailsCard
 							idea={idea}
 							likesDisLakesSlot={
-								<LikeDislikeButtons id={id} likes={likes} disLakes={disLakes} />
+								<LikeDislikeButtons id={id} likes={likes} disLikes={disLikes} />
 							}
 							wishListSlot={
 								<WishListToggle
@@ -70,7 +77,9 @@ export function IdeaDetailsPage({ route, navigation }: any): JSX.Element {
 							}
 							commentsSlot={
 								<ButtonToComments
-									onPress={() => navigation.navigate('Comments')}
+									onPress={() =>
+										navigation.navigate(AppRoutes.CommentsPage, { id })
+									}
 								/>
 							}
 						/>

@@ -16,7 +16,6 @@ import { LayoutLogo } from '@/widgets'
 import { setIsAuthorized } from '../model/slice'
 import { saveAccessToken } from '../api/session-api'
 import { AuthRdo } from '../model/types'
-import { setWishlistCount } from '@/entities/wishlist/model/slice'
 
 const Container = styled.View`
 	flex: 1;

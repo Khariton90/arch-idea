@@ -1,5 +1,4 @@
 import Colors from '@/app/styles/Colors'
-import Root from '@/app/styles/Root'
 import { IdeaStatus, setMyIdeasCount } from '@/entities/idea'
 import { useAccountQuery } from '@/entities/session/api'
 import { setUserId } from '@/entities/session/model/slice'
@@ -19,6 +18,8 @@ import { useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native'
 import styled from 'styled-components/native'
 import React from 'react'
+import { RouteProp } from '@react-navigation/native'
+import { AppRoutes, RootStackParamList } from '@/shared/model/types'
 
 const Main = styled.View`
 	gap: 10px;
@@ -26,7 +27,8 @@ const Main = styled.View`
 `
 
 interface Props {
-	navigation: NativeStackNavigationProp<any, any, any>
+	route: RouteProp<RootStackParamList, AppRoutes.HomePage>
+	navigation: NativeStackNavigationProp<RootStackParamList>
 }
 
 export function HomePage({ navigation }: Props): JSX.Element {

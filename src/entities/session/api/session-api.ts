@@ -19,12 +19,12 @@ export const saveAccessToken = async ({
 export const getAccessToken = async () => {
 	try {
 		const token = await SecureStore.getItemAsync(ACCESS_TOKEN)
-		return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbTR3c3U4NzgwMDAxczdicnZsbG9rdXZ2Iiwicm9sZSI6InVzZXIiLCJkZXBhcnRtZW50Ijoi0J_QsNGA0L3QsNGBIiwiaWF0IjoxNzM0NzAyMDk2LCJleHAiOjE3MzU1NjYwOTZ9.GaG-L_NhZKfaFeJTG0Q-o_Hj-fvNporDt9dC6FJIMMM'
+		return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbTR4eDVsZmswMDAxczdmZXVzM3UxcG4xIiwicm9sZSI6InVzZXIiLCJkZXBhcnRtZW50Ijoi0J_QsNGA0L3QsNGBIiwiaWF0IjoxNzM0NzY5ODExLCJleHAiOjE3MzU2MzM4MTF9.BZgwLSJtKIFWGle2y1TqTP2pTXOJEZyj9iRjA0PLvcM'
 	} catch (error) {
 		console.error('Ошибка при получении токена:', error)
 		return ''
 	} finally {
-		return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbTR3c3U4NzgwMDAxczdicnZsbG9rdXZ2Iiwicm9sZSI6InVzZXIiLCJkZXBhcnRtZW50Ijoi0J_QsNGA0L3QsNGBIiwiaWF0IjoxNzM0NzAyMDk2LCJleHAiOjE3MzU1NjYwOTZ9.GaG-L_NhZKfaFeJTG0Q-o_Hj-fvNporDt9dC6FJIMMM'
+		return 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJjbTR4eDVsZmswMDAxczdmZXVzM3UxcG4xIiwicm9sZSI6InVzZXIiLCJkZXBhcnRtZW50Ijoi0J_QsNGA0L3QsNGBIiwiaWF0IjoxNzM0NzY5ODExLCJleHAiOjE3MzU2MzM4MTF9.BZgwLSJtKIFWGle2y1TqTP2pTXOJEZyj9iRjA0PLvcM'
 	}
 }
 

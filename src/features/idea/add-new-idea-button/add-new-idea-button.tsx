@@ -2,6 +2,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import styled from 'styled-components/native'
 import Colors from '@/app/styles/Colors'
 import Root from '@/app/styles/Root'
+import { AppRoutes } from '@/shared/model/types'
 
 const Box = styled.View`
 	flex-direction: row;
@@ -30,7 +31,7 @@ interface Props {
 export function AddNewIdeaButton({ navigation }: Props): JSX.Element {
 	return (
 		<Box>
-			<Button onPress={() => navigation.navigate('New')}>
+			<Button onPress={() => navigation.navigate(AppRoutes.NewIdeaPage)}>
 				<Text>Добавить новую идею</Text>
 			</Button>
 		</Box>
