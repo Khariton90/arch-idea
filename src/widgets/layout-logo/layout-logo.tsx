@@ -1,5 +1,7 @@
 import Colors from '@/app/styles/Colors'
+import { TextWithThemeProps, ThemeContext } from '@/shared/colors.styled'
 import { LampIcon } from '@/shared/ui/lamp-icon'
+import { useContext } from 'react'
 import styled from 'styled-components/native'
 
 const Logo = styled.View`
@@ -9,21 +11,22 @@ const Logo = styled.View`
 	margin: 30px 0 0;
 `
 
-const Title = styled.Text`
+const Title = styled.Text<TextWithThemeProps>`
 	font-size: 32px;
-	color: ${Colors.white};
+	color: ${({ theme }) => theme.colors.text};
 	font-weight: 500;
 	text-align: center;
-	letter-spacing: -1.9px;
+	letter-spacing: -1px;
 	text-transform: uppercase;
 `
 
 export function LayoutLogo(): JSX.Element {
+	const { theme } = useContext(ThemeContext)
 	return (
 		<Logo>
-			<Title>Arch</Title>
+			<Title theme={theme}>Arch</Title>
 			<LampIcon />
-			<Title>Idea</Title>
+			<Title theme={theme}>Idea</Title>
 		</Logo>
 	)
 }

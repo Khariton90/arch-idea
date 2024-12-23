@@ -8,23 +8,18 @@ import {
 } from '@/entities/wishlist/api'
 import { LikeDislikeButtons } from '@/features/vote'
 import { WishListToggle } from '@/features/wishlist'
+import { ThemeContext, ViewWithThemeProps } from '@/shared/colors.styled'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import React from 'react'
+import React, { useContext } from 'react'
 import { ReactNode, useState } from 'react'
 import { RefreshControl } from 'react-native'
 import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
-const ErrorText = styled.Text`
-	text-align: center;
-	color: ${Colors.white};
-	font-size: 18px;
-`
-
-const IdeasContainer = styled.View`
+const IdeasContainer = styled.View<ViewWithThemeProps>`
 	flex: 1;
 	gap: 20px;
-	background: ${Colors.lightGrey};
+	background: ${({ theme }) => theme.colors.background};
 	padding: 20px;
 	border-radius: ${Root.radius20} ${Root.radius20} 0 0;
 `
@@ -40,6 +35,7 @@ export function BaseIdeasList({
 	navigation,
 	emptySlot,
 }: Props): JSX.Element {
+	const { theme } = useContext(ThemeContext)
 	const [query, setQuery] = useState<IdeaQuery>({
 		page: 0,
 		sortDirection: 'desc',
@@ -57,7 +53,7 @@ export function BaseIdeasList({
 	const [removeFromWishlist] = useRemoveFromWishlistMutation()
 
 	return (
-		<IdeasContainer>
+		<IdeasContainer theme={theme}>
 			<FlatList
 				refreshControl={
 					<RefreshControl refreshing={isLoading} onRefresh={refetch} />

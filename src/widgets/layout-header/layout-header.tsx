@@ -1,16 +1,18 @@
 import Colors from '@/app/styles/Colors'
 import Root from '@/app/styles/Root'
+import { ThemeContext, ViewWithThemeProps } from '@/shared/colors.styled'
 import { useAppSelector } from '@/shared/hooks/hooks'
 import { formatIdea } from '@/shared/lib/format-idea'
 import { AppRoutes } from '@/shared/model/types'
 import { FavoriteIcon } from '@/shared/ui/favorite-icon'
 import { IdeaIcon } from '@/shared/ui/idea-icon'
+import { useContext } from 'react'
 import { TextProps, TouchableOpacityProps } from 'react-native'
 import styled from 'styled-components/native'
 
-const Header = styled.View`
+const Header = styled.View<ViewWithThemeProps>`
 	padding: 10px 20px 0;
-	background-color: ${Colors.lightGrey};
+	background-color: ${({ theme }) => theme.colors.background};
 	border-bottom-left-radius: ${Root.radius20};
 	border-bottom-right-radius: ${Root.radius20};
 	position: fixed;
@@ -77,6 +79,8 @@ const TextGrey = styled.Text`
 `
 
 export function LayoutHeader({ navigation }: any): JSX.Element {
+	const { theme } = useContext(ThemeContext)
+
 	const wishlistCount = useAppSelector(
 		({ wishlistSlice }) => wishlistSlice.count
 	)
@@ -84,7 +88,7 @@ export function LayoutHeader({ navigation }: any): JSX.Element {
 	const myIdeasCount = useAppSelector(({ ideaSlice }) => ideaSlice.myIdeasCount)
 
 	return (
-		<Header>
+		<Header theme={theme}>
 			<WrapperProfile
 				onPress={() => navigation.navigate(AppRoutes.ProfilePage)}
 			>
