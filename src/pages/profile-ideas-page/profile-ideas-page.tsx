@@ -1,7 +1,7 @@
 import Colors from '@/app/styles/Colors'
 import Root from '@/app/styles/Root'
 import { AppRoutes, RootStackParamList } from '@/shared/model/types'
-import { LampIcon } from '@/shared/ui/lamp-icon'
+import { LampIcon } from '@/shared/ui/icons/lamp-icon'
 import { RouteProp } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { useEffect } from 'react'

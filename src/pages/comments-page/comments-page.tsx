@@ -6,7 +6,8 @@ import {
 } from '@/entities/comment/api'
 import { CommentListRdo } from '@/entities/comment/model/types'
 import { AppRoutes, RootStackParamList } from '@/shared/model/types'
-import { ArrowUpCircleIcon } from '@/shared/ui/arrow-up-circle-icon'
+import { Avatar } from '@/shared/ui/avatar/avatar'
+import { ArrowUpCircleIcon } from '@/shared/ui/icons/arrow-up-circle-icon'
 import { LoadingIndicator } from '@/shared/ui/loading-indicator'
 import { RouteProp } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
@@ -99,16 +100,6 @@ const UserBox = styled.View`
 	align-items: center;
 `
 
-const UserAvatar = styled.View`
-	width: 30px;
-	height: 30px;
-	background-color: ${Colors.success};
-	justify-content: center;
-	align-items: center;
-	justify-content: center;
-	border-radius: ${Root.radius10};
-`
-
 const CommentText = styled.Text`
 	color: ${Colors.white};
 	font-weight: 500;
@@ -149,9 +140,7 @@ export function CommentsList({
 					renderItem={({ item }) => (
 						<CommentItem key={item.id}>
 							<UserBox>
-								<UserAvatar>
-									<CommentText>A</CommentText>
-								</UserAvatar>
+								<Avatar />
 								<CommentText>{item.user.firstName || 'Аноним'}</CommentText>
 							</UserBox>
 

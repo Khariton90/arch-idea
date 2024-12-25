@@ -8,6 +8,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { Idea } from '@/entities/idea'
 import { useCreateIdeaMutation } from '@/entities/idea/api'
 import { LoadingIndicator } from '@/shared/ui/loading-indicator'
+import { UniversalButton } from '@/shared/ui/universal-button/universal-button'
 
 const Form = styled.View`
 	gap: ${Root.gap10};
@@ -150,9 +151,11 @@ export function NewIdeaForm(): JSX.Element {
 					content={item.content}
 				/>
 			))}
-			<Button disabled={disabled} onPress={handleSubmit}>
-				<TextButton>Создать</TextButton>
-			</Button>
+			<UniversalButton
+				disabled={disabled}
+				title='Создать'
+				onPress={handleSubmit}
+			/>
 		</Form>
 	)
 }

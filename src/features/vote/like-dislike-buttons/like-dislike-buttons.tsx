@@ -1,5 +1,5 @@
-import { ThumbDownIcon } from '@/shared/ui/thumb-down-icon'
-import { ThumbUpIcon } from '@/shared/ui/thumb-up-icon'
+import { ThumbDownIcon } from '@/shared/ui/icons/thumb-down-icon'
+import { ThumbUpIcon } from '@/shared/ui/icons/thumb-up-icon'
 import { useCallback } from 'react'
 import styled from 'styled-components/native'
 import Colors from '@/app/styles/Colors'

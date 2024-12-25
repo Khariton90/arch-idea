@@ -1,13 +1,18 @@
 import Colors from '@/app/styles/Colors'
 import Root from '@/app/styles/Root'
-import { ThemeContext, ViewWithThemeProps } from '@/shared/colors.styled'
+import {
+	ThemeContext,
+	TouchableOpacityWithThemeProps,
+	ViewWithThemeProps,
+} from '@/shared/colors.styled'
 import { useAppSelector } from '@/shared/hooks/hooks'
 import { formatIdea } from '@/shared/lib/format-idea'
 import { AppRoutes } from '@/shared/model/types'
-import { FavoriteIcon } from '@/shared/ui/favorite-icon'
-import { IdeaIcon } from '@/shared/ui/idea-icon'
+import { Avatar } from '@/shared/ui/avatar/avatar'
+import { FavoriteIcon } from '@/shared/ui/icons/favorite-icon'
+import { IdeaIcon } from '@/shared/ui/icons/idea-icon'
 import { useContext } from 'react'
-import { TextProps, TouchableOpacityProps } from 'react-native'
+import { TextProps } from 'react-native'
 import styled from 'styled-components/native'
 
 const Header = styled.View<ViewWithThemeProps>`
@@ -26,13 +31,13 @@ const NavList = styled.View`
 	gap: 10px;
 `
 
-const NavLink = styled.TouchableOpacity<TouchableOpacityProps>`
-	background-color: ${Colors.background};
+const NavLink = styled.TouchableOpacity<TouchableOpacityWithThemeProps>`
+	background-color: ${({ theme }) => theme.colors.surface};
 	padding: 10px;
 	border-radius: ${Root.radius10};
 	flex: 1;
 	justify-content: flex-end;
-	box-shadow: 0 0 2px ${Colors.success};
+	border: 1px solid ${({ theme }) => theme.colors.highlight};
 `
 
 const NavLinkText = styled.Text`
@@ -92,9 +97,7 @@ export function LayoutHeader({ navigation }: any): JSX.Element {
 			<WrapperProfile
 				onPress={() => navigation.navigate(AppRoutes.ProfilePage)}
 			>
-				<ProfileIcon>
-					<ProfileIconLetter>A</ProfileIconLetter>
-				</ProfileIcon>
+				<Avatar size='md' />
 				<ProfileUserName>
 					<ProfileIconLetter>Аноним</ProfileIconLetter>
 					<TextGrey>Перейти к профилю</TextGrey>
@@ -102,6 +105,7 @@ export function LayoutHeader({ navigation }: any): JSX.Element {
 			</WrapperProfile>
 			<NavList>
 				<NavLink
+					theme={theme}
 					onPress={() =>
 						navigation.navigate(AppRoutes.ProfileIdeasPage, {
 							title: 'Избранное',
@@ -115,6 +119,7 @@ export function LayoutHeader({ navigation }: any): JSX.Element {
 					</NavLinkSmallText>
 				</NavLink>
 				<NavLink
+					theme={theme}
 					onPress={() =>
 						navigation.navigate(AppRoutes.ProfileIdeasPage, {
 							title: 'Мои идеи',

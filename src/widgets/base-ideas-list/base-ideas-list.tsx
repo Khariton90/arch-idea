@@ -1,4 +1,3 @@
-import Colors from '@/app/styles/Colors'
 import Root from '@/app/styles/Root'
 import { IdeaCard, IdeaQuery, IdeaStatus } from '@/entities/idea'
 import { useFindIdeasQuery } from '@/entities/idea/api'
@@ -6,6 +5,7 @@ import {
 	useAddToWishlistMutation,
 	useRemoveFromWishlistMutation,
 } from '@/entities/wishlist/api'
+import { Filter } from '@/features/idea'
 import { LikeDislikeButtons } from '@/features/vote'
 import { WishListToggle } from '@/features/wishlist'
 import { ThemeContext, ViewWithThemeProps } from '@/shared/colors.styled'
@@ -17,8 +17,7 @@ import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
 
 const IdeasContainer = styled.View<ViewWithThemeProps>`
-	flex: 1;
-	gap: 20px;
+	gap: 10px;
 	background: ${({ theme }) => theme.colors.background};
 	padding: 20px;
 	border-radius: ${Root.radius20} ${Root.radius20} 0 0;
@@ -54,6 +53,8 @@ export function BaseIdeasList({
 
 	return (
 		<IdeasContainer theme={theme}>
+			<Filter categories={'department'} />
+			<Filter categories={'categories'} />
 			<FlatList
 				refreshControl={
 					<RefreshControl refreshing={isLoading} onRefresh={refetch} />

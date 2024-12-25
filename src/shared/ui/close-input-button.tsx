@@ -1,7 +1,7 @@
 import { Keyboard } from 'react-native'
 import styled from 'styled-components/native'
 import React, { useEffect, useState } from 'react'
-import { CloseIcon } from '@/shared/ui/close-icon'
+import { CloseIcon } from '@/shared/ui/icons/close-icon'
 
 const CloseButton = styled.TouchableOpacity`
 	position: absolute;

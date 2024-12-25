@@ -14,12 +14,13 @@ import {
 } from '@/widgets'
 
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { SafeAreaView } from 'react-native'
 import styled from 'styled-components/native'
 import React from 'react'
 import { RouteProp } from '@react-navigation/native'
 import { AppRoutes, RootStackParamList } from '@/shared/model/types'
+import { ThemeContext } from '@/shared/colors.styled'
 
 const Main = styled.View`
 	gap: 10px;
@@ -35,6 +36,8 @@ export function HomePage({ navigation }: Props): JSX.Element {
 	const [queryFilter, setQueryFilter] = useState<IdeaStatus | string>('')
 	const { data: account, isLoading, isSuccess } = useAccountQuery()
 	const dispatch = useAppDispatch()
+
+	const { theme } = useContext(ThemeContext)
 
 	const onPressFilter = (query: IdeaStatus) => {
 		if (query === queryFilter) {
@@ -58,7 +61,7 @@ export function HomePage({ navigation }: Props): JSX.Element {
 	}
 
 	return (
-		<SafeAreaView style={{ flex: 1, backgroundColor: Colors.background }}>
+		<SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.backdrop }}>
 			<Main>
 				<LayoutHeader navigation={navigation} />
 				<LayoutLogo />

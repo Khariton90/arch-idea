@@ -1,9 +1,15 @@
 import Colors from '@/app/styles/Colors'
 import Root from '@/app/styles/Root'
-import { View } from 'react-native'
+import { Text, View } from 'react-native'
 import Svg, { Path } from 'react-native-svg'
 import { ViewProps } from 'react-native-svg/lib/typescript/fabric/utils'
 import styled from 'styled-components/native'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import React, { useContext, useState } from 'react'
+import { MainBottomSheet } from '@/widgets/bottom-sheet/main-bottom-sheet'
+import { UniversalButton } from '@/shared/ui/universal-button/universal-button'
+import { Avatar } from '@/shared/ui/avatar/avatar'
+import { ThemeContext } from '@/shared/colors.styled'
 
 const Container = styled.View`
 	flex: 1;
@@ -64,63 +70,138 @@ const BoldText = styled.Text`
 	font-weight: 600;
 `
 
+enum RenderListModal {
+	Status = 'Status',
+	Profile = 'Profile',
+}
+
+const renderList = {
+	[RenderListModal.Profile]: <ProfileModal />,
+	[RenderListModal.Status]: <StatusModal />,
+}
+
 export function ProfilePage(): JSX.Element {
+	const [isOpen, setIsOpen] = useState(false)
+	const [visibleComponent, setVisibleComponent] =
+		useState<RenderListModal | null>(null)
+
+	const { toggleTheme } = useContext(ThemeContext)
+
 	return (
-		<Container>
-			<Box top>
-				<ProfileLogo>
-					<ProfileLetter>A</ProfileLetter>
-				</ProfileLogo>
+		<GestureHandlerRootView>
+			<Container>
+				<Box top>
+					<Avatar size='xl' />
 
-				<ProfileNameButton>
-					<View>
-						<GreyText>Публичное имя</GreyText>
-						<BoldText>Аноним</BoldText>
-					</View>
-					<Svg viewBox='0 0 20 20' width={20} height={20} fill={Colors.success}>
-						<Path d='M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z' />
-					</Svg>
-				</ProfileNameButton>
-				<ProfileNameButton>
-					<View>
-						<GreyText>Статус</GreyText>
-						<BoldText>Спец</BoldText>
-					</View>
-					<Svg viewBox='0 0 20 20' width={20} height={20} fill={Colors.success}>
-						<Path d='M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z' />
-					</Svg>
-				</ProfileNameButton>
-			</Box>
-			<Box bottom>
-				<ProfileNameButton>
-					<View>
-						<GreyText>Пригласить коллегу</GreyText>
-						<BoldText>QR Code</BoldText>
-					</View>
-					<Svg viewBox='0 0 20 20' width={20} height={20} fill={Colors.success}>
-						<Path d='M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z' />
-					</Svg>
-				</ProfileNameButton>
-				<ProfileNameButton>
-					<View>
-						<GreyText>Сменить тему</GreyText>
-						<BoldText>Тема</BoldText>
-					</View>
-					<Svg viewBox='0 0 20 20' width={20} height={20} fill={Colors.success}>
-						<Path d='M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z' />
-					</Svg>
-				</ProfileNameButton>
+					<ProfileNameButton
+						onPress={() => {
+							setVisibleComponent(() => RenderListModal.Profile)
+							setIsOpen(prev => !prev)
+						}}
+					>
+						<View>
+							<GreyText>Публичное имя</GreyText>
+							<BoldText>Аноним</BoldText>
+						</View>
+						<Svg
+							viewBox='0 0 20 20'
+							width={20}
+							height={20}
+							fill={Colors.success}
+						>
+							<Path d='M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z' />
+						</Svg>
+					</ProfileNameButton>
+					<ProfileNameButton
+						onPress={() => {
+							setVisibleComponent(() => RenderListModal.Status)
+							setIsOpen(prev => !prev)
+						}}
+					>
+						<View>
+							<GreyText>Статус</GreyText>
+							<BoldText>Спец</BoldText>
+						</View>
+						<Svg
+							viewBox='0 0 20 20'
+							width={20}
+							height={20}
+							fill={Colors.success}
+						>
+							<Path d='M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z' />
+						</Svg>
+					</ProfileNameButton>
+				</Box>
+				<Box bottom>
+					<ProfileNameButton>
+						<View>
+							<GreyText>Пригласить коллегу</GreyText>
+							<BoldText>QR Code</BoldText>
+						</View>
+						<Svg
+							viewBox='0 0 20 20'
+							width={20}
+							height={20}
+							fill={Colors.success}
+						>
+							<Path d='M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z' />
+						</Svg>
+					</ProfileNameButton>
+					<ProfileNameButton onPress={() => toggleTheme()}>
+						<View>
+							<GreyText>Сменить тему</GreyText>
+							<BoldText>Тема</BoldText>
+						</View>
+						<Svg
+							viewBox='0 0 20 20'
+							width={20}
+							height={20}
+							fill={Colors.success}
+						>
+							<Path d='M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z' />
+						</Svg>
+					</ProfileNameButton>
 
-				<ProfileNameButton>
-					<View>
-						<GreyText>Удалить профиль</GreyText>
-						<BoldText>Другое</BoldText>
-					</View>
-					<Svg viewBox='0 0 20 20' width={20} height={20} fill={Colors.success}>
-						<Path d='M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z' />
-					</Svg>
-				</ProfileNameButton>
-			</Box>
-		</Container>
+					<ProfileNameButton>
+						<View>
+							<GreyText>Удалить профиль</GreyText>
+							<BoldText>Другое</BoldText>
+						</View>
+						<Svg
+							viewBox='0 0 20 20'
+							width={20}
+							height={20}
+							fill={Colors.success}
+						>
+							<Path d='M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z' />
+						</Svg>
+					</ProfileNameButton>
+				</Box>
+			</Container>
+
+			<MainBottomSheet isOpen={isOpen}>
+				{visibleComponent ? renderList[visibleComponent] : null}
+				<UniversalButton
+					title='Закрыть'
+					onPress={() => {
+						setIsOpen(() => false)
+						setVisibleComponent(null)
+					}}
+				/>
+			</MainBottomSheet>
+		</GestureHandlerRootView>
 	)
+}
+
+//TODO
+export function StatusModal(): JSX.Element {
+	return (
+		<View>
+			<Text>Status</Text>
+		</View>
+	)
+}
+
+export function ProfileModal(): JSX.Element {
+	return <Text>Profile</Text>
 }

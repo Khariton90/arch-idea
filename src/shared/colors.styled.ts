@@ -6,6 +6,8 @@ export interface ITheme {
 		primary: string
 		secondary: string
 		background: string
+		backdrop: string
+		surface: string
 		text: string
 		border: string
 		shadow: string
@@ -25,9 +27,11 @@ export type TouchableOpacityWithThemeProps = TouchableOpacityProps & {
 
 export const lightTheme = {
 	colors: {
-		primary: '#007BFF',
+		primary: '#FC3',
 		secondary: '#6C757D',
-		background: '#FFFDF7',
+		background: '#F5F5F5',
+		backdrop: '#FEFEFE',
+		surface: '#FFFFFF',
 		text: '#333',
 		border: '#EAEAEA',
 		shadow: 'rgba(51, 51, 51, 0.15)',
@@ -44,6 +48,8 @@ export const darkTheme = {
 		primary: '#FC3',
 		secondary: '#333',
 		background: '#191919',
+		backdrop: '#0A0A0A',
+		surface: '#171a21',
 		text: '#EEE',
 		border: '#444',
 		shadow: 'rgba(238, 238, 238, 0.25)',

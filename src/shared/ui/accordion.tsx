@@ -1,7 +1,7 @@
 import Colors from '@/app/styles/Colors'
 import Root from '@/app/styles/Root'
 import styled from 'styled-components/native'
-import { Chevron } from './chevron'
+import { Chevron } from './icons/chevron'
 import Animated, {
 	useSharedValue,
 	withTiming,

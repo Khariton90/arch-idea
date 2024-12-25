@@ -1,4 +1,4 @@
-import { FavoriteIcon } from '@/shared/ui/favorite-icon'
+import { FavoriteIcon } from '@/shared/ui/icons/favorite-icon'
 import styled from 'styled-components/native'
 
 const WishlistButton = styled.TouchableOpacity`

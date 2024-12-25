@@ -6,6 +6,7 @@ import { ReactNode } from 'react'
 import React from 'react'
 import { IdeaRdo } from '../model/types'
 import dayjs from 'dayjs'
+import { Avatar } from '@/shared/ui/avatar/avatar'
 
 const Card = styled.View`
 	background-color: ${Colors.lightGrey};
@@ -45,15 +46,6 @@ const AuthorBox = styled.View`
 	position: absolute;
 	right: 10px;
 	top: 20px;
-`
-
-const Avatar = styled.View`
-	width: 24px;
-	height: 24px;
-	border-radius: 50%;
-	background-color: ${Colors.btnGrey};
-	justify-content: center;
-	align-items: center;
 `
 
 const Row = styled.View`
@@ -100,13 +92,11 @@ export function IdeaDetailsCard({
 			</CardHeader>
 			<CardContent>
 				<AuthorBox>
+					<Avatar />
 					<View>
 						<SmallText color={Colors.colorMuted}>Автор</SmallText>
 						<SmallText>{idea.userId.slice(0, 6)}</SmallText>
 					</View>
-					<Avatar>
-						<SmallText>A</SmallText>
-					</Avatar>
 				</AuthorBox>
 
 				<Row>

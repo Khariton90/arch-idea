@@ -1,83 +1,76 @@
-import Colors from '@/app/styles/Colors'
 import Root from '@/app/styles/Root'
-import { IdeaStatus } from '@/entities/idea'
-import { Dimensions, TouchableOpacityProps } from 'react-native'
+
+import {
+	TextWithThemeProps,
+	ThemeContext,
+	TouchableOpacityWithThemeProps,
+} from '@/shared/colors.styled'
+
+import { useContext, useState } from 'react'
+import { ScrollView } from 'react-native'
 import styled from 'styled-components/native'
 
-const FilterList = styled.View`
-	flex-direction: row;
-	gap: 10px;
-	justify-content: space-between;
-	padding: 10px 0 20px;
-`
-
-const FilterItem = styled.TouchableOpacity<
-	TouchableOpacityProps & {
-		background?: string
-		width: string
-	}
->`
-	background-color: ${Colors.background};
-	padding: 6px;
+const FilterItem = styled.TouchableOpacity<TouchableOpacityWithThemeProps>`
+	background-color: ${({ theme }) => theme.colors.secondary};
+	padding: 10px 16px;
 	border-radius: ${Root.radius10};
+	border: 1px solid ${({ theme }) => theme.colors.highlight};
 	justify-content: center;
 	align-items: center;
-	width: ${({ width }) => width};
+	margin: 0 6px;
 `
 
-const FilterItemText = styled.Text`
-	color: ${Colors.white};
-	text-align: center;
-	font-size: 10px;
+const FilterItemText = styled.Text<TextWithThemeProps & { active: boolean }>`
+	color: ${({ active, theme }) => (active ? theme.colors.primary : '#FFFFFF')};
+	font-size: 12px;
 `
 
-interface Props {
-	onPressFilter: (query: IdeaStatus) => void
-	queryFilter: IdeaStatus | string
+export enum DepartmentList {
+	Parnas = 'Парнас',
+	Industrial = 'Индустриальный',
+	Kad = 'Кад Север',
+	Slav = 'Славянка',
 }
 
-export function Filter({ onPressFilter, queryFilter }: Props): JSX.Element {
-	const handlePress = (query: IdeaStatus) => {
-		onPressFilter(query)
+export enum CategoriesList {
+	New = 'Новые',
+	InProgress = 'В работе',
+	Completed = 'Завершенные',
+	Canceled = 'Отмененные',
+	Popular = 'Популярные',
+}
+
+interface Props {
+	categories: 'department' | 'categories'
+}
+
+export function Filter({ categories }: Props): JSX.Element {
+	const { theme } = useContext(ThemeContext)
+
+	const [activeItem, setActiveItem] = useState<string | null>(null)
+
+	const handlePress = (el: any) => {
+		if (activeItem === el) {
+			setActiveItem(() => null)
+			return
+		}
+		setActiveItem(prev => el)
 	}
 
-	const width = Dimensions.get('window').width
-	const smallBtnWidth = Math.ceil(width / 4 - 20)
-	const widthValue = `${smallBtnWidth}px`
+	const list =
+		categories === 'categories'
+			? Object.entries(CategoriesList)
+			: Object.entries(DepartmentList)
 
 	return (
-		<FilterList>
-			<FilterItem
-				background={Colors.success}
-				width={widthValue}
-				onPress={() => handlePress(IdeaStatus.New)}
-			>
-				<FilterItemText>Новые</FilterItemText>
-			</FilterItem>
-
-			<FilterItem
-				background={Colors.primary}
-				width={widthValue}
-				onPress={() => handlePress(IdeaStatus.InProgress)}
-			>
-				<FilterItemText>В работе</FilterItemText>
-			</FilterItem>
-
-			<FilterItem
-				background={Colors.alert}
-				width={widthValue}
-				onPress={() => handlePress(IdeaStatus.Completed)}
-			>
-				<FilterItemText>Завершены</FilterItemText>
-			</FilterItem>
-
-			<FilterItem
-				background={Colors.alert}
-				width={widthValue}
-				onPress={() => handlePress(IdeaStatus.Canceled)}
-			>
-				<FilterItemText>Отменены</FilterItemText>
-			</FilterItem>
-		</FilterList>
+		<ScrollView horizontal showsHorizontalScrollIndicator={false}>
+			{list.map(([key, value]) => (
+				<FilterItem theme={theme} key={key} onPress={() => handlePress(key)}>
+					<FilterItemText theme={theme} active={activeItem === key}>
+						{value}
+					</FilterItemText>
+				</FilterItem>
+			))}
+		</ScrollView>
 	)
 }

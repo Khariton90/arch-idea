@@ -1,6 +1,6 @@
 import { QrCode } from '@/entities/session/ui/qr-code'
 import { useContext, useEffect, useState } from 'react'
-import { Text, TouchableOpacityProps } from 'react-native'
+import { TouchableOpacityProps } from 'react-native'
 import styled from 'styled-components/native'
 import { LayoutLogo } from '@/widgets'
 import Root from '@/app/styles/Root'
@@ -14,6 +14,7 @@ import {
 	ViewWithThemeProps,
 } from '@/shared/colors.styled'
 import { AppRoutes } from '@/shared/model/types'
+import { UniversalButton } from '@/shared/ui/universal-button/universal-button'
 
 const Container = styled.View<ViewWithThemeProps>`
 	flex: 1;
@@ -34,7 +35,7 @@ const Button = styled.TouchableOpacity<
 `
 
 export function LoginPage({ navigation }: any): JSX.Element {
-	const { theme, toggleTheme } = useContext(ThemeContext)
+	const { theme } = useContext(ThemeContext)
 	const [isOpenCamera, setIsOpenCamera] = useState(false)
 	const [isLoading, setIsLoading] = useState(false)
 	const token = useAppSelector(({ sessionSlice }) => sessionSlice.accessToken)
@@ -60,16 +61,15 @@ export function LoginPage({ navigation }: any): JSX.Element {
 			<Container theme={theme}>
 				<LayoutLogo />
 				{token ? (
-					<Button
-						theme={theme}
+					<UniversalButton
 						onPress={() => navigation.replace(AppRoutes.HomePage)}
-					>
-						<Text>Войти</Text>
-					</Button>
+						title='Войти'
+					/>
 				) : (
-					<Button theme={theme} onPress={() => setIsLoading(state => true)}>
-						<Text>Войти по QR-коду</Text>
-					</Button>
+					<UniversalButton
+						onPress={() => setIsLoading(state => true)}
+						title='Войти по QR-коду'
+					/>
 				)}
 			</Container>
 		)

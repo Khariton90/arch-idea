@@ -1,6 +1,6 @@
 import Colors from '@/app/styles/Colors'
 import Root from '@/app/styles/Root'
-import { CommentsIcon } from '@/shared/ui/comments-icon'
+import { CommentsIcon } from '@/shared/ui/icons/comments-icon'
 import { TextProps, TouchableOpacityProps } from 'react-native'
 import styled from 'styled-components/native'
 

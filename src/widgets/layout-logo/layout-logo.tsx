@@ -1,6 +1,5 @@
-import Colors from '@/app/styles/Colors'
 import { TextWithThemeProps, ThemeContext } from '@/shared/colors.styled'
-import { LampIcon } from '@/shared/ui/lamp-icon'
+import { LampIcon } from '@/shared/ui/icons/lamp-icon'
 import { useContext } from 'react'
 import styled from 'styled-components/native'
 
@@ -8,7 +7,7 @@ const Logo = styled.View`
 	flex-direction: row;
 	align-items: flex-end;
 	justify-content: center;
-	margin: 30px 0 0;
+	margin: 10px 0 0;
 `
 
 const Title = styled.Text<TextWithThemeProps>`

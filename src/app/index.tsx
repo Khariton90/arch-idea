@@ -4,7 +4,7 @@ import store from './store'
 import { getAccessToken } from '@/entities/session/api/session-api'
 import { setIsAuthorized, setToken } from '@/entities/session/model/slice'
 import { delay } from '@/shared/lib/delay'
-import { useColorScheme } from 'react-native'
+import { StatusBar, useColorScheme } from 'react-native'
 import ThemeProvider from './providers/theme-provider'
 
 const getToken = async () => {

@@ -1,6 +1,5 @@
-import { ViewProps } from 'react-native'
 import { IdeaRdo } from '../model/types'
-import { ReactNode } from 'react'
+import { ReactNode, useContext } from 'react'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import styled from 'styled-components/native'
 import Colors from '@/app/styles/Colors'
@@ -8,15 +7,18 @@ import Root from '@/app/styles/Root'
 import { TextProps } from 'react-native-svg'
 import dayjs from 'dayjs'
 import { AppRoutes } from '@/shared/model/types'
+import { ThemeContext, ViewWithThemeProps } from '@/shared/colors.styled'
+import { formatDate } from '@/shared/lib/format-date'
 
 const CardWrapper = styled.TouchableOpacity`
 	margin: 10px 0;
 `
 
-const IdeaItem = styled.View<ViewProps>`
+const IdeaItem = styled.View<ViewWithThemeProps>`
 	height: 100%;
 	max-height: 200px;
-	background-color: ${Colors.background};
+	background-color: ${({ theme }) => theme.colors.surface};
+	border: 1px solid ${({ theme }) => theme.colors.highlight};
 	border-radius: ${Root.radius10};
 	flex: 1;
 	padding: 10px 10px 60px;
@@ -67,11 +69,13 @@ export function IdeaCard({
 	wishlistSlot,
 	navigation,
 }: Props): JSX.Element {
+	const { theme } = useContext(ThemeContext)
+
 	return (
 		<CardWrapper
 			onPress={() => navigation.navigate(AppRoutes.IdeaDetailsPage, idea)}
 		>
-			<IdeaItem>
+			<IdeaItem theme={theme}>
 				<FavoriteBox>{wishlistSlot}</FavoriteBox>
 				<StatusText top={16}>Статус: {idea.status}</StatusText>
 				<Title ellipsizeMode='tail' numberOfLines={1}>
@@ -82,9 +86,7 @@ export function IdeaCard({
 				</Description>
 				{likeDislikeSlot}
 
-				<DateText bottom={10}>
-					{dayjs(idea.createdAt).format('DD.MM.YYYY')}
-				</DateText>
+				<DateText bottom={10}>{formatDate(idea.createdAt)}</DateText>
 			</IdeaItem>
 		</CardWrapper>
 	)
