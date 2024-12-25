@@ -1,9 +1,11 @@
 import {
+	darkTheme,
 	TextWithThemeProps,
 	ThemeContext,
 	ViewWithThemeProps,
 } from '@/shared/colors.styled'
 import { useContext } from 'react'
+import { TextProps } from 'react-native'
 import styled from 'styled-components/native'
 
 const sizeList = {
@@ -21,18 +23,17 @@ const letterList = {
 const Box = styled.View<ViewWithThemeProps & { size: number }>`
 	width: ${({ size }) => `${size}px`};
 	height: ${({ size }) => `${size}px`};
-	background-color: #6e6e6e;
+	background-color: ${darkTheme.colors.secondary};
 	justify-content: center;
 	align-items: center;
 	border-radius: 8px;
-	border: 1px solid ${({ theme }) => theme.colors.highlight};
 	align-self: center;
 	justify-content: center;
 	align-items: center;
 `
 
-const Letter = styled.Text<TextWithThemeProps & { size: number }>`
-	color: ${({ theme }) => theme.colors.text};
+const Letter = styled.Text<TextProps & { size: number }>`
+	color: #ffffff;
 	font-weight: 700;
 	font-size: ${({ size }) => `${size}px`};
 `
@@ -48,9 +49,7 @@ export function Avatar({ size = 'sm' }: Props): JSX.Element {
 	const letterSize = letterList[size]
 	return (
 		<Box theme={theme} size={avatarSize}>
-			<Letter size={letterSize} theme={theme}>
-				A
-			</Letter>
+			<Letter size={letterSize}>A</Letter>
 		</Box>
 	)
 }

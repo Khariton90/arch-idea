@@ -12,7 +12,7 @@ import { Avatar } from '@/shared/ui/avatar/avatar'
 import { FavoriteIcon } from '@/shared/ui/icons/favorite-icon'
 import { IdeaIcon } from '@/shared/ui/icons/idea-icon'
 import { useContext } from 'react'
-import { TextProps } from 'react-native'
+import { TextProps, View } from 'react-native'
 import styled from 'styled-components/native'
 
 const Header = styled.View<ViewWithThemeProps>`
@@ -33,23 +33,24 @@ const NavList = styled.View`
 
 const NavLink = styled.TouchableOpacity<TouchableOpacityWithThemeProps>`
 	background-color: ${({ theme }) => theme.colors.surface};
-	padding: 10px;
+	padding: 16px;
 	border-radius: ${Root.radius10};
 	flex: 1;
-	justify-content: flex-end;
-	border: 1px solid ${({ theme }) => theme.colors.highlight};
+	justify-content: space-between;
+	border: 1px solid ${({ theme }) => theme.colors.border};
+	flex-direction: row;
 `
 
 const NavLinkText = styled.Text`
 	color: ${Colors.white};
 	font-weight: 600;
 	font-size: 12px;
-	margin-top: 6px;
 `
 
-const NavLinkSmallText = styled.Text<TextProps & { color?: string }>`
-	color: ${({ color }) => color ?? Colors.white};
+const NavLinkSmallText = styled.Text<TextProps & { color: string }>`
+	color: ${({ color }) => color};
 	font-size: 12px;
+	opacity: 0.7;
 `
 
 const WrapperProfile = styled.TouchableOpacity`
@@ -60,17 +61,7 @@ const WrapperProfile = styled.TouchableOpacity`
 	align-items: center;
 `
 
-const ProfileIcon = styled.View`
-	width: 36px;
-	height: 36px;
-	border-radius: ${Root.radius10};
-	background-color: ${Colors.success};
-	justify-content: center;
-	align-items: center;
-`
-
-const ProfileIconLetter = styled.Text`
-	color: ${Colors.white};
+const ProfileIconTitle = styled.Text`
 	font-weight: 600;
 `
 
@@ -99,7 +90,9 @@ export function LayoutHeader({ navigation }: any): JSX.Element {
 			>
 				<Avatar size='md' />
 				<ProfileUserName>
-					<ProfileIconLetter>Аноним</ProfileIconLetter>
+					<ProfileIconTitle style={{ color: theme.colors.text }}>
+						Аноним
+					</ProfileIconTitle>
 					<TextGrey>Перейти к профилю</TextGrey>
 				</ProfileUserName>
 			</WrapperProfile>
@@ -112,11 +105,15 @@ export function LayoutHeader({ navigation }: any): JSX.Element {
 						})
 					}
 				>
+					<View>
+						<NavLinkText style={{ color: theme.colors.text }}>
+							Избранное
+						</NavLinkText>
+						<NavLinkSmallText color={theme.colors.text}>
+							{formatIdea(wishlistCount)}
+						</NavLinkSmallText>
+					</View>
 					<FavoriteIcon active={!!wishlistCount} />
-					<NavLinkText>Избранное</NavLinkText>
-					<NavLinkSmallText color={Colors.btnGrey}>
-						{formatIdea(wishlistCount)}
-					</NavLinkSmallText>
 				</NavLink>
 				<NavLink
 					theme={theme}
@@ -126,11 +123,15 @@ export function LayoutHeader({ navigation }: any): JSX.Element {
 						})
 					}
 				>
+					<View>
+						<NavLinkText style={{ color: theme.colors.text }}>
+							Мои идеи
+						</NavLinkText>
+						<NavLinkSmallText color={theme.colors.text}>
+							{formatIdea(myIdeasCount)}
+						</NavLinkSmallText>
+					</View>
 					<IdeaIcon active={!!myIdeasCount} />
-					<NavLinkText>Мои идеи</NavLinkText>
-					<NavLinkSmallText color={Colors.btnGrey}>
-						{formatIdea(myIdeasCount)}
-					</NavLinkSmallText>
 				</NavLink>
 			</NavList>
 		</Header>

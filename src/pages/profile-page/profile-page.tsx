@@ -1,7 +1,5 @@
-import Colors from '@/app/styles/Colors'
 import Root from '@/app/styles/Root'
 import { Text, View } from 'react-native'
-import Svg, { Path } from 'react-native-svg'
 import { ViewProps } from 'react-native-svg/lib/typescript/fabric/utils'
 import styled from 'styled-components/native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
@@ -10,64 +8,31 @@ import { MainBottomSheet } from '@/widgets/bottom-sheet/main-bottom-sheet'
 import { UniversalButton } from '@/shared/ui/universal-button/universal-button'
 import { Avatar } from '@/shared/ui/avatar/avatar'
 import { ThemeContext } from '@/shared/colors.styled'
+import { BottomSheetButton } from '@/shared/ui/bottom-sheet-button/bottom-sheet-button'
 
-const Container = styled.View`
+import { UserStatusModal } from '@/widgets/user-status-modal/user-status-modal'
+
+const Container = styled.View<ViewProps & { background: string }>`
 	flex: 1;
-	background-color: ${Colors.background};
-	gap: ${Root.gap10};
+	background-color: ${({ background }) => background};
+	gap: 20px;
 `
 
-const Box = styled.View<ViewProps & { top?: boolean; bottom?: boolean }>`
+const Box = styled.View<
+	ViewProps & { top?: boolean; bottom?: boolean; background: string }
+>`
 	width: 100%;
 	padding: 20px;
 	gap: ${Root.gap10};
-	background-color: ${Colors.lightGrey};
+	background-color: ${({ background }) => background};
 	flex: 1;
 	justify-content: center;
 	border-radius: ${({ top, bottom }) =>
 		top
 			? `0 0 ${Root.radius20} ${Root.radius20}`
 			: bottom
-			? `${Root.radius20} ${Root.radius20} 0`
+			? `${Root.radius20} ${Root.radius20} 0 0`
 			: '0'};
-`
-
-const ProfileLogo = styled.View`
-	width: 120px;
-	height: 120px;
-	background-color: ${Colors.success};
-	justify-content: center;
-	align-items: center;
-	border-radius: ${Root.radius20};
-	align-self: center;
-	justify-content: center;
-	align-items: center;
-`
-
-const ProfileLetter = styled.Text`
-	color: ${Colors.white};
-	font-weight: 700;
-	font-size: 36px;
-`
-
-const ProfileNameButton = styled.TouchableOpacity`
-	width: 100%;
-	border-radius: ${Root.radius10};
-	border: 1px solid ${Colors.success};
-	padding: 14px;
-	background: ${Colors.background};
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-`
-const GreyText = styled.Text`
-	font-size: 14px;
-	color: ${Colors.colorMuted};
-`
-
-const BoldText = styled.Text`
-	color: ${Colors.white};
-	font-weight: 600;
 `
 
 enum RenderListModal {
@@ -75,107 +40,75 @@ enum RenderListModal {
 	Profile = 'Profile',
 }
 
-const renderList = {
-	[RenderListModal.Profile]: <ProfileModal />,
-	[RenderListModal.Status]: <StatusModal />,
-}
-
 export function ProfilePage(): JSX.Element {
 	const [isOpen, setIsOpen] = useState(false)
 	const [visibleComponent, setVisibleComponent] =
 		useState<RenderListModal | null>(null)
 
-	const { toggleTheme } = useContext(ThemeContext)
+	const { theme, toggleTheme } = useContext(ThemeContext)
+
+	const renderList = {
+		[RenderListModal.Profile]: (
+			<UserStatusModal
+				color={theme.colors.text}
+				background={theme.colors.backdrop}
+			/>
+		),
+		[RenderListModal.Status]: (
+			<UserStatusModal
+				color={theme.colors.text}
+				background={theme.colors.shadow}
+			/>
+		),
+	}
 
 	return (
 		<GestureHandlerRootView>
-			<Container>
-				<Box top>
+			<Container background={theme.colors.background}>
+				<Box background={theme.colors.backdrop} top>
 					<Avatar size='xl' />
-
-					<ProfileNameButton
+					<BottomSheetButton
+						title={'Аноним'}
+						subTitle={'Публичное имя'}
 						onPress={() => {
 							setVisibleComponent(() => RenderListModal.Profile)
 							setIsOpen(prev => !prev)
 						}}
-					>
-						<View>
-							<GreyText>Публичное имя</GreyText>
-							<BoldText>Аноним</BoldText>
-						</View>
-						<Svg
-							viewBox='0 0 20 20'
-							width={20}
-							height={20}
-							fill={Colors.success}
-						>
-							<Path d='M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z' />
-						</Svg>
-					</ProfileNameButton>
-					<ProfileNameButton
+					/>
+					<BottomSheetButton
+						title={'Статус'}
+						subTitle={'Спец'}
 						onPress={() => {
-							setVisibleComponent(() => RenderListModal.Status)
+							setVisibleComponent(() => RenderListModal.Profile)
 							setIsOpen(prev => !prev)
 						}}
-					>
-						<View>
-							<GreyText>Статус</GreyText>
-							<BoldText>Спец</BoldText>
-						</View>
-						<Svg
-							viewBox='0 0 20 20'
-							width={20}
-							height={20}
-							fill={Colors.success}
-						>
-							<Path d='M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z' />
-						</Svg>
-					</ProfileNameButton>
+					/>
 				</Box>
-				<Box bottom>
-					<ProfileNameButton>
-						<View>
-							<GreyText>Пригласить коллегу</GreyText>
-							<BoldText>QR Code</BoldText>
-						</View>
-						<Svg
-							viewBox='0 0 20 20'
-							width={20}
-							height={20}
-							fill={Colors.success}
-						>
-							<Path d='M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z' />
-						</Svg>
-					</ProfileNameButton>
-					<ProfileNameButton onPress={() => toggleTheme()}>
-						<View>
-							<GreyText>Сменить тему</GreyText>
-							<BoldText>Тема</BoldText>
-						</View>
-						<Svg
-							viewBox='0 0 20 20'
-							width={20}
-							height={20}
-							fill={Colors.success}
-						>
-							<Path d='M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z' />
-						</Svg>
-					</ProfileNameButton>
 
-					<ProfileNameButton>
-						<View>
-							<GreyText>Удалить профиль</GreyText>
-							<BoldText>Другое</BoldText>
-						</View>
-						<Svg
-							viewBox='0 0 20 20'
-							width={20}
-							height={20}
-							fill={Colors.success}
-						>
-							<Path d='M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z' />
-						</Svg>
-					</ProfileNameButton>
+				<Box background={theme.colors.backdrop} bottom>
+					<BottomSheetButton
+						title={'QR Code'}
+						subTitle={'Пригласить коллегу'}
+						onPress={() => {
+							setVisibleComponent(() => RenderListModal.Profile)
+							setIsOpen(prev => !prev)
+						}}
+					/>
+					<BottomSheetButton
+						title={'Тема'}
+						subTitle={'Сменить тему'}
+						onPress={() => {
+							toggleTheme()
+						}}
+					/>
+					<BottomSheetButton
+						title={'Другое'}
+						subTitle={'Удалить профиль'}
+						onPress={() => {
+							setVisibleComponent(() => RenderListModal.Profile)
+							setIsOpen(prev => !prev)
+						}}
+					/>
 				</Box>
 			</Container>
 

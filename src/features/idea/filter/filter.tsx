@@ -1,6 +1,7 @@
 import Root from '@/app/styles/Root'
 
 import {
+	darkTheme,
 	TextWithThemeProps,
 	ThemeContext,
 	TouchableOpacityWithThemeProps,
@@ -10,11 +11,15 @@ import { useContext, useState } from 'react'
 import { ScrollView } from 'react-native'
 import styled from 'styled-components/native'
 
+const Container = styled.View`
+	height: 40px;
+`
+
 const FilterItem = styled.TouchableOpacity<TouchableOpacityWithThemeProps>`
 	background-color: ${({ theme }) => theme.colors.secondary};
 	padding: 10px 16px;
 	border-radius: ${Root.radius10};
-	border: 1px solid ${({ theme }) => theme.colors.highlight};
+	border: 1px solid ${darkTheme.colors.border};
 	justify-content: center;
 	align-items: center;
 	margin: 0 6px;
@@ -63,14 +68,16 @@ export function Filter({ categories }: Props): JSX.Element {
 			: Object.entries(DepartmentList)
 
 	return (
-		<ScrollView horizontal showsHorizontalScrollIndicator={false}>
-			{list.map(([key, value]) => (
-				<FilterItem theme={theme} key={key} onPress={() => handlePress(key)}>
-					<FilterItemText theme={theme} active={activeItem === key}>
-						{value}
-					</FilterItemText>
-				</FilterItem>
-			))}
-		</ScrollView>
+		<Container>
+			<ScrollView horizontal showsHorizontalScrollIndicator={false}>
+				{list.map(([key, value]) => (
+					<FilterItem theme={theme} key={key} onPress={() => handlePress(key)}>
+						<FilterItemText theme={theme} active={activeItem === key}>
+							{value}
+						</FilterItemText>
+					</FilterItem>
+				))}
+			</ScrollView>
+		</Container>
 	)
 }

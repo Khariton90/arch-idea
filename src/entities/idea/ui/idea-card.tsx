@@ -7,7 +7,11 @@ import Root from '@/app/styles/Root'
 import { TextProps } from 'react-native-svg'
 import dayjs from 'dayjs'
 import { AppRoutes } from '@/shared/model/types'
-import { ThemeContext, ViewWithThemeProps } from '@/shared/colors.styled'
+import {
+	darkTheme,
+	ThemeContext,
+	ViewWithThemeProps,
+} from '@/shared/colors.styled'
 import { formatDate } from '@/shared/lib/format-date'
 
 const CardWrapper = styled.TouchableOpacity`
@@ -18,7 +22,7 @@ const IdeaItem = styled.View<ViewWithThemeProps>`
 	height: 100%;
 	max-height: 200px;
 	background-color: ${({ theme }) => theme.colors.surface};
-	border: 1px solid ${({ theme }) => theme.colors.highlight};
+	border: 1px solid ${({ theme }) => theme.colors.border};
 	border-radius: ${Root.radius10};
 	flex: 1;
 	padding: 10px 10px 60px;
@@ -78,10 +82,18 @@ export function IdeaCard({
 			<IdeaItem theme={theme}>
 				<FavoriteBox>{wishlistSlot}</FavoriteBox>
 				<StatusText top={16}>Статус: {idea.status}</StatusText>
-				<Title ellipsizeMode='tail' numberOfLines={1}>
+				<Title
+					style={{ color: theme.colors.text }}
+					ellipsizeMode='tail'
+					numberOfLines={1}
+				>
 					{idea.title}
 				</Title>
-				<Description ellipsizeMode='tail' numberOfLines={2}>
+				<Description
+					style={{ color: theme.colors.text, opacity: 0.7 }}
+					ellipsizeMode='tail'
+					numberOfLines={2}
+				>
 					{idea.description}
 				</Description>
 				{likeDislikeSlot}

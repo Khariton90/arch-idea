@@ -1,4 +1,5 @@
 import Colors from '@/app/styles/Colors'
+import { darkTheme } from '@/shared/colors.styled'
 import * as React from 'react'
 import Animated, {
 	SharedValue,
@@ -17,7 +18,12 @@ export function Chevron({ progress }: Props) {
 
 	return (
 		<Animated.View style={iconStyle}>
-			<Svg viewBox='0 0 20 20' width={20} height={20} fill={Colors.white}>
+			<Svg
+				viewBox='0 0 20 20'
+				width={20}
+				height={20}
+				fill={darkTheme.colors.primary}
+			>
 				<Path d='M16.59 8.59L12 13.17 7.41 8.59 6 10l6 6 6-6z' />
 			</Svg>
 		</Animated.View>

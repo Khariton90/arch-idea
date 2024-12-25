@@ -10,6 +10,7 @@ import {
 	useToggleLikeMutation,
 } from '@/entities/vote/api'
 import React from 'react'
+import { darkTheme, lightTheme } from '@/shared/colors.styled'
 
 const Box = styled.View`
 	position: absolute;
@@ -23,10 +24,13 @@ const Box = styled.View`
 const Button = styled.TouchableOpacity`
 	flex-direction: row;
 	align-items: center;
+	justify-content: center;
 	gap: 6px;
-	background-color: ${Colors.transparent};
+	background-color: ${darkTheme.colors.text};
 	padding: 6px;
+	min-width: 56px;
 	border-radius: ${Root.radius10};
+	border: 1px solid ${darkTheme.colors.border};
 `
 
 const ButtonText = styled.Text`

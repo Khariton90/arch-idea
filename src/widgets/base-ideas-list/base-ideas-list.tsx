@@ -21,6 +21,7 @@ const IdeasContainer = styled.View<ViewWithThemeProps>`
 	background: ${({ theme }) => theme.colors.background};
 	padding: 20px;
 	border-radius: ${Root.radius20} ${Root.radius20} 0 0;
+	flex: 1;
 `
 
 interface Props {
@@ -52,38 +53,42 @@ export function BaseIdeasList({
 	const [removeFromWishlist] = useRemoveFromWishlistMutation()
 
 	return (
-		<IdeasContainer theme={theme}>
+		<>
 			<Filter categories={'department'} />
 			<Filter categories={'categories'} />
-			<FlatList
-				refreshControl={
-					<RefreshControl refreshing={isLoading} onRefresh={refetch} />
-				}
-				refreshing={isLoading}
-				data={ideasList}
-				renderItem={({ item }) => (
-					<IdeaCard
-						navigation={navigation}
-						key={item.id}
-						idea={item}
-						likeDislikeSlot={
-							<LikeDislikeButtons
-								id={item.id}
-								likes={item.likesCount}
-								disLikes={item.dislikesCount}
-								reactionType={item.reactionType}
-							/>
-						}
-						wishlistSlot={
-							<WishListToggle
-								active={item.isFavorite}
-								add={() => addToWishlist({ id: item.id })}
-								remove={() => removeFromWishlist({ id: item.id })}
-							/>
-						}
-					/>
-				)}
-			/>
-		</IdeasContainer>
+
+			<IdeasContainer theme={theme}>
+				<FlatList
+					showsVerticalScrollIndicator={false}
+					refreshControl={
+						<RefreshControl refreshing={isLoading} onRefresh={refetch} />
+					}
+					refreshing={isLoading}
+					data={ideasList}
+					renderItem={({ item }) => (
+						<IdeaCard
+							navigation={navigation}
+							key={item.id}
+							idea={item}
+							likeDislikeSlot={
+								<LikeDislikeButtons
+									id={item.id}
+									likes={item.likesCount}
+									disLikes={item.dislikesCount}
+									reactionType={item.reactionType}
+								/>
+							}
+							wishlistSlot={
+								<WishListToggle
+									active={item.isFavorite}
+									add={() => addToWishlist({ id: item.id })}
+									remove={() => removeFromWishlist({ id: item.id })}
+								/>
+							}
+						/>
+					)}
+				/>
+			</IdeasContainer>
+		</>
 	)
 }

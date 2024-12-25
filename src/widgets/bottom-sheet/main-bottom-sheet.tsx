@@ -13,7 +13,7 @@ export function MainBottomSheet({ children, isOpen }: Props): JSX.Element {
 
 	const handleOpen = useCallback(() => {
 		if (bottomSheetRef.current) {
-			bottomSheetRef.current.snapToPosition('50%')
+			bottomSheetRef.current.snapToPosition('70%')
 		}
 	}, [])
 
@@ -36,6 +36,7 @@ export function MainBottomSheet({ children, isOpen }: Props): JSX.Element {
 		<BottomSheet
 			handleIndicatorStyle={{ backgroundColor: theme.colors.primary }}
 			backgroundStyle={{ backgroundColor: theme.colors.background }}
+			style={{ justifyContent: 'space-between' }}
 			ref={bottomSheetRef}
 			index={-1}
 			enablePanDownToClose
