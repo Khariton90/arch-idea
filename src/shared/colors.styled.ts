@@ -1,3 +1,4 @@
+import { ThemeList } from '@/entities/theme/model/types'
 import { createContext } from 'react'
 import { TextProps, TouchableOpacityProps, ViewProps } from 'react-native'
 
@@ -62,11 +63,13 @@ export const darkTheme = {
 }
 
 type ContextType = {
+	currentTheme: ThemeList
 	theme: ITheme
-	toggleTheme: () => void
+	toggleTheme: (theme: ThemeList) => void
 }
 
 export const ThemeContext = createContext<ContextType>({
+	currentTheme: ThemeList.Dark,
 	theme: darkTheme,
 	toggleTheme: () => {},
 })
