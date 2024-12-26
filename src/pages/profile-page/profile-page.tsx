@@ -12,6 +12,7 @@ import { UserStatusModal } from '@/widgets/user-status-modal/user-status-modal'
 import { ThemeModal } from '@/widgets/theme-modal/theme-modal'
 import { ProfileEditModal } from '@/widgets/profile-edit-modal/profile-edit-modal'
 import { useAppSelector } from '@/shared/hooks/hooks'
+import { QrCodeModal } from '@/widgets/qr-code-modal/qr-code-modal'
 
 const Container = styled.View<ViewProps & { background: string }>`
 	flex: 1;
@@ -114,6 +115,13 @@ export function ProfilePage(): JSX.Element {
 						background={theme.colors.shadow}
 					/>
 					<UniversalButton title='Закрыть' onPress={() => toggleModal(1)} />
+				</ContainerModal>
+			</MainBottomSheet>
+
+			<MainBottomSheet isOpen={modalList[2]}>
+				<ContainerModal>
+					<QrCodeModal isOpen={modalList[2]} />
+					<UniversalButton title='Закрыть' onPress={() => toggleModal(2)} />
 				</ContainerModal>
 			</MainBottomSheet>
 
