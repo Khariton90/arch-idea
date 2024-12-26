@@ -18,26 +18,39 @@ const fontSize = {
 }
 
 const Text = styled.Text<
-	TextWithThemeProps & { weight: number; fontSize: string; soft?: boolean }
+	TextWithThemeProps & {
+		weight: number
+		fontSize: string
+		soft?: boolean
+		align: string
+	}
 >`
 	font-weight: ${({ weight }) => weight};
 	font-size: ${({ fontSize }) => fontSize};
 	color: ${({ theme }) => theme.colors.text};
 	opacity: ${({ soft }) => (soft ? 0.7 : 1)};
 	line-height: 22px;
+	text-align: ${({ align }) => align};
 `
 
 interface Props extends TextProps {
 	variant: 'h1' | 'h2' | 'p' | 'span'
 	text: string
 	soft?: boolean
+	align?: 'left' | 'right' | 'center'
 }
 
-export function Typography({ variant, text, soft }: Props): JSX.Element {
+export function Typography({
+	variant,
+	text,
+	soft,
+	align = 'left',
+}: Props): JSX.Element {
 	const { theme } = useContext(ThemeContext)
 
 	return (
 		<Text
+			align={align}
 			theme={theme}
 			weight={weight[variant]}
 			soft={soft}

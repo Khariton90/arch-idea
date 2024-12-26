@@ -1,35 +1,16 @@
-import Colors from '@/app/styles/Colors'
-import Root from '@/app/styles/Root'
+import { NotFoundFavoriteIdea, NotFoundMainIdea } from '@/entities/idea'
+import { ThemeContext } from '@/shared/colors.styled'
 import { AppRoutes, RootStackParamList } from '@/shared/model/types'
-import { LampIcon } from '@/shared/ui/icons/lamp-icon'
 import { RouteProp } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { useEffect } from 'react'
-import { Dimensions, Image } from 'react-native'
-import { ViewProps } from 'react-native-svg/lib/typescript/fabric/utils'
+import { useContext, useEffect } from 'react'
 import styled from 'styled-components/native'
 
-const Container = styled.View`
+const Container = styled.View<{ background: string }>`
 	flex: 1;
-	background-color: ${Colors.background};
+	background-color: ${({ background }) => background};
 	justify-content: center;
 	align-items: center;
-`
-
-const ImageBlock = styled.View<ViewProps>`
-	height: 400px;
-	background-color: ${Colors.lightGrey};
-	justify-content: center;
-	align-items: center;
-	border-radius: ${Root.radius20};
-	gap: ${Root.gap20};
-`
-
-const TextTitle = styled.Text`
-	font-size: 20px;
-	font-weight: 600;
-	color: ${Colors.success};
-	text-transform: uppercase;
 `
 
 type Props = {
@@ -37,10 +18,9 @@ type Props = {
 	navigation: NativeStackNavigationProp<RootStackParamList>
 }
 
-const width = Dimensions.get('window').width - 20
-
 export function ProfileIdeasPage({ route, navigation }: Props): JSX.Element {
 	const { title } = route.params
+	const { theme } = useContext(ThemeContext)
 
 	useEffect(() => {
 		navigation.setOptions({
@@ -49,11 +29,8 @@ export function ProfileIdeasPage({ route, navigation }: Props): JSX.Element {
 	})
 
 	return (
-		<Container>
-			<ImageBlock style={{ width }}>
-				<LampIcon />
-				<TextTitle>В разработке</TextTitle>
-			</ImageBlock>
+		<Container background={theme.colors.backdrop}>
+			{title === 'Избранное' ? <NotFoundFavoriteIdea /> : <NotFoundMainIdea />}
 		</Container>
 	)
 }
