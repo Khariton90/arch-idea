@@ -1,6 +1,11 @@
 import { ThemeList } from '@/entities/theme/model/types'
 import { createContext } from 'react'
-import { TextProps, TouchableOpacityProps, ViewProps } from 'react-native'
+import {
+	TextInput,
+	TextProps,
+	TouchableOpacityProps,
+	ViewProps,
+} from 'react-native'
 
 export interface ITheme {
 	colors: {
@@ -25,6 +30,7 @@ export type ViewWithThemeProps = ViewProps & { theme: ITheme }
 export type TouchableOpacityWithThemeProps = TouchableOpacityProps & {
 	theme: ITheme
 }
+export type InputFieldProps = TextInput & { theme: ITheme }
 
 export const lightTheme = {
 	colors: {

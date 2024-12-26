@@ -21,6 +21,7 @@ import React from 'react'
 import { RouteProp } from '@react-navigation/native'
 import { AppRoutes, RootStackParamList } from '@/shared/model/types'
 import { ThemeContext } from '@/shared/colors.styled'
+import { setUserFullName } from '@/entities/user/model/slice'
 
 const Main = styled.View`
 	gap: 10px;
@@ -53,6 +54,12 @@ export function HomePage({ navigation }: Props): JSX.Element {
 			dispatch(setUserId(account.id))
 			dispatch(setWishlistCount(account.favoriteIdeasCount))
 			dispatch(setMyIdeasCount(account.myIdeasCount))
+			dispatch(
+				setUserFullName({
+					firstName: account.firstName,
+					lastName: account.lastName,
+				})
+			)
 		}
 	}, [account])
 

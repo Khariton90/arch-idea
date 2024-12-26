@@ -1,6 +1,6 @@
 import Colors from '@/app/styles/Colors'
 import Root from '@/app/styles/Root'
-import { TouchableOpacityProps, View } from 'react-native'
+import { View } from 'react-native'
 import styled from 'styled-components/native'
 import { Accordion } from '@/shared/ui/accordion'
 import { CloseInputButton } from '@/shared/ui/close-input-button'
@@ -30,25 +30,6 @@ const InputField = styled.TextInput`
 	padding: 20px 40px 20px 10px;
 	border: 1px solid ${Colors.grey};
 	color: ${Colors.white};
-`
-
-const Button = styled.TouchableOpacity<
-	TouchableOpacityProps & { disabled: boolean }
->`
-	width: 100%;
-	padding: 18px 10px;
-	justify-content: center;
-	align-items: center;
-	border-radius: ${Root.radius10};
-	background-color: ${Colors.success};
-	opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
-	pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
-`
-
-const TextButton = styled.Text`
-	font-size: 16px;
-	color: ${Colors.white};
-	text-align: center;
 `
 
 const accordion = [

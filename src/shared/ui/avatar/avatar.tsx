@@ -40,16 +40,19 @@ const Letter = styled.Text<TextProps & { size: number }>`
 
 interface Props {
 	size?: 'sm' | 'md' | 'xl'
+	name?: string
 }
 
-export function Avatar({ size = 'sm' }: Props): JSX.Element {
+export function Avatar({ size = 'sm', name }: Props): JSX.Element {
 	const { theme } = useContext(ThemeContext)
+
+	const letter = name ? name.slice(0, 1) : 'П'
 
 	const avatarSize = sizeList[size]
 	const letterSize = letterList[size]
 	return (
 		<Box theme={theme} size={avatarSize}>
-			<Letter size={letterSize}>A</Letter>
+			<Letter size={letterSize}>{letter}</Letter>
 		</Box>
 	)
 }

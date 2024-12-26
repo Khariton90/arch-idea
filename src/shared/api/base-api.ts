@@ -6,12 +6,20 @@ import {
 	COMMENT_TAG,
 	IDEA_TAG,
 	SESSION_TAG,
+	USER_TAG,
 	VOTE_TAG,
 	WISHLIST_TAG,
 } from './tags'
 
 export const baseApi = createApi({
-	tagTypes: [SESSION_TAG, IDEA_TAG, WISHLIST_TAG, COMMENT_TAG, VOTE_TAG],
+	tagTypes: [
+		SESSION_TAG,
+		IDEA_TAG,
+		WISHLIST_TAG,
+		COMMENT_TAG,
+		VOTE_TAG,
+		USER_TAG,
+	],
 	reducerPath: 'baseApi',
 	baseQuery: fetchBaseQuery({
 		baseUrl: BASE_URL,

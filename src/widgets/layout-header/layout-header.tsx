@@ -82,16 +82,17 @@ export function LayoutHeader({ navigation }: any): JSX.Element {
 	)
 
 	const myIdeasCount = useAppSelector(({ ideaSlice }) => ideaSlice.myIdeasCount)
+	const firstName = useAppSelector(({ userSlice }) => userSlice.firstName)
 
 	return (
 		<Header theme={theme}>
 			<WrapperProfile
 				onPress={() => navigation.navigate(AppRoutes.ProfilePage)}
 			>
-				<Avatar size='md' />
+				<Avatar size='md' name={firstName} />
 				<ProfileUserName>
 					<ProfileIconTitle style={{ color: theme.colors.text }}>
-						Аноним
+						{firstName}
 					</ProfileIconTitle>
 					<TextGrey>Перейти к профилю</TextGrey>
 				</ProfileUserName>

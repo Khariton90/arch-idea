@@ -10,6 +10,8 @@ import { ThemeContext } from '@/shared/colors.styled'
 import { BottomSheetButton } from '@/shared/ui/bottom-sheet-button/bottom-sheet-button'
 import { UserStatusModal } from '@/widgets/user-status-modal/user-status-modal'
 import { ThemeModal } from '@/widgets/theme-modal/theme-modal'
+import { ProfileEditModal } from '@/widgets/profile-edit-modal/profile-edit-modal'
+import { useAppSelector } from '@/shared/hooks/hooks'
 
 const Container = styled.View<ViewProps & { background: string }>`
 	flex: 1;
@@ -39,12 +41,9 @@ const Box = styled.View<
 			: '0'};
 `
 
-enum Modal {
-	Status = 'Status',
-	Profile = 'Profile',
-}
-
 export function ProfilePage(): JSX.Element {
+	const { firstName, lastName } = useAppSelector(({ userSlice }) => userSlice)
+
 	const [modalList, setModalList] = useState([
 		false,
 		false,
@@ -63,13 +62,15 @@ export function ProfilePage(): JSX.Element {
 
 	const { theme } = useContext(ThemeContext)
 
+	const fullname = `${firstName} ${lastName}`
+
 	return (
 		<GestureHandlerRootView>
 			<Container background={theme.colors.background}>
 				<Box background={theme.colors.backdrop} top>
-					<Avatar size='xl' />
+					<Avatar size='xl' name={firstName} />
 					<BottomSheetButton
-						title={'Аноним'}
+						title={fullname}
 						subTitle={'Публичное имя'}
 						onPress={() => toggleModal(0)}
 					/>
@@ -98,6 +99,13 @@ export function ProfilePage(): JSX.Element {
 					/>
 				</Box>
 			</Container>
+
+			<MainBottomSheet isOpen={modalList[0]}>
+				<ContainerModal>
+					<ProfileEditModal />
+					<UniversalButton title='Закрыть' onPress={() => toggleModal(0)} />
+				</ContainerModal>
+			</MainBottomSheet>
 
 			<MainBottomSheet isOpen={modalList[1]}>
 				<ContainerModal>

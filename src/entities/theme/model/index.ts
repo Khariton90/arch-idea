@@ -12,8 +12,8 @@ export const getCurrentTheme = async (): Promise<ThemeList> => {
 		const currentTheme = (await SecureStore.getItemAsync(
 			CURRENT_THEME
 		)) as ThemeList
-		return currentTheme || ThemeList.Auto
+		return currentTheme || ThemeList.Dark
 	} catch {
-		return ThemeList.Auto
+		return ThemeList.Dark
 	}
 }
