@@ -1,5 +1,4 @@
 import Root from '@/app/styles/Root'
-import { Text, View } from 'react-native'
 import { ViewProps } from 'react-native-svg/lib/typescript/fabric/utils'
 import styled from 'styled-components/native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
@@ -9,13 +8,18 @@ import { UniversalButton } from '@/shared/ui/universal-button/universal-button'
 import { Avatar } from '@/shared/ui/avatar/avatar'
 import { ThemeContext } from '@/shared/colors.styled'
 import { BottomSheetButton } from '@/shared/ui/bottom-sheet-button/bottom-sheet-button'
-
 import { UserStatusModal } from '@/widgets/user-status-modal/user-status-modal'
+import { ThemeModal } from '@/widgets/theme-modal/theme-modal'
 
 const Container = styled.View<ViewProps & { background: string }>`
 	flex: 1;
 	background-color: ${({ background }) => background};
 	gap: 20px;
+`
+
+const ContainerModal = styled.View`
+	gap: 10px;
+	padding: 20px 10px;
 `
 
 const Box = styled.View<
@@ -35,32 +39,29 @@ const Box = styled.View<
 			: '0'};
 `
 
-enum RenderListModal {
+enum Modal {
 	Status = 'Status',
 	Profile = 'Profile',
 }
 
 export function ProfilePage(): JSX.Element {
-	const [isOpen, setIsOpen] = useState(false)
-	const [visibleComponent, setVisibleComponent] =
-		useState<RenderListModal | null>(null)
+	const [modalList, setModalList] = useState([
+		false,
+		false,
+		false,
+		false,
+		false,
+	])
 
-	const { theme, toggleTheme } = useContext(ThemeContext)
+	const toggleModal = (index: number) => {
+		const array = modalList.map((element, idx) =>
+			idx === index ? (element = !element) : false
+		)
 
-	const renderList = {
-		[RenderListModal.Profile]: (
-			<UserStatusModal
-				color={theme.colors.text}
-				background={theme.colors.backdrop}
-			/>
-		),
-		[RenderListModal.Status]: (
-			<UserStatusModal
-				color={theme.colors.text}
-				background={theme.colors.shadow}
-			/>
-		),
+		setModalList(prev => [...array])
 	}
+
+	const { theme } = useContext(ThemeContext)
 
 	return (
 		<GestureHandlerRootView>
@@ -70,18 +71,12 @@ export function ProfilePage(): JSX.Element {
 					<BottomSheetButton
 						title={'Аноним'}
 						subTitle={'Публичное имя'}
-						onPress={() => {
-							setVisibleComponent(() => RenderListModal.Profile)
-							setIsOpen(prev => !prev)
-						}}
+						onPress={() => toggleModal(0)}
 					/>
 					<BottomSheetButton
 						title={'Статус'}
 						subTitle={'Спец'}
-						onPress={() => {
-							setVisibleComponent(() => RenderListModal.Profile)
-							setIsOpen(prev => !prev)
-						}}
+						onPress={() => toggleModal(1)}
 					/>
 				</Box>
 
@@ -89,52 +84,37 @@ export function ProfilePage(): JSX.Element {
 					<BottomSheetButton
 						title={'QR Code'}
 						subTitle={'Пригласить коллегу'}
-						onPress={() => {
-							setVisibleComponent(() => RenderListModal.Profile)
-							setIsOpen(prev => !prev)
-						}}
+						onPress={() => toggleModal(2)}
 					/>
 					<BottomSheetButton
 						title={'Тема'}
 						subTitle={'Сменить тему'}
-						onPress={() => {
-							toggleTheme()
-						}}
+						onPress={() => toggleModal(3)}
 					/>
 					<BottomSheetButton
 						title={'Другое'}
 						subTitle={'Удалить профиль'}
-						onPress={() => {
-							setVisibleComponent(() => RenderListModal.Profile)
-							setIsOpen(prev => !prev)
-						}}
+						onPress={() => toggleModal(4)}
 					/>
 				</Box>
 			</Container>
 
-			<MainBottomSheet isOpen={isOpen}>
-				{visibleComponent ? renderList[visibleComponent] : null}
-				<UniversalButton
-					title='Закрыть'
-					onPress={() => {
-						setIsOpen(() => false)
-						setVisibleComponent(null)
-					}}
-				/>
+			<MainBottomSheet isOpen={modalList[1]}>
+				<ContainerModal>
+					<UserStatusModal
+						color={theme.colors.text}
+						background={theme.colors.shadow}
+					/>
+					<UniversalButton title='Закрыть' onPress={() => toggleModal(1)} />
+				</ContainerModal>
+			</MainBottomSheet>
+
+			<MainBottomSheet isOpen={modalList[3]}>
+				<ContainerModal>
+					<ThemeModal />
+					<UniversalButton title='Закрыть' onPress={() => toggleModal(3)} />
+				</ContainerModal>
 			</MainBottomSheet>
 		</GestureHandlerRootView>
 	)
-}
-
-//TODO
-export function StatusModal(): JSX.Element {
-	return (
-		<View>
-			<Text>Status</Text>
-		</View>
-	)
-}
-
-export function ProfileModal(): JSX.Element {
-	return <Text>Profile</Text>
 }

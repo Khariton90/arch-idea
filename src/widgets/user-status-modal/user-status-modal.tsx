@@ -1,12 +1,8 @@
+import { Typography } from '@/shared/ui/typography/typography'
+import React from 'react'
 import { TextProps } from 'react-native'
 import { ViewProps } from 'react-native-svg/lib/typescript/fabric/utils'
 import styled from 'styled-components/native'
-
-const Container = styled.View`
-	margin: 10px 0;
-	gap: 10px;
-	padding: 10px;
-`
 
 const Row = styled.View<ViewProps & { border?: boolean }>`
 	flex-direction: row;
@@ -14,12 +10,6 @@ const Row = styled.View<ViewProps & { border?: boolean }>`
 	padding: 0 10px;
 	border-bottom-width: ${({ border }) => (border ? '1px' : '0px')};
 	border-bottom-color: #ccc;
-`
-
-const Title = styled.Text<TextProps>`
-	font-size: 16px;
-	color: #fff;
-	padding-bottom: 6px;
 `
 
 const DescriptionBox = styled.View`
@@ -34,48 +24,50 @@ interface Props {
 
 export function UserStatusModal({ color, background }: Props): JSX.Element {
 	return (
-		<Container>
+		<>
 			<Row>
-				<Title style={{ color: color, fontWeight: 600 }}>Ваш статус</Title>
-				<Title style={{ color: color, fontWeight: 600 }}>Спец</Title>
+				<Typography variant='h1' text='Ваш статус' />
+				<Typography variant='h1' text='Спец' />
 			</Row>
 
 			<DescriptionBox style={{ backgroundColor: background }}>
-				<Title style={{ color: color }}>Старайтесь держать активность</Title>
-				<Title style={{ color: color }}>
-					Завершённые идеи повышают ваш статус, когда проект или задание
-					полностью выполнены и готовы к использованию.
-				</Title>
-				<Title style={{ color: color }}>
-					После завершения идеи переходят в стадию внедрения, где они начинают
-					приносить пользу.
-				</Title>
+				<Typography variant='p' text='Старайтесь держать активность' />
+				<Typography
+					variant='p'
+					text='Завершённые идеи повышают ваш статус, когда проект или задание
+					полностью выполнены и готовы к использованию.'
+				/>
+				<Typography
+					variant='p'
+					text='После завершения идеи переходят в стадию внедрения, где они начинают
+					приносить пользу.'
+				/>
 			</DescriptionBox>
 
 			<Row border>
-				<Title style={{ color: color }}>Спец</Title>
-				<Title style={{ color: color }}>0 идей</Title>
+				<Typography variant='h2' text='Спец' />
+				<Typography variant='h2' text='<= 0 идей' />
 			</Row>
 
 			<Row border>
-				<Title style={{ color: color }}>Мастер</Title>
-				<Title style={{ color: color }}>20 идей</Title>
+				<Typography variant='h2' text='Мастер' />
+				<Typography variant='h2' text='<= 20 идей' />
 			</Row>
 
 			<Row border>
-				<Title style={{ color: color }}>Профи</Title>
-				<Title style={{ color: color }}>30 идей</Title>
+				<Typography variant='h2' text='Профи' />
+				<Typography variant='h2' text='<= 30 идей' />
 			</Row>
 
 			<Row border>
-				<Title style={{ color: color }}>Эксперт</Title>
-				<Title style={{ color: color }}>40 идей</Title>
+				<Typography variant='h2' text='Эксперт' />
+				<Typography variant='h2' text='<= 40 идей' />
 			</Row>
 
 			<Row>
-				<Title style={{ color: color }}>Супер-эксперт</Title>
-				<Title style={{ color: color }}>50 идей</Title>
+				<Typography variant='h2' text='Супер-эксперт' />
+				<Typography variant='h2' text='<= 50 идей' />
 			</Row>
-		</Container>
+		</>
 	)
 }

@@ -1,6 +1,7 @@
 import { ThemeContext } from '@/shared/colors.styled'
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet'
 import { ReactNode, useCallback, useContext, useEffect, useRef } from 'react'
+import { Dimensions } from 'react-native'
 
 interface Props {
 	children: ReactNode
@@ -11,17 +12,19 @@ export function MainBottomSheet({ children, isOpen }: Props): JSX.Element {
 	const { theme } = useContext(ThemeContext)
 	const bottomSheetRef = useRef<BottomSheet>(null)
 
-	const handleOpen = useCallback(() => {
-		if (bottomSheetRef.current) {
-			bottomSheetRef.current.snapToPosition('70%')
-		}
-	}, [])
+	const height = Dimensions.get('window').height
 
-	const handleClose = useCallback(() => {
+	const handleOpen = () => {
+		if (bottomSheetRef.current) {
+			bottomSheetRef.current.expand()
+		}
+	}
+
+	const handleClose = () => {
 		if (bottomSheetRef.current) {
 			bottomSheetRef.current.close()
 		}
-	}, [])
+	}
 
 	useEffect(() => {
 		if (isOpen) {
@@ -36,12 +39,11 @@ export function MainBottomSheet({ children, isOpen }: Props): JSX.Element {
 		<BottomSheet
 			handleIndicatorStyle={{ backgroundColor: theme.colors.primary }}
 			backgroundStyle={{ backgroundColor: theme.colors.background }}
-			style={{ justifyContent: 'space-between' }}
 			ref={bottomSheetRef}
 			index={-1}
-			enablePanDownToClose
+			enableContentPanningGesture={false}
 		>
-			<BottomSheetView>{children}</BottomSheetView>
+			<BottomSheetView style={{ height: 'auto' }}>{children}</BottomSheetView>
 		</BottomSheet>
 	)
 }
