@@ -14,12 +14,12 @@ export function NotFoundFavoriteIdea(): JSX.Element {
 			<Image
 				width={200}
 				height={260}
-				source={require('../../../../assets/images/not-found-300.avif')}
+				source={require('../../../../assets/images/not-found-300.webp')}
 			/>
 			<Typography variant='h1' text='Вы ничего не добавили' />
 			<Typography variant='h1' text='в избранное' />
-			<Typography variant='h2' soft text='Сохраняйте понравившиеся идеи,' />
-			<Typography variant='h2' soft text='к которым планируете вернуться' />
+			<Typography variant='p' soft text='Сохраняйте понравившиеся идеи,' />
+			<Typography variant='p' soft text='к которым планируете вернуться' />
 		</Box>
 	)
 }

@@ -14,20 +14,20 @@ export function CommentsNotFound(): JSX.Element {
 			<Image
 				width={200}
 				height={260}
-				source={require('../../../../assets/images/not-found-300.avif')}
+				source={require('../../../../assets/images/not-found-300.webp')}
 			/>
 			<Typography variant='h1' text='Оставить комментарий' />
 			<Typography
-				variant='h2'
+				variant='p'
 				soft
 				text='Чтобы начать обсуждение с коллегами и '
 			/>
 			<Typography
-				variant='h2'
+				variant='p'
 				soft
 				text='детально разобрать идею, оставьте свой'
 			/>
-			<Typography variant='h2' soft text='комментарий ниже' />
+			<Typography variant='p' soft text='комментарий ниже' />
 		</Box>
 	)
 }

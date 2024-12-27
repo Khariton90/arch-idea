@@ -50,7 +50,7 @@ const TextContent = styled.Text`
 
 interface Props {
 	value: string
-	content: string[]
+	content: string[][]
 	title: string
 	onSelected: (key: keyof Idea, value: string) => void
 }
@@ -108,13 +108,13 @@ export function Accordion({
 						top: 0,
 					}}
 				>
-					{content.map(item => (
+					{content.map(([key, value]) => (
 						<Content
-							activeLink={activeSelect === item}
-							key={item}
-							onPress={() => handleSelect(item)}
+							activeLink={activeSelect === key}
+							key={key}
+							onPress={() => handleSelect(key)}
 						>
-							<TextContent>{item}</TextContent>
+							<TextContent>{value}</TextContent>
 						</Content>
 					))}
 				</Animated.View>

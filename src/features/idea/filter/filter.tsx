@@ -1,10 +1,16 @@
+import { LocationDepartment } from '@/entities/idea'
+import {
+	mappingDepartment,
+	mappingPriority,
+	mappingStatus,
+} from '@/entities/idea/lib/mapIdea'
 import {
 	TextWithThemeProps,
 	ThemeContext,
 	TouchableOpacityWithThemeProps,
 } from '@/shared/colors.styled'
 
-import { useContext, useState } from 'react'
+import { memo, useCallback, useContext, useEffect, useState } from 'react'
 import { ScrollView } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -28,48 +34,39 @@ const FilterItemText = styled.Text<TextWithThemeProps & { active: boolean }>`
 	font-size: 10px;
 `
 
-export enum DepartmentList {
-	Parnas = 'Парнас',
-	Industrial = 'Индустриальный',
-	Kad = 'Кад Север',
-	Slav = 'Славянка',
-}
-
-export enum CategoriesList {
-	New = 'Новые',
-	InProgress = 'В работе',
-	Completed = 'Завершенные',
-	Canceled = 'Отмененные',
-	Popular = 'Популярные',
-}
-
 interface Props {
-	categories: 'department' | 'categories'
+	onChangeFilter: (value: LocationDepartment | undefined) => void
 }
 
-export function Filter({ categories }: Props): JSX.Element {
+function FilterComponent({ onChangeFilter }: Props): JSX.Element {
 	const { theme } = useContext(ThemeContext)
+	const [activeItem, setActiveItem] = useState<LocationDepartment | undefined>(
+		undefined
+	)
 
-	const [activeItem, setActiveItem] = useState<string | null>(null)
-
-	const handlePress = (el: any) => {
-		if (activeItem === el) {
-			setActiveItem(() => null)
+	const handlePress = (item: LocationDepartment) => {
+		if (activeItem === item) {
+			setActiveItem(() => undefined)
 			return
 		}
-		setActiveItem(prev => el)
+		setActiveItem(prev => item)
 	}
 
-	const list =
-		categories === 'categories'
-			? Object.entries(CategoriesList)
-			: Object.entries(DepartmentList)
+	useEffect(() => {
+		onChangeFilter(activeItem)
+	}, [activeItem])
+
+	const list = Object.entries(mappingDepartment)
 
 	return (
 		<Container>
 			<ScrollView horizontal showsHorizontalScrollIndicator={false}>
 				{list.map(([key, value]) => (
-					<FilterItem theme={theme} key={key} onPress={() => handlePress(key)}>
+					<FilterItem
+						theme={theme}
+						key={key}
+						onPress={() => handlePress(key as LocationDepartment)}
+					>
 						<FilterItemText theme={theme} active={activeItem === key}>
 							{value}
 						</FilterItemText>
@@ -79,3 +76,5 @@ export function Filter({ categories }: Props): JSX.Element {
 		</Container>
 	)
 }
+
+export const Filter = memo(FilterComponent)

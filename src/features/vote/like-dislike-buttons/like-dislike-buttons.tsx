@@ -51,13 +51,13 @@ export function LikeDislikeButtons({
 	const [toggleDislike, { data: dislike, isLoading: isLoadingDislike }] =
 		useToggleDislikeMutation()
 
-	const handleLike = useCallback(async () => {
+	const handleLike = async () => {
 		await toggleLike({ ideaId: id })
-	}, [])
+	}
 
-	const handleDislike = useCallback(async () => {
+	const handleDislike = async () => {
 		await toggleDislike({ ideaId: id })
-	}, [])
+	}
 
 	useEffect(() => {
 		if (onRefetch) {

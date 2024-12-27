@@ -13,12 +13,10 @@ type Props = {
 
 export function CommentsPage({ navigation, route }: Props): JSX.Element {
 	const ideId = route.params.id
-	const { data: comments, isLoading } = useFindCommentsQuery(ideId)
 
 	return (
 		<SafeAreaView style={{ flex: 1 }}>
-			{isLoading && <LoadingIndicator />}
-			{comments && <CommentsList commentData={comments} ideaId={ideId} />}
+			<CommentsList ideaId={ideId} />
 		</SafeAreaView>
 	)
 }

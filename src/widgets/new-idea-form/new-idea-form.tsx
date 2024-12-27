@@ -1,14 +1,18 @@
-import { View } from 'react-native'
+import { ActivityIndicator, View } from 'react-native'
 import styled from 'styled-components/native'
 import { Accordion } from '@/shared/ui/accordion'
 import { CloseInputButton } from '@/shared/ui/close-input-button'
 import { useContext, useEffect, useMemo, useState } from 'react'
 import { Idea } from '@/entities/idea'
 import { useCreateIdeaMutation } from '@/entities/idea/api'
-import { LoadingIndicator } from '@/shared/ui/loading-indicator'
 import { UniversalButton } from '@/shared/ui/universal-button/universal-button'
 import { ThemeContext } from '@/shared/colors.styled'
 import { Typography } from '@/shared/ui/typography/typography'
+import {
+	mappingDepartment,
+	mappingPriority,
+	mappingSubDepartment,
+} from '@/entities/idea/lib/mapIdea'
 
 const Container = styled.View<{ background: string }>`
 	flex: 1;
@@ -37,25 +41,19 @@ const accordion = [
 		id: 1,
 		title: 'department',
 		value: 'Подразделение',
-		content: [
-			'Парнас',
-			'Кад Север',
-			'Индустриальный',
-			'Софийская',
-			'Планерная',
-		],
+		content: Object.entries(mappingDepartment),
 	},
 	{
 		id: 2,
 		title: 'subDepartment',
 		value: 'Отдел',
-		content: ['Коммерческий отдел', 'Торговый зал', 'Склад'],
+		content: Object.entries(mappingSubDepartment),
 	},
 	{
 		id: 3,
 		title: 'priority',
 		value: 'Приоритет',
-		content: ['Low', 'Medium', 'High'],
+		content: Object.entries(mappingPriority),
 	},
 ]
 
@@ -96,12 +94,11 @@ export function NewIdeaForm(): JSX.Element {
 		}
 	}, [isSuccess, isLoading])
 
-	if (isLoading) {
-		return <LoadingIndicator />
-	}
-
 	return (
 		<Container background={theme.colors.backdrop}>
+			{isLoading && (
+				<ActivityIndicator size={'large'} color={theme.colors.primary} />
+			)}
 			<Form>
 				<Typography variant='h1' text='Описание идеи' align='center' />
 				<View>

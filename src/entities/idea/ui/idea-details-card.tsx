@@ -39,6 +39,7 @@ const AuthorBox = styled.View`
 	position: absolute;
 	right: 10px;
 	top: 20px;
+	padding: 0 10px;
 `
 
 const Row = styled.View`
@@ -89,10 +90,10 @@ export function IdeaDetailsCard({
 				</CardHeader>
 				<CardContent>
 					<AuthorBox>
-						<Avatar size='md' name={idea.userId} />
+						<Avatar size='md' name={idea.user.firstName} />
 						<View>
 							<Typography variant='span' soft text='Автор' />
-							<Typography variant='span' soft text={idea.userId.slice(0, 10)} />
+							<Typography variant='span' soft text={idea.user.firstName} />
 						</View>
 					</AuthorBox>
 					<Row>

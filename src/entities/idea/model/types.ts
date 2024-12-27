@@ -1,30 +1,42 @@
+import { UserRdo } from '@/entities/session/model/types'
+
 export type ReactionType = 'None' | 'Like' | 'Dislike'
 
 export enum IdeaStatus {
-	New = 'new',
-	InProgress = 'inProgress',
-	Completed = 'completed',
-	Canceled = 'canceled',
+	New = 'New',
+	InProgress = 'InProgress',
+	Completed = 'Completed',
+	Canceled = 'Canceled',
+}
+
+export enum LocationDepartment {
+	Parnas = 'Parnas',
+	Industrialny = 'Industrialny',
+	KadSever = 'KadSever',
+	Planernaya = 'Planernaya',
+	Murmanskoe = 'Murmanskoe',
+	Sofiyskaya = 'Sofiyskaya',
+	Tallinskaya = 'Tallinskaya',
+	Slavyanka = 'Slavyanka',
+	Other = 'Other',
 }
 
 export interface User {
 	id: number
 	username: string
-	role: Role
 }
 
-export type Role = 'Admin' | 'User' | 'Anonymous'
-
-export enum Category {
-	TradingHall = 'TradingHall',
-	CommercialDepartment = 'CommercialDepartment',
+export enum SubDepartment {
 	Warehouse = 'Warehouse',
+	SalesFloor = 'SalesFloor',
+	CommercialDepartment = 'CommercialDepartment',
+	Other = 'Other',
 }
 
 export enum Priority {
-	Low = 'low',
-	Medium = 'medium',
-	High = 'high',
+	Low = 'Low',
+	Medium = 'Medium',
+	High = 'High',
 }
 
 export interface Idea {
@@ -37,7 +49,7 @@ export interface Idea {
 
 export interface IdeaRdo extends Idea {
 	id: string
-	userId: string
+	user: UserRdo
 	status: string
 	createdAt: string
 	updatedAt: string
@@ -50,7 +62,8 @@ export interface IdeaRdo extends Idea {
 }
 
 export interface IdeaQuery {
-	page: number
-	limit: number
-	sortDirection: 'asc' | 'desc'
+	page?: number
+	limit?: number
+	sortDirection?: 'asc' | 'desc'
+	department?: LocationDepartment
 }

@@ -2,24 +2,42 @@ import Navigation from './navigation/navigation'
 import { Provider } from 'react-redux'
 import store from './store'
 import { getAccessToken } from '@/entities/session/api/session-api'
-import { setIsAuthorized, setToken } from '@/entities/session/model/slice'
+import { deleteToken, setIsAuthorized } from '@/entities/session/model/slice'
 import { delay } from '@/shared/lib/delay'
 import ThemeProvider from './providers/theme-provider'
+import { BASE_URL } from '@/shared/constants/consts'
+import { useEffect } from 'react'
 
-const getToken = async () => {
-	await delay()
-	const token = await getAccessToken()
+const authenticateAndFetchUser = async () => {
+	try {
+		const token = await getAccessToken()
 
-	if (token !== null) {
-		store.dispatch(setIsAuthorized(token))
-	} else {
-		store.dispatch(setToken(''))
+		await delay()
+		if (token) {
+			const response = await fetch(`${BASE_URL}/user/account`, {
+				method: 'GET',
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			})
+			if (response.ok) {
+				store.dispatch(setIsAuthorized(token))
+			} else {
+				store.dispatch(deleteToken())
+			}
+		} else {
+			store.dispatch(deleteToken())
+		}
+	} catch (error) {
+		store.dispatch(deleteToken())
 	}
 }
 
-getToken()
-
 export default function App() {
+	useEffect(() => {
+		authenticateAndFetchUser()
+	})
+
 	return (
 		<ThemeProvider>
 			<Provider store={store}>

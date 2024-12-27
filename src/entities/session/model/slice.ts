@@ -25,11 +25,16 @@ export const sessionSlice = createSlice({
 		setToken(state, action: PayloadAction<string>) {
 			state.accessToken = action.payload
 		},
+		deleteToken(state) {
+			state.isAuthorized = false
+			state.accessToken = ''
+		},
 		setUserId(state, action: PayloadAction<string>) {
 			state.userId = action.payload
 		},
 	},
 })
 
-export const { setIsAuthorized, setToken, setUserId } = sessionSlice.actions
+export const { setIsAuthorized, setToken, setUserId, deleteToken } =
+	sessionSlice.actions
 export const selectToken = (state: RootState) => state.sessionSlice.accessToken

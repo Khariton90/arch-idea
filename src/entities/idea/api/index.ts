@@ -1,6 +1,7 @@
 import { baseApi } from '@/shared/api/base-api'
 import { Idea, IdeaQuery, IdeaRdo } from '../model/types'
 import { IDEA_TAG, WISHLIST_TAG } from '@/shared/api/tags'
+import { mapIdea } from '../lib/mapIdea'
 
 export const ideaApi = baseApi.injectEndpoints({
 	endpoints: build => ({
@@ -11,6 +12,7 @@ export const ideaApi = baseApi.injectEndpoints({
 				params: { ...queryParams },
 			}),
 			providesTags: [IDEA_TAG, WISHLIST_TAG],
+			transformResponse: (response: IdeaRdo[]) => response.map(mapIdea),
 		}),
 		findMyIdeas: build.query<IdeaRdo[], IdeaQuery>({
 			query: queryParams => ({
@@ -19,6 +21,7 @@ export const ideaApi = baseApi.injectEndpoints({
 				params: { ...queryParams },
 			}),
 			providesTags: [IDEA_TAG, WISHLIST_TAG],
+			transformResponse: (response: IdeaRdo[]) => response.map(mapIdea),
 		}),
 		findFavoriteIdeas: build.query<IdeaRdo[], IdeaQuery>({
 			query: queryParams => ({
@@ -27,6 +30,7 @@ export const ideaApi = baseApi.injectEndpoints({
 				params: { ...queryParams },
 			}),
 			providesTags: [IDEA_TAG, WISHLIST_TAG],
+			transformResponse: (response: IdeaRdo[]) => response.map(mapIdea),
 		}),
 		findByIdeaId: build.query<IdeaRdo, string>({
 			query: id => ({
@@ -34,6 +38,7 @@ export const ideaApi = baseApi.injectEndpoints({
 				method: 'GET',
 				providesTags: [IDEA_TAG, WISHLIST_TAG],
 			}),
+			transformResponse: (response: IdeaRdo) => mapIdea(response),
 		}),
 		createIdea: build.mutation<IdeaRdo, Idea>({
 			query: dto => ({
@@ -42,6 +47,7 @@ export const ideaApi = baseApi.injectEndpoints({
 				body: dto,
 			}),
 			invalidatesTags: [IDEA_TAG, WISHLIST_TAG],
+			transformResponse: (response: IdeaRdo) => mapIdea(response),
 		}),
 	}),
 })

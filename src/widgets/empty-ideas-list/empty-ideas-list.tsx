@@ -1,3 +1,4 @@
+import { Typography } from '@/shared/ui/typography/typography'
 import styled from 'styled-components/native'
 
 const Box = styled.View`
@@ -6,23 +7,15 @@ const Box = styled.View`
 	align-items: center;
 `
 
-const Title = styled.Text`
-	font-size: 24px;
-	color: #fff;
-	margin-bottom: 20px;
-`
-
-const SubTitle = styled.Text`
-	font-size: 14px;
-	color: #fff;
-	margin-bottom: 30px;
-`
-
 export function EmptyIdeasList(): JSX.Element {
 	return (
 		<Box>
-			<Title>Пока здесь пусто...</Title>
-			<SubTitle>Будьте первым, кто предложит идею!</SubTitle>
+			<Typography variant='h1' text={'Пока здесь пусто...'} />
+			<Typography
+				variant='span'
+				soft
+				text={'Будьте первым, кто предложит идею!'}
+			/>
 		</Box>
 	)
 }

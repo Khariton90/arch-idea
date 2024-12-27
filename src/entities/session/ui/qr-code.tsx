@@ -7,7 +7,6 @@ import {
 } from 'expo-camera'
 import { useContext, useEffect, useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { delay } from '@/shared/lib/delay'
 import { useAuthByQrCodeMutation } from '../api'
 import styled from 'styled-components/native'
 import { LayoutLogo } from '@/widgets'
@@ -61,19 +60,17 @@ export function QrCode({ navigation }: any) {
 		({ sessionSlice }) => sessionSlice.isAuthorized
 	)
 
-	const [
-		authByQrCode,
-		{ data: account, isLoading, isSuccess, isError, data, error },
-	] = useAuthByQrCodeMutation()
+	const [authByQrCode, { data: account, isLoading, isSuccess, isError }] =
+		useAuthByQrCodeMutation()
 
 	const authUser = async (result: BarcodeScanningResult) => {
 		setResult(state => result.data)
 
 		if (result.data) {
 			await authByQrCode({ sub: result.data })
-			await delay()
 		}
 	}
+
 	const setTokenData = async (data: AuthRdo) => {
 		await saveAccessToken(data)
 		dispatch(setIsAuthorized(data.access_token))
@@ -86,10 +83,10 @@ export function QrCode({ navigation }: any) {
 	}, [isAuthorized])
 
 	useEffect(() => {
-		if (data) {
-			setTokenData(data)
+		if (account) {
+			setTokenData(account)
 		}
-	}, [isSuccess, data])
+	}, [isSuccess, account])
 
 	useEffect(() => {
 		requestPermission()

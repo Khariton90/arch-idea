@@ -57,7 +57,7 @@ export default function Navigation() {
 			<Stack.Screen
 				name={AppRoutes.CommentsPage}
 				component={CommentsPage}
-				options={{ title: 'Комментарии', ...styles }}
+				options={{ title: 'Комментарии', ...styles, headerBackTitle: 'Назад' }}
 			/>
 			<Stack.Screen
 				name={AppRoutes.ProfileIdeasPage}
