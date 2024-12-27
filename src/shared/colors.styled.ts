@@ -34,16 +34,16 @@ export type InputFieldProps = TextInput & { theme: ITheme }
 
 export const lightTheme = {
 	colors: {
-		primary: '#FC3',
+		primary: '#ffba4e',
 		secondary: '#6C757D',
-		background: '#F5F5F5',
-		backdrop: '#FEFEFE',
-		surface: '#FFFFFF',
+		background: '#E1E0E0',
+		backdrop: '#F7F6F6',
+		surface: '#F7F6F6',
 		text: '#333',
 		border: '#EAEAEA',
 		shadow: 'rgba(51, 51, 51, 0.15)',
 		highlight: '#FEFCEA',
-		accent: '#FFDE59',
+		accent: '#ffba4e',
 		warning: '#FF5722',
 		error: '#EF5350',
 		success: '#66BB6A',
@@ -52,7 +52,7 @@ export const lightTheme = {
 
 export const darkTheme = {
 	colors: {
-		primary: '#FC3',
+		primary: '#ffba4e',
 		secondary: '#333',
 		background: '#191919',
 		backdrop: '#0A0A0A',
@@ -61,7 +61,7 @@ export const darkTheme = {
 		border: '#444',
 		shadow: 'rgba(238, 238, 238, 0.25)',
 		highlight: '#282828',
-		accent: '#FFCC00',
+		accent: '#ffba4e',
 		warning: '#FF9100',
 		error: '#E53935',
 		success: '#43A047',

@@ -1,6 +1,5 @@
 import {
 	darkTheme,
-	TextWithThemeProps,
 	ThemeContext,
 	ViewWithThemeProps,
 } from '@/shared/colors.styled'
@@ -11,19 +10,21 @@ import styled from 'styled-components/native'
 const sizeList = {
 	sm: 30,
 	md: 36,
+	lg: 38,
 	xl: 120,
 }
 
 const letterList = {
 	sm: 16,
 	md: 18,
+	lg: 20,
 	xl: 36,
 }
 
 const Box = styled.View<ViewWithThemeProps & { size: number }>`
 	width: ${({ size }) => `${size}px`};
 	height: ${({ size }) => `${size}px`};
-	background-color: ${darkTheme.colors.secondary};
+	background-color: ${darkTheme.colors.success};
 	justify-content: center;
 	align-items: center;
 	border-radius: 8px;
@@ -39,7 +40,7 @@ const Letter = styled.Text<TextProps & { size: number }>`
 `
 
 interface Props {
-	size?: 'sm' | 'md' | 'xl'
+	size?: 'sm' | 'md' | 'lg' | 'xl'
 	name?: string
 }
 

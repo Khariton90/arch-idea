@@ -1,6 +1,6 @@
 import { ThumbDownIcon } from '@/shared/ui/icons/thumb-down-icon'
 import { ThumbUpIcon } from '@/shared/ui/icons/thumb-up-icon'
-import { useCallback } from 'react'
+import { useCallback, useContext, useEffect } from 'react'
 import styled from 'styled-components/native'
 import Colors from '@/app/styles/Colors'
 import Root from '@/app/styles/Root'
@@ -10,18 +10,15 @@ import {
 	useToggleLikeMutation,
 } from '@/entities/vote/api'
 import React from 'react'
-import { darkTheme, lightTheme } from '@/shared/colors.styled'
+import { darkTheme, ThemeContext } from '@/shared/colors.styled'
 
 const Box = styled.View`
-	position: absolute;
-	bottom: 10px;
-	right: 10px;
 	flex-direction: row;
 	justify-content: flex-end;
 	gap: 6px;
 `
 
-const Button = styled.TouchableOpacity`
+const Button = styled.TouchableOpacity<{ border: string }>`
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
@@ -30,7 +27,7 @@ const Button = styled.TouchableOpacity`
 	padding: 6px;
 	min-width: 56px;
 	border-radius: ${Root.radius10};
-	border: 1px solid ${darkTheme.colors.border};
+	border: 1px solid ${({ border }) => border};
 `
 
 const ButtonText = styled.Text`
@@ -43,6 +40,7 @@ interface Props {
 	likes: number
 	disLikes: number
 	reactionType: ReactionType
+	onRefetch?: () => void
 }
 
 export function LikeDislikeButtons({
@@ -50,10 +48,14 @@ export function LikeDislikeButtons({
 	likes,
 	disLikes,
 	reactionType,
+	onRefetch,
 }: Props): JSX.Element {
-	const [toggleLike] = useToggleLikeMutation()
+	const { theme } = useContext(ThemeContext)
 
-	const [toggleDislike] = useToggleDislikeMutation()
+	const [toggleLike, { data: like, isLoading: isLoadingLike }] =
+		useToggleLikeMutation()
+	const [toggleDislike, { data: dislike, isLoading: isLoadingDislike }] =
+		useToggleDislikeMutation()
 
 	const handleLike = useCallback(async () => {
 		await toggleLike({ ideaId: id })
@@ -63,9 +65,15 @@ export function LikeDislikeButtons({
 		await toggleDislike({ ideaId: id })
 	}, [])
 
+	useEffect(() => {
+		if (onRefetch) {
+			onRefetch()
+		}
+	}, [like, dislike])
+
 	return (
 		<Box>
-			<Button onPress={handleLike}>
+			<Button border={theme.colors.border} onPress={handleLike}>
 				{reactionType === 'Like' ? (
 					<ThumbUpIcon active={true} />
 				) : (
@@ -73,7 +81,7 @@ export function LikeDislikeButtons({
 				)}
 				<ButtonText>{likes}</ButtonText>
 			</Button>
-			<Button onPress={handleDislike}>
+			<Button border={theme.colors.border} onPress={handleDislike}>
 				{reactionType === 'Dislike' ? (
 					<ThumbDownIcon active={true} />
 				) : (

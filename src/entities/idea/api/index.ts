@@ -12,6 +12,14 @@ export const ideaApi = baseApi.injectEndpoints({
 			}),
 			providesTags: [IDEA_TAG, WISHLIST_TAG],
 		}),
+		findMyIdeas: build.query<IdeaRdo[], IdeaQuery>({
+			query: queryParams => ({
+				url: '/idea/my-ideas',
+				method: 'GET',
+				params: { ...queryParams },
+			}),
+			providesTags: [IDEA_TAG, WISHLIST_TAG],
+		}),
 		findByIdeaId: build.query<IdeaRdo, string>({
 			query: id => ({
 				url: `/idea/${id}`,
@@ -34,4 +42,5 @@ export const {
 	useCreateIdeaMutation,
 	useFindIdeasQuery,
 	useFindByIdeaIdQuery,
+	useFindMyIdeasQuery,
 } = ideaApi

@@ -63,7 +63,6 @@ export function Accordion({
 	onSelected,
 }: Props): JSX.Element {
 	const [activeSelect, setActiveSelect] = useState('')
-
 	const listRef = useAnimatedRef<Animated.View>()
 	const heightValue = useSharedValue(0)
 	const open = useSharedValue(false)

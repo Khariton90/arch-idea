@@ -16,17 +16,18 @@ const Container = styled.View`
 `
 
 const FilterItem = styled.TouchableOpacity<TouchableOpacityWithThemeProps>`
-	background-color: ${({ theme }) => theme.colors.secondary};
-	padding: 10px 16px;
-	border-radius: ${Root.radius10};
-	border: 1px solid ${darkTheme.colors.border};
+	background-color: ${({ theme }) => theme.colors.backdrop};
+	padding: 0 16px;
+	border-radius: 20px;
+	border: 1px solid ${({ theme }) => theme.colors.border};
 	justify-content: center;
 	align-items: center;
-	margin: 0 6px;
+	margin: 0 4px;
 `
 
 const FilterItemText = styled.Text<TextWithThemeProps & { active: boolean }>`
-	color: ${({ active, theme }) => (active ? theme.colors.primary : '#FFFFFF')};
+	color: ${({ active, theme }) =>
+		active ? theme.colors.primary : theme.colors.text};
 	font-size: 12px;
 `
 

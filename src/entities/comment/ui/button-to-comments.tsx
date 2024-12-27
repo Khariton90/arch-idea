@@ -1,29 +1,28 @@
-import Colors from '@/app/styles/Colors'
-import Root from '@/app/styles/Root'
+import { ThemeContext } from '@/shared/colors.styled'
 import { CommentsIcon } from '@/shared/ui/icons/comments-icon'
-import { TextProps, TouchableOpacityProps } from 'react-native'
+import { Typography } from '@/shared/ui/typography/typography'
+import { useContext } from 'react'
+import { TouchableOpacityProps } from 'react-native'
 import styled from 'styled-components/native'
 
-const CommentBox = styled.TouchableOpacity`
+const CommentBox = styled.TouchableOpacity<{ background: string }>`
 	flex-direction: row;
-	align-items: flex-start;
-	border-radius: ${Root.radius10};
-	background-color: ${Colors.transparent};
+	align-items: center;
+	border-radius: 10px;
+	background-color: ${({ background }) => background};
 	padding: 6px 12px;
 	gap: 6px;
-`
-const SmallText = styled.Text<TextProps & { color?: string }>`
-	color: ${({ color }) => color ?? Colors.white};
-	font-size: 12px;
 `
 
 interface Props extends TouchableOpacityProps {}
 
 export function ButtonToComments({ onPress }: Props): JSX.Element {
+	const { theme } = useContext(ThemeContext)
+
 	return (
-		<CommentBox onPress={onPress}>
+		<CommentBox onPress={onPress} background={theme.colors.secondary}>
 			<CommentsIcon />
-			<SmallText color={Colors.background}>Комментарии</SmallText>
+			<Typography variant='span' text='Комментарии' />
 		</CommentBox>
 	)
 }

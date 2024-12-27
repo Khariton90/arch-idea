@@ -25,5 +25,6 @@ export type RootStackParamList = {
 	}
 	[AppRoutes.ProfileIdeasPage]: {
 		title: string
+		page: 'Favorite' | 'MyIdeas'
 	}
 }

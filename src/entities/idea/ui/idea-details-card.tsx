@@ -1,42 +1,35 @@
-import { TextProps, View } from 'react-native'
+import { View } from 'react-native'
 import styled from 'styled-components/native'
-import Colors from '@/app/styles/Colors'
-import Root from '@/app/styles/Root'
-import { ReactNode } from 'react'
+import { ReactNode, useContext } from 'react'
 import React from 'react'
 import { IdeaRdo } from '../model/types'
-import dayjs from 'dayjs'
 import { Avatar } from '@/shared/ui/avatar/avatar'
+import { ThemeContext } from '@/shared/colors.styled'
+import { formatDate } from '@/shared/lib/format-date'
+import { Typography } from '@/shared/ui/typography/typography'
 
-const Card = styled.View`
-	background-color: ${Colors.lightGrey};
-	border-radius: ${Root.radius20};
+const Container = styled.View<{ background: string }>`
 	flex: 1;
-	margin: 40px 10px;
+	background-color: ${({ background }) => background};
+`
+
+const Card = styled.View<{ background: string }>`
+	flex: 1;
+	background-color: ${({ background }) => background};
+	border-radius: 20px;
+	margin: 40px 0;
 	overflow: hidden;
 `
 
 const CardHeader = styled.View`
 	padding: 20px;
-	border-bottom-color: ${Colors.btnGrey};
+	border-bottom-color: #6e6e6e;
 	border-bottom-width: 1px;
-`
-
-const Title = styled.Text`
-	color: ${Colors.white};
-	font-weight: 600;
-	font-size: 16px;
-	margin: 10px 0;
 `
 
 const CardContent = styled.View`
 	padding: 20px;
 	gap: 10px;
-`
-
-const SmallText = styled.Text<TextProps & { color?: string }>`
-	color: ${({ color }) => color ?? Colors.white};
-	font-size: 12px;
 `
 
 const AuthorBox = styled.View`
@@ -57,14 +50,15 @@ const CardFooter = styled.View`
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
-	padding: 10px 10px;
+	padding: 10px;
 	margin-top: auto;
 `
 
 const FavoriteBox = styled.View`
 	position: absolute;
-	right: 10px;
-	top: 10px;
+	z-index: 2;
+	right: 16px;
+	top: 16px;
 `
 
 interface Props {
@@ -80,43 +74,43 @@ export function IdeaDetailsCard({
 	wishListSlot,
 	commentsSlot,
 }: Props): JSX.Element {
+	const { theme } = useContext(ThemeContext)
+
 	return (
-		<Card>
-			<CardHeader>
-				<FavoriteBox>{wishListSlot}</FavoriteBox>
-				<Title>Идея от {dayjs(idea.createdAt).format('DD.MM.YYYY')}</Title>
-				<Row>
-					<SmallText color={Colors.colorMuted}>Cтатус: </SmallText>
-					<SmallText>{idea.status} </SmallText>
-				</Row>
-			</CardHeader>
-			<CardContent>
-				<AuthorBox>
-					<Avatar />
-					<View>
-						<SmallText color={Colors.colorMuted}>Автор</SmallText>
-						<SmallText>{idea.userId.slice(0, 6)}</SmallText>
-					</View>
-				</AuthorBox>
-
-				<Row>
-					<SmallText color={Colors.colorMuted}>Категория: </SmallText>
-					<SmallText>{idea.subDepartment}</SmallText>
-				</Row>
-
-				<Row>
-					<SmallText color={Colors.colorMuted}>Приоритет: </SmallText>
-					<SmallText>{idea.priority}</SmallText>
-				</Row>
-
-				<Title>{idea.title}</Title>
-				<SmallText>{idea.description}</SmallText>
-			</CardContent>
-			<CardFooter>
-				{commentsSlot}
-
-				{likesDisLakesSlot}
-			</CardFooter>
-		</Card>
+		<Container background={theme.colors.background}>
+			<Card background={theme.colors.backdrop}>
+				<CardHeader>
+					<FavoriteBox>{wishListSlot}</FavoriteBox>
+					<Typography variant='h2' soft text={formatDate(idea.createdAt)} />
+					<Row>
+						<Typography variant='span' soft text='Cтатус: ' />
+						<Typography variant='span' text={idea.status} />
+					</Row>
+				</CardHeader>
+				<CardContent>
+					<AuthorBox>
+						<Avatar size='md' name={idea.userId} />
+						<View>
+							<Typography variant='span' soft text='Автор' />
+							<Typography variant='span' soft text={idea.userId.slice(0, 10)} />
+						</View>
+					</AuthorBox>
+					<Row>
+						<Typography variant='span' soft text='Категория: ' />
+						<Typography variant='span' soft text={idea.subDepartment} />
+					</Row>
+					<Row>
+						<Typography variant='span' soft text='Приоритет: ' />
+						<Typography variant='span' soft text={idea.priority} />
+					</Row>
+					<Typography variant='h1' text={idea.title} />
+					<Typography variant='p' text={idea.description} />
+				</CardContent>
+				<CardFooter>
+					{commentsSlot}
+					{likesDisLakesSlot}
+				</CardFooter>
+			</Card>
+		</Container>
 	)
 }

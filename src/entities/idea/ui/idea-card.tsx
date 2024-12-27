@@ -2,62 +2,35 @@ import { IdeaRdo } from '../model/types'
 import { ReactNode, useContext } from 'react'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import styled from 'styled-components/native'
-import Colors from '@/app/styles/Colors'
-import Root from '@/app/styles/Root'
-import { TextProps } from 'react-native-svg'
-import dayjs from 'dayjs'
 import { AppRoutes } from '@/shared/model/types'
-import {
-	darkTheme,
-	ThemeContext,
-	ViewWithThemeProps,
-} from '@/shared/colors.styled'
+import { ThemeContext } from '@/shared/colors.styled'
 import { formatDate } from '@/shared/lib/format-date'
+import { Typography } from '@/shared/ui/typography/typography'
+import { TouchableOpacityProps } from 'react-native'
 
-const CardWrapper = styled.TouchableOpacity`
+const Container = styled.TouchableOpacity<
+	TouchableOpacityProps & {
+		border: string
+		background: string
+	}
+>`
+	width: 100%;
+	height: 200px;
+	background: ${({ background }) => background};
+	border: 1px solid ${({ border }) => border};
+	border-radius: 20px;
 	margin: 10px 0;
+	padding: 16px 20px;
+	justify-content: space-between;
+	gap: 8px;
 `
 
-const IdeaItem = styled.View<ViewWithThemeProps>`
-	height: 100%;
-	max-height: 200px;
-	background-color: ${({ theme }) => theme.colors.surface};
-	border: 1px solid ${({ theme }) => theme.colors.border};
-	border-radius: ${Root.radius10};
-	flex: 1;
-	padding: 10px 10px 60px;
-`
-
-const Title = styled.Text`
-	font-size: 16px;
-	color: ${Colors.white};
-	text-transform: uppercase;
-	line-height: 40px;
-`
-
-const Description = styled.Text`
-	font-size: 12px;
-	color: ${Colors.colorMuted};
-`
-
-const FavoriteBox = styled.View`
-	align-self: flex-end;
-`
-
-const StatusText = styled.Text<TextProps & { top?: number; bottom?: number }>`
-	font-size: 12px;
-	color: ${Colors.colorMuted};
-	position: absolute;
-	left: 10px;
-	top: ${({ top }) => `${top}px`};
-`
-
-const DateText = styled.Text<TextProps & { bottom?: number }>`
-	font-size: 12px;
-	color: ${Colors.colorMuted};
-	position: absolute;
-	left: 10px;
-	bottom: ${({ bottom }) => `${bottom}px`};
+const Row = styled.View<{ direction?: boolean }>`
+	width: 100%;
+	flex-direction: ${({ direction }) => (direction ? 'column' : 'row')};
+	justify-content: ${({ direction }) =>
+		direction ? 'flex-start' : 'space-between'};
+	align-items: ${({ direction }) => (direction ? 'flex-start' : 'flex-end')};
 `
 
 interface Props {
@@ -76,30 +49,37 @@ export function IdeaCard({
 	const { theme } = useContext(ThemeContext)
 
 	return (
-		<CardWrapper
+		<Container
+			border={theme.colors.border}
+			background={theme.colors.backdrop}
 			onPress={() => navigation.navigate(AppRoutes.IdeaDetailsPage, idea)}
 		>
-			<IdeaItem theme={theme}>
-				<FavoriteBox>{wishlistSlot}</FavoriteBox>
-				<StatusText top={16}>Статус: {idea.status}</StatusText>
-				<Title
-					style={{ color: theme.colors.text }}
+			<Row>
+				<Typography variant='p' soft text={`Статус: ${idea.status}`} />
+				{wishlistSlot}
+			</Row>
+
+			<Row direction>
+				<Typography
 					ellipsizeMode='tail'
 					numberOfLines={1}
-				>
-					{idea.title}
-				</Title>
-				<Description
-					style={{ color: theme.colors.text, opacity: 0.7 }}
+					variant='h2'
+					text={idea.title}
+				/>
+
+				<Typography
 					ellipsizeMode='tail'
 					numberOfLines={2}
-				>
-					{idea.description}
-				</Description>
-				{likeDislikeSlot}
+					variant='span'
+					soft
+					text={idea.description}
+				/>
+			</Row>
 
-				<DateText bottom={10}>{formatDate(idea.createdAt)}</DateText>
-			</IdeaItem>
-		</CardWrapper>
+			<Row>
+				<Typography variant='span' soft text={formatDate(idea.createdAt)} />
+				{likeDislikeSlot}
+			</Row>
+		</Container>
 	)
 }

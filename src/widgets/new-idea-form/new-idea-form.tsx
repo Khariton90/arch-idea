@@ -4,25 +4,27 @@ import { View } from 'react-native'
 import styled from 'styled-components/native'
 import { Accordion } from '@/shared/ui/accordion'
 import { CloseInputButton } from '@/shared/ui/close-input-button'
-import { useEffect, useMemo, useState } from 'react'
+import { useContext, useEffect, useMemo, useState } from 'react'
 import { Idea } from '@/entities/idea'
 import { useCreateIdeaMutation } from '@/entities/idea/api'
 import { LoadingIndicator } from '@/shared/ui/loading-indicator'
 import { UniversalButton } from '@/shared/ui/universal-button/universal-button'
+import { ThemeContext } from '@/shared/colors.styled'
+import { Typography } from '@/shared/ui/typography/typography'
+
+const Container = styled.View<{ background: string }>`
+	flex: 1;
+	background-color: ${({ background }) => background};
+	align-items: center;
+	justify-content: center;
+	padding: 20px;
+`
 
 const Form = styled.View`
 	gap: ${Root.gap10};
 	width: 100%;
 	flex: 1;
 	justify-content: center;
-`
-
-const Text = styled.Text`
-	font-size: 18px;
-	font-weight: 600;
-	color: ${Colors.white};
-	text-align: center;
-	margin-bottom: 10px;
 `
 
 const InputField = styled.TextInput`
@@ -59,16 +61,19 @@ const accordion = [
 	},
 ]
 
-export function NewIdeaForm(): JSX.Element {
-	const initialFormValues: Idea = {
-		title: '',
-		description: '',
-		department: '',
-		subDepartment: '',
-		priority: '',
-	}
+const initialFormValues: Idea = {
+	title: '',
+	description: '',
+	department: '',
+	subDepartment: '',
+	priority: '',
+}
 
+export function NewIdeaForm(): JSX.Element {
+	const { theme } = useContext(ThemeContext)
 	const [form, setForm] = useState<Idea>(initialFormValues)
+	const [createIdea, { data, isLoading, isError, isSuccess, error }] =
+		useCreateIdeaMutation()
 
 	const handleChange = (key: keyof Idea, value: string) => {
 		setForm(prevForm => ({ ...prevForm, [key]: value }))
@@ -82,9 +87,6 @@ export function NewIdeaForm(): JSX.Element {
 		() => Object.values(form).some(item => item === ''),
 		[form]
 	)
-
-	const [createIdea, { data, isLoading, isError, isSuccess, error }] =
-		useCreateIdeaMutation()
 
 	const handleSubmit = async () => {
 		await createIdea(form)
@@ -101,42 +103,42 @@ export function NewIdeaForm(): JSX.Element {
 	}
 
 	return (
-		<Form>
-			<Text>Полная информация</Text>
-			<View>
-				<InputField
-					value={form.title || ''}
-					onChangeText={text => handleChange('title', text)}
-					placeholder='Заголовок...'
-					placeholderTextColor={Colors.grey}
+		<Container background={theme.colors.backdrop}>
+			<Form>
+				<Typography variant='h1' text='Описание идеи' align='center' />
+				<View>
+					<InputField
+						value={form.title || ''}
+						onChangeText={text => handleChange('title', text)}
+						placeholder='Заголовок...'
+						placeholderTextColor={Colors.grey}
+					/>
+				</View>
+				<View>
+					<InputField
+						value={form.description || ''}
+						onChangeText={text => handleChange('description', text)}
+						placeholder='Описание...'
+						placeholderTextColor={Colors.grey}
+						multiline
+					/>
+					<CloseInputButton />
+				</View>
+				{accordion.map(item => (
+					<Accordion
+						title={item.title}
+						onSelected={onSelected}
+						key={item.id}
+						value={item.value}
+						content={item.content}
+					/>
+				))}
+				<UniversalButton
+					disabled={disabled}
+					title='Создать'
+					onPress={handleSubmit}
 				/>
-			</View>
-
-			<View>
-				<InputField
-					value={form.description || ''}
-					onChangeText={text => handleChange('description', text)}
-					placeholder='Описание...'
-					placeholderTextColor={Colors.grey}
-					multiline
-				/>
-				<CloseInputButton />
-			</View>
-
-			{accordion.map(item => (
-				<Accordion
-					title={item.title}
-					onSelected={onSelected}
-					key={item.id}
-					value={item.value}
-					content={item.content}
-				/>
-			))}
-			<UniversalButton
-				disabled={disabled}
-				title='Создать'
-				onPress={handleSubmit}
-			/>
-		</Form>
+			</Form>
+		</Container>
 	)
 }

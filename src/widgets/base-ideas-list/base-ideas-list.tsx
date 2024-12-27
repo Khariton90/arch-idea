@@ -19,13 +19,13 @@ import styled from 'styled-components/native'
 const IdeasContainer = styled.View<ViewWithThemeProps>`
 	gap: 10px;
 	background: ${({ theme }) => theme.colors.background};
-	padding: 20px;
+	padding: 10px;
 	border-radius: ${Root.radius20} ${Root.radius20} 0 0;
 	flex: 1;
 `
 
 interface Props {
-	queryFilter: IdeaStatus | string
+	queryFilter?: IdeaStatus | string
 	navigation: NativeStackNavigationProp<any, any, any>
 	emptySlot: ReactNode
 }

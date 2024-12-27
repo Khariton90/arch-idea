@@ -2,8 +2,6 @@ import { useEffect } from 'react'
 import { SafeAreaView, ScrollView } from 'react-native'
 import { IdeaDetailsCard } from '@/entities/idea'
 import { LikeDislikeButtons } from '@/features/vote'
-import styled from 'styled-components/native'
-import Colors from '@/app/styles/Colors'
 import { useFindByIdeaIdQuery } from '@/entities/idea/api'
 import { LoadingIndicator } from '@/shared/ui/loading-indicator'
 import { WishListToggle } from '@/features/wishlist'
@@ -21,14 +19,8 @@ type Props = {
 	navigation: NativeStackNavigationProp<RootStackParamList>
 }
 
-const Container = styled.View`
-	flex: 1;
-	background-color: ${Colors.background};
-`
-
 export function IdeaDetailsPage({ route, navigation }: Props): JSX.Element {
 	const { id, isFavorite, title } = route.params
-
 	const [removeFromWishlist] = useRemoveFromWishlistMutation()
 	const [addToWishlist] = useAddToWishlistMutation()
 	const { data: idea, isLoading, refetch } = useFindByIdeaIdQuery(id)
@@ -47,6 +39,10 @@ export function IdeaDetailsPage({ route, navigation }: Props): JSX.Element {
 		}
 	}
 
+	const onRefetch = async () => {
+		await refetch()
+	}
+
 	useEffect(() => {
 		navigation.setOptions({
 			title,
@@ -62,33 +58,32 @@ export function IdeaDetailsPage({ route, navigation }: Props): JSX.Element {
 			<ScrollView contentContainerStyle={{ flexGrow: 1 }}>
 				{isLoading && <LoadingIndicator />}
 				{idea && (
-					<Container>
-						<IdeaDetailsCard
-							idea={idea}
-							likesDisLakesSlot={
-								<LikeDislikeButtons
-									reactionType={idea.reactionType}
-									id={id}
-									likes={idea.likesCount}
-									disLikes={idea.dislikesCount}
-								/>
-							}
-							wishListSlot={
-								<WishListToggle
-									active={idea.isFavorite}
-									add={handleAddToWishlist}
-									remove={handleRemoveFromWishlist}
-								/>
-							}
-							commentsSlot={
-								<ButtonToComments
-									onPress={() =>
-										navigation.navigate(AppRoutes.CommentsPage, { id })
-									}
-								/>
-							}
-						/>
-					</Container>
+					<IdeaDetailsCard
+						idea={idea}
+						likesDisLakesSlot={
+							<LikeDislikeButtons
+								reactionType={idea.reactionType}
+								id={id}
+								likes={idea.likesCount}
+								disLikes={idea.dislikesCount}
+								onRefetch={onRefetch}
+							/>
+						}
+						wishListSlot={
+							<WishListToggle
+								active={idea.isFavorite}
+								add={handleAddToWishlist}
+								remove={handleRemoveFromWishlist}
+							/>
+						}
+						commentsSlot={
+							<ButtonToComments
+								onPress={() =>
+									navigation.navigate(AppRoutes.CommentsPage, { id })
+								}
+							/>
+						}
+					/>
 				)}
 			</ScrollView>
 		</SafeAreaView>

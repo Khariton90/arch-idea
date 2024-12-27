@@ -1,4 +1,3 @@
-import Colors from '@/app/styles/Colors'
 import Root from '@/app/styles/Root'
 import {
 	ThemeContext,
@@ -11,46 +10,32 @@ import { AppRoutes } from '@/shared/model/types'
 import { Avatar } from '@/shared/ui/avatar/avatar'
 import { FavoriteIcon } from '@/shared/ui/icons/favorite-icon'
 import { IdeaIcon } from '@/shared/ui/icons/idea-icon'
+import { Typography } from '@/shared/ui/typography/typography'
 import { useContext } from 'react'
-import { TextProps, View } from 'react-native'
+import { View } from 'react-native'
 import styled from 'styled-components/native'
 
 const Header = styled.View<ViewWithThemeProps>`
-	padding: 10px 20px 0;
+	padding: 10px;
 	background-color: ${({ theme }) => theme.colors.background};
-	border-bottom-left-radius: ${Root.radius20};
-	border-bottom-right-radius: ${Root.radius20};
-	position: fixed;
-	top: 0;
+	border-bottom-left-radius: 20px;
+	border-bottom-right-radius: 20px;
 `
 
 const NavList = styled.View`
 	flex-direction: row;
 	justify-content: space-between;
-	padding: 10px;
 	gap: 10px;
 `
 
 const NavLink = styled.TouchableOpacity<TouchableOpacityWithThemeProps>`
-	background-color: ${({ theme }) => theme.colors.surface};
-	padding: 16px;
-	border-radius: ${Root.radius10};
 	flex: 1;
 	justify-content: space-between;
-	border: 1px solid ${({ theme }) => theme.colors.border};
 	flex-direction: row;
-`
-
-const NavLinkText = styled.Text`
-	color: ${Colors.white};
-	font-weight: 600;
-	font-size: 12px;
-`
-
-const NavLinkSmallText = styled.Text<TextProps & { color: string }>`
-	color: ${({ color }) => color};
-	font-size: 12px;
-	opacity: 0.7;
+	background-color: ${({ theme }) => theme.colors.backdrop};
+	padding: 12px;
+	border-radius: ${Root.radius10};
+	border: 1px solid ${({ theme }) => theme.colors.border};
 `
 
 const WrapperProfile = styled.TouchableOpacity`
@@ -59,19 +44,6 @@ const WrapperProfile = styled.TouchableOpacity`
 	margin-bottom: 10px;
 	gap: 10px;
 	align-items: center;
-`
-
-const ProfileIconTitle = styled.Text`
-	font-weight: 600;
-`
-
-const ProfileUserName = styled.View`
-	gap: 2px;
-`
-
-const TextGrey = styled.Text`
-	color: ${Colors.colorMuted};
-	font-size: 12px;
 `
 
 export function LayoutHeader({ navigation }: any): JSX.Element {
@@ -89,13 +61,11 @@ export function LayoutHeader({ navigation }: any): JSX.Element {
 			<WrapperProfile
 				onPress={() => navigation.navigate(AppRoutes.ProfilePage)}
 			>
-				<Avatar size='md' name={firstName} />
-				<ProfileUserName>
-					<ProfileIconTitle style={{ color: theme.colors.text }}>
-						{firstName}
-					</ProfileIconTitle>
-					<TextGrey>Перейти к профилю</TextGrey>
-				</ProfileUserName>
+				<Avatar size='lg' name={firstName} />
+				<View>
+					<Typography variant='p' text={firstName} />
+					<Typography variant='span' soft text='Перейти к профилю' />
+				</View>
 			</WrapperProfile>
 			<NavList>
 				<NavLink
@@ -103,16 +73,13 @@ export function LayoutHeader({ navigation }: any): JSX.Element {
 					onPress={() =>
 						navigation.navigate(AppRoutes.ProfileIdeasPage, {
 							title: 'Избранное',
+							page: 'Favorite',
 						})
 					}
 				>
 					<View>
-						<NavLinkText style={{ color: theme.colors.text }}>
-							Избранное
-						</NavLinkText>
-						<NavLinkSmallText color={theme.colors.text}>
-							{formatIdea(wishlistCount)}
-						</NavLinkSmallText>
+						<Typography variant='span' text='Избранное' />
+						<Typography variant='span' soft text={formatIdea(wishlistCount)} />
 					</View>
 					<FavoriteIcon active={!!wishlistCount} />
 				</NavLink>
@@ -121,16 +88,13 @@ export function LayoutHeader({ navigation }: any): JSX.Element {
 					onPress={() =>
 						navigation.navigate(AppRoutes.ProfileIdeasPage, {
 							title: 'Мои идеи',
+							page: 'MyIdeas',
 						})
 					}
 				>
 					<View>
-						<NavLinkText style={{ color: theme.colors.text }}>
-							Мои идеи
-						</NavLinkText>
-						<NavLinkSmallText color={theme.colors.text}>
-							{formatIdea(myIdeasCount)}
-						</NavLinkSmallText>
+						<Typography variant='span' text='Мои идеи' />
+						<Typography variant='span' soft text={formatIdea(myIdeasCount)} />
 					</View>
 					<IdeaIcon active={!!myIdeasCount} />
 				</NavLink>

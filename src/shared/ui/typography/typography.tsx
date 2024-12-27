@@ -29,7 +29,7 @@ const Text = styled.Text<
 	font-size: ${({ fontSize }) => fontSize};
 	color: ${({ theme }) => theme.colors.text};
 	opacity: ${({ soft }) => (soft ? 0.7 : 1)};
-	line-height: 22px;
+	line-height: 18px;
 	text-align: ${({ align }) => align};
 `
 
@@ -38,6 +38,8 @@ interface Props extends TextProps {
 	text: string
 	soft?: boolean
 	align?: 'left' | 'right' | 'center'
+	ellipsizeMode?: 'head' | 'middle' | 'tail' | 'clip' | undefined
+	numberOfLines?: number
 }
 
 export function Typography({
@@ -45,11 +47,15 @@ export function Typography({
 	text,
 	soft,
 	align = 'left',
+	ellipsizeMode,
+	numberOfLines,
 }: Props): JSX.Element {
 	const { theme } = useContext(ThemeContext)
 
 	return (
 		<Text
+			numberOfLines={numberOfLines}
+			ellipsizeMode={ellipsizeMode}
 			align={align}
 			theme={theme}
 			weight={weight[variant]}

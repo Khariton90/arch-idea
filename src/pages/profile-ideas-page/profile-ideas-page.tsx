@@ -1,9 +1,16 @@
-import { NotFoundFavoriteIdea, NotFoundMainIdea } from '@/entities/idea'
+import {
+	IdeaQuery,
+	NotFoundFavoriteIdea,
+	NotFoundMainIdea,
+} from '@/entities/idea'
+import { useFindMyIdeasQuery } from '@/entities/idea/api'
 import { ThemeContext } from '@/shared/colors.styled'
 import { AppRoutes, RootStackParamList } from '@/shared/model/types'
+import { BaseIdeasList, EmptyIdeasList } from '@/widgets'
+import { MyIdeasList } from '@/widgets/my-ideas-list/my-ideas-list'
 import { RouteProp } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import styled from 'styled-components/native'
 
 const Container = styled.View<{ background: string }>`
@@ -11,6 +18,7 @@ const Container = styled.View<{ background: string }>`
 	background-color: ${({ background }) => background};
 	justify-content: center;
 	align-items: center;
+	width: 100%;
 `
 
 type Props = {
@@ -19,7 +27,7 @@ type Props = {
 }
 
 export function ProfileIdeasPage({ route, navigation }: Props): JSX.Element {
-	const { title } = route.params
+	const { title, page } = route.params
 	const { theme } = useContext(ThemeContext)
 
 	useEffect(() => {
@@ -28,9 +36,16 @@ export function ProfileIdeasPage({ route, navigation }: Props): JSX.Element {
 		})
 	})
 
+	if (page === 'Favorite') {
+		return (
+			<Container background={theme.colors.backdrop}>
+				<NotFoundFavoriteIdea />
+			</Container>
+		)
+	}
 	return (
 		<Container background={theme.colors.backdrop}>
-			{title === 'Избранное' ? <NotFoundFavoriteIdea /> : <NotFoundMainIdea />}
+			<MyIdeasList navigation={navigation} />
 		</Container>
 	)
 }
