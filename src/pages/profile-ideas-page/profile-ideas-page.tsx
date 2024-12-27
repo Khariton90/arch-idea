@@ -7,6 +7,7 @@ import { useFindMyIdeasQuery } from '@/entities/idea/api'
 import { ThemeContext } from '@/shared/colors.styled'
 import { AppRoutes, RootStackParamList } from '@/shared/model/types'
 import { BaseIdeasList, EmptyIdeasList } from '@/widgets'
+import { FavoriteIdeasList } from '@/widgets/favorite-ideas-list/favorite-ideas-list'
 import { MyIdeasList } from '@/widgets/my-ideas-list/my-ideas-list'
 import { RouteProp } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
@@ -39,7 +40,7 @@ export function ProfileIdeasPage({ route, navigation }: Props): JSX.Element {
 	if (page === 'Favorite') {
 		return (
 			<Container background={theme.colors.backdrop}>
-				<NotFoundFavoriteIdea />
+				<FavoriteIdeasList navigation={navigation} />
 			</Container>
 		)
 	}

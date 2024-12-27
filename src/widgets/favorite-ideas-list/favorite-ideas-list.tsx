@@ -1,5 +1,5 @@
-import { IdeaCard, IdeaQuery, NotFoundMainIdea } from '@/entities/idea'
-import { useFindMyIdeasQuery } from '@/entities/idea/api'
+import { IdeaCard, IdeaQuery, NotFoundFavoriteIdea } from '@/entities/idea'
+import { useFindFavoriteIdeasQuery } from '@/entities/idea/api'
 import {
 	useAddToWishlistMutation,
 	useRemoveFromWishlistMutation,
@@ -26,7 +26,7 @@ interface Props {
 	navigation: NativeStackNavigationProp<any, any, any>
 }
 
-export function MyIdeasList({ navigation }: Props): JSX.Element {
+export function FavoriteIdeasList({ navigation }: Props): JSX.Element {
 	const { theme } = useContext(ThemeContext)
 	const [query, setQuery] = useState<IdeaQuery>({
 		page: 0,
@@ -40,12 +40,12 @@ export function MyIdeasList({ navigation }: Props): JSX.Element {
 		error,
 		isSuccess,
 		refetch,
-	} = useFindMyIdeasQuery(query)
+	} = useFindFavoriteIdeasQuery(query)
 	const [addToWishlist] = useAddToWishlistMutation()
 	const [removeFromWishlist] = useRemoveFromWishlistMutation()
 
 	if (ideasList && !ideasList.length) {
-		return <NotFoundMainIdea />
+		return <NotFoundFavoriteIdea />
 	}
 
 	return (
