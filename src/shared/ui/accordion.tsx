@@ -1,5 +1,3 @@
-import Colors from '@/app/styles/Colors'
-import Root from '@/app/styles/Root'
 import styled from 'styled-components/native'
 import { Chevron } from './icons/chevron'
 import Animated, {
@@ -16,10 +14,11 @@ import Animated, {
 import { TouchableOpacityProps } from 'react-native'
 import { useState } from 'react'
 import { Idea } from '@/entities/idea'
+import { darkTheme } from '../colors.styled'
 
 const Container = styled.View`
-	border-radius: ${Root.radius10};
-	border: 1px solid ${Colors.grey};
+	border-radius: 10px;
+	border: 1px solid #ccc;
 	width: 100%;
 	overflow: hidden;
 `
@@ -32,7 +31,7 @@ const Pressable = styled.Pressable`
 `
 
 const TextTitle = styled.Text`
-	color: ${Colors.white};
+	color: #ccc;
 	font-size: 14px;
 `
 
@@ -41,12 +40,12 @@ const Content = styled.TouchableOpacity<
 >`
 	padding: 10px;
 	background-color: ${({ activeLink }) =>
-		activeLink ? Colors.success : Colors.background};
+		activeLink ? darkTheme.colors.primary : darkTheme.colors.border};
 `
 
 const TextContent = styled.Text`
 	font-size: 14px;
-	color: ${Colors.white};
+	color: #fff;
 `
 
 interface Props {

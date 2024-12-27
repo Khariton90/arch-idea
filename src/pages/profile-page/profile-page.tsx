@@ -1,4 +1,3 @@
-import Root from '@/app/styles/Root'
 import { ViewProps } from 'react-native-svg/lib/typescript/fabric/utils'
 import styled from 'styled-components/native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
@@ -30,16 +29,12 @@ const Box = styled.View<
 >`
 	width: 100%;
 	padding: 20px;
-	gap: ${Root.gap10};
+	gap: 10px;
 	background-color: ${({ background }) => background};
 	flex: 1;
 	justify-content: center;
 	border-radius: ${({ top, bottom }) =>
-		top
-			? `0 0 ${Root.radius20} ${Root.radius20}`
-			: bottom
-			? `${Root.radius20} ${Root.radius20} 0 0`
-			: '0'};
+		top ? `0 0 20px 20px` : bottom ? `20px 20px 0 0` : '0'};
 `
 
 export function ProfilePage(): JSX.Element {
@@ -110,10 +105,7 @@ export function ProfilePage(): JSX.Element {
 
 			<MainBottomSheet isOpen={modalList[1]}>
 				<ContainerModal>
-					<UserStatusModal
-						color={theme.colors.text}
-						background={theme.colors.shadow}
-					/>
+					<UserStatusModal background={theme.colors.backdrop} />
 					<UniversalButton title='Закрыть' onPress={() => toggleModal(1)} />
 				</ContainerModal>
 			</MainBottomSheet>

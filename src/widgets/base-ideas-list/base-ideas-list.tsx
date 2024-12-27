@@ -1,4 +1,3 @@
-import Root from '@/app/styles/Root'
 import { IdeaCard, IdeaQuery, IdeaStatus } from '@/entities/idea'
 import { useFindIdeasQuery } from '@/entities/idea/api'
 import {
@@ -20,7 +19,7 @@ const IdeasContainer = styled.View<ViewWithThemeProps>`
 	gap: 10px;
 	background: ${({ theme }) => theme.colors.background};
 	padding: 10px;
-	border-radius: ${Root.radius20} ${Root.radius20} 0 0;
+	border-radius: 20px 20px 0 0;
 	flex: 1;
 `
 
@@ -61,7 +60,11 @@ export function BaseIdeasList({
 				<FlatList
 					showsVerticalScrollIndicator={false}
 					refreshControl={
-						<RefreshControl refreshing={isLoading} onRefresh={refetch} />
+						<RefreshControl
+							tintColor={theme.colors.primary}
+							refreshing={isLoading}
+							onRefresh={refetch}
+						/>
 					}
 					refreshing={isLoading}
 					data={ideasList}

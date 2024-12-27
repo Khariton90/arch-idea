@@ -2,15 +2,14 @@ import { ThumbDownIcon } from '@/shared/ui/icons/thumb-down-icon'
 import { ThumbUpIcon } from '@/shared/ui/icons/thumb-up-icon'
 import { useCallback, useContext, useEffect } from 'react'
 import styled from 'styled-components/native'
-import Colors from '@/app/styles/Colors'
-import Root from '@/app/styles/Root'
 import { ReactionType } from '@/entities/idea'
 import {
 	useToggleDislikeMutation,
 	useToggleLikeMutation,
 } from '@/entities/vote/api'
 import React from 'react'
-import { darkTheme, ThemeContext } from '@/shared/colors.styled'
+import { ThemeContext } from '@/shared/colors.styled'
+import { Typography } from '@/shared/ui/typography/typography'
 
 const Box = styled.View`
 	flex-direction: row;
@@ -18,21 +17,16 @@ const Box = styled.View`
 	gap: 6px;
 `
 
-const Button = styled.TouchableOpacity<{ border: string }>`
+const Button = styled.TouchableOpacity<{ border: string; background: string }>`
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
 	gap: 6px;
-	background-color: ${darkTheme.colors.text};
+	background-color: ${({ background }) => background};
 	padding: 6px;
 	min-width: 56px;
-	border-radius: ${Root.radius10};
+	border-radius: 10px;
 	border: 1px solid ${({ border }) => border};
-`
-
-const ButtonText = styled.Text`
-	font-size: 12px;
-	color: ${Colors.background};
 `
 
 interface Props {
@@ -73,21 +67,21 @@ export function LikeDislikeButtons({
 
 	return (
 		<Box>
-			<Button border={theme.colors.border} onPress={handleLike}>
-				{reactionType === 'Like' ? (
-					<ThumbUpIcon active={true} />
-				) : (
-					<ThumbUpIcon active={false} />
-				)}
-				<ButtonText>{likes}</ButtonText>
+			<Button
+				background={theme.colors.background}
+				border={theme.colors.border}
+				onPress={handleLike}
+			>
+				<ThumbUpIcon active={reactionType === 'Like'} />
+				<Typography variant='span' text={likes} />
 			</Button>
-			<Button border={theme.colors.border} onPress={handleDislike}>
-				{reactionType === 'Dislike' ? (
-					<ThumbDownIcon active={true} />
-				) : (
-					<ThumbDownIcon active={false} />
-				)}
-				<ButtonText>{disLikes}</ButtonText>
+			<Button
+				background={theme.colors.background}
+				border={theme.colors.border}
+				onPress={handleDislike}
+			>
+				<ThumbDownIcon active={reactionType === 'Dislike'} />
+				<Typography variant='span' text={disLikes} />
 			</Button>
 		</Box>
 	)

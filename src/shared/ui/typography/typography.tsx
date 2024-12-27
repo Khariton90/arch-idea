@@ -35,7 +35,7 @@ const Text = styled.Text<
 
 interface Props extends TextProps {
 	variant: 'h1' | 'h2' | 'p' | 'span'
-	text: string
+	text: string | number
 	soft?: boolean
 	align?: 'left' | 'right' | 'center'
 	ellipsizeMode?: 'head' | 'middle' | 'tail' | 'clip' | undefined

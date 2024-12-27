@@ -1,5 +1,3 @@
-import Colors from '@/app/styles/Colors'
-import Root from '@/app/styles/Root'
 import { View } from 'react-native'
 import styled from 'styled-components/native'
 import { Accordion } from '@/shared/ui/accordion'
@@ -21,17 +19,17 @@ const Container = styled.View<{ background: string }>`
 `
 
 const Form = styled.View`
-	gap: ${Root.gap10};
+	gap: 10px;
 	width: 100%;
 	flex: 1;
 	justify-content: center;
 `
 
 const InputField = styled.TextInput`
-	border-radius: ${Root.radius10};
+	border-radius: 10px;
 	padding: 20px 40px 20px 10px;
-	border: 1px solid ${Colors.grey};
-	color: ${Colors.white};
+	border: 1px solid #ccc;
+	color: #fff;
 `
 
 const accordion = [
@@ -111,7 +109,7 @@ export function NewIdeaForm(): JSX.Element {
 						value={form.title || ''}
 						onChangeText={text => handleChange('title', text)}
 						placeholder='Заголовок...'
-						placeholderTextColor={Colors.grey}
+						placeholderTextColor={'#ccc'}
 					/>
 				</View>
 				<View>
@@ -119,7 +117,7 @@ export function NewIdeaForm(): JSX.Element {
 						value={form.description || ''}
 						onChangeText={text => handleChange('description', text)}
 						placeholder='Описание...'
-						placeholderTextColor={Colors.grey}
+						placeholderTextColor={'#ccc'}
 						multiline
 					/>
 					<CloseInputButton />

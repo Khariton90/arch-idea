@@ -1,4 +1,4 @@
-import Colors from '@/app/styles/Colors'
+import { darkTheme } from '@/shared/colors.styled'
 import * as React from 'react'
 import Svg, { Path } from 'react-native-svg'
 
@@ -9,7 +9,7 @@ interface Props {
 export function ThumbUpIcon({ active }: Props) {
 	return (
 		<Svg
-			fill={active ? Colors.success : Colors.background}
+			fill={active ? darkTheme.colors.success : darkTheme.colors.text}
 			width={16}
 			height={16}
 			viewBox='0 0 24 24'

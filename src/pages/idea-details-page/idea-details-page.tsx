@@ -14,6 +14,8 @@ import { RouteProp } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { AppRoutes, RootStackParamList } from '@/shared/model/types'
 
+const TITLE_LENGTH = 12
+
 type Props = {
 	route: RouteProp<RootStackParamList, AppRoutes.IdeaDetailsPage>
 	navigation: NativeStackNavigationProp<RootStackParamList>
@@ -45,7 +47,10 @@ export function IdeaDetailsPage({ route, navigation }: Props): JSX.Element {
 
 	useEffect(() => {
 		navigation.setOptions({
-			title,
+			title:
+				title.length > TITLE_LENGTH
+					? `${title.slice(0, TITLE_LENGTH)}...`
+					: title,
 		})
 	})
 

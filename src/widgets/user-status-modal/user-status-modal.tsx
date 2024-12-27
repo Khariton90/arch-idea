@@ -1,13 +1,12 @@
 import { Typography } from '@/shared/ui/typography/typography'
 import React from 'react'
-import { TextProps } from 'react-native'
 import { ViewProps } from 'react-native-svg/lib/typescript/fabric/utils'
 import styled from 'styled-components/native'
 
 const Row = styled.View<ViewProps & { border?: boolean }>`
 	flex-direction: row;
 	justify-content: space-between;
-	padding: 0 10px;
+	padding: 10px;
 	border-bottom-width: ${({ border }) => (border ? '1px' : '0px')};
 	border-bottom-color: #ccc;
 `
@@ -18,11 +17,10 @@ const DescriptionBox = styled.View`
 `
 
 interface Props {
-	color: string
 	background: string
 }
 
-export function UserStatusModal({ color, background }: Props): JSX.Element {
+export function UserStatusModal({ background }: Props): JSX.Element {
 	return (
 		<>
 			<Row>

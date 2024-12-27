@@ -1,4 +1,3 @@
-import Root from '@/app/styles/Root'
 import {
 	ThemeContext,
 	TouchableOpacityWithThemeProps,
@@ -34,7 +33,7 @@ const NavLink = styled.TouchableOpacity<TouchableOpacityWithThemeProps>`
 	flex-direction: row;
 	background-color: ${({ theme }) => theme.colors.backdrop};
 	padding: 12px;
-	border-radius: ${Root.radius10};
+	border-radius: 10px;
 	border: 1px solid ${({ theme }) => theme.colors.border};
 `
 

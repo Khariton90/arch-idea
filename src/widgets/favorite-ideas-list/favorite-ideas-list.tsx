@@ -56,7 +56,11 @@ export function FavoriteIdeasList({ navigation }: Props): JSX.Element {
 					<FlatList
 						showsVerticalScrollIndicator={false}
 						refreshControl={
-							<RefreshControl refreshing={isLoading} onRefresh={refetch} />
+							<RefreshControl
+								tintColor={theme.colors.primary}
+								refreshing={isLoading}
+								onRefresh={refetch}
+							/>
 						}
 						refreshing={isLoading}
 						data={ideasList}

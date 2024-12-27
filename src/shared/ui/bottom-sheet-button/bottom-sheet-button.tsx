@@ -1,4 +1,3 @@
-import Root from '@/app/styles/Root'
 import {
 	darkTheme,
 	ThemeContext,
@@ -11,7 +10,7 @@ import styled from 'styled-components/native'
 
 const ButtonContainer = styled.TouchableOpacity<TouchableOpacityWithThemeProps>`
 	width: 100%;
-	border-radius: ${Root.radius10};
+	border-radius: 10px;
 	border: 1px solid ${darkTheme.colors.highlight};
 	padding: 14px;
 	background-color: ${({ theme }) => theme.colors.backdrop};

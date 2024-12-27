@@ -3,7 +3,6 @@ import { useContext, useEffect, useState } from 'react'
 import { TouchableOpacityProps } from 'react-native'
 import styled from 'styled-components/native'
 import { LayoutLogo } from '@/widgets'
-import Root from '@/app/styles/Root'
 import { delay } from '@/shared/lib/delay'
 import { LoadingIndicator } from '@/shared/ui/loading-indicator'
 import { useAppSelector } from '@/shared/hooks/hooks'
@@ -31,7 +30,7 @@ const Button = styled.TouchableOpacity<
 	padding: 10px 40px;
 	align-items: center;
 	justify-content: center;
-	border-radius: ${Root.radius10};
+	border-radius: 10px;
 `
 
 export function LoginPage({ navigation }: any): JSX.Element {
