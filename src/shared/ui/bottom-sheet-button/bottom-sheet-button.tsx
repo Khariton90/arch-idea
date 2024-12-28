@@ -8,7 +8,9 @@ import { TextProps, View } from 'react-native'
 import Svg, { Path } from 'react-native-svg'
 import styled from 'styled-components/native'
 
-const ButtonContainer = styled.TouchableOpacity<TouchableOpacityWithThemeProps>`
+const ButtonContainer = styled.TouchableOpacity<
+	TouchableOpacityWithThemeProps & { disabled?: boolean }
+>`
 	width: 100%;
 	border-radius: 10px;
 	border: 1px solid ${darkTheme.colors.highlight};
@@ -17,6 +19,8 @@ const ButtonContainer = styled.TouchableOpacity<TouchableOpacityWithThemeProps>`
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
+	opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
+	pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
 `
 
 const Title = styled.Text<TextProps & { color: string }>`
@@ -34,17 +38,19 @@ interface Props {
 	title: string
 	subTitle: string
 	onPress: () => void
+	disabled?: boolean
 }
 
 export function BottomSheetButton({
 	title,
 	subTitle,
 	onPress,
+	disabled,
 }: Props): JSX.Element {
 	const { theme } = useContext(ThemeContext)
 
 	return (
-		<ButtonContainer theme={theme} onPress={onPress}>
+		<ButtonContainer theme={theme} onPress={onPress} disabled={disabled}>
 			<View style={{ gap: 4 }}>
 				<Title color={theme.colors.text}>{title}</Title>
 				<SubTitle color={theme.colors.text}>{subTitle}</SubTitle>

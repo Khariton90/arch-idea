@@ -1,28 +1,13 @@
 import { ThemeContext } from '@/shared/colors.styled'
-import { useContext, useState } from 'react'
+import { ReactNode, useContext, useState } from 'react'
 import styled from 'styled-components/native'
-import {
-	TextInput,
-	StyleSheet,
-	KeyboardAvoidingView,
-	View,
-	TextInputProps,
-} from 'react-native'
-
-const Input = styled.TextInput<
-	TextInputProps & { border: string; color: string }
->`
-	border-radius: 10px;
-	padding: 20px 40px 20px 10px;
-	border: 1px solid ${({ border }) => border};
-	color: ${({ color }) => color};
-`
+import { TextInput, StyleSheet, KeyboardAvoidingView, View } from 'react-native'
 
 const DoneButton = styled.TouchableOpacity<{ background: string }>`
-	background-color: ${({ background }) => background};
-	padding: 8px 16px;
+	padding: 2px;
 	border-radius: 4px;
-	width: 100%;
+	right: 10;
+	position: absolute;
 `
 const DoneButtonText = styled.Text<{ color: string }>`
 	color: ${({ color }) => color};
@@ -36,6 +21,7 @@ interface Props {
 	onChangeText: (textKey: any, value: string) => void
 	placeholder: string
 	multiline?: boolean
+	children?: ReactNode
 }
 
 export function InputField({
@@ -44,6 +30,7 @@ export function InputField({
 	onChangeText,
 	placeholder,
 	multiline,
+	children,
 }: Props): JSX.Element {
 	const { theme } = useContext(ThemeContext)
 	const [showDoneButton, setShowDoneButton] = useState(false)
@@ -59,7 +46,7 @@ export function InputField({
 	const activeColor = !value ? theme.colors.secondary : theme.colors.success
 
 	return (
-		<KeyboardAvoidingView behavior={'padding'}>
+		<KeyboardAvoidingView behavior={'padding'} style={{ width: '100%' }}>
 			<View style={styles.container}>
 				<TextInput
 					multiline={multiline}
@@ -74,6 +61,8 @@ export function InputField({
 					placeholder={placeholder}
 					value={value}
 				/>
+
+				{children}
 				{showDoneButton && (
 					<DoneButton background={theme.colors.backdrop} onPress={handleBlur}>
 						<DoneButtonText color={theme.colors.accent}>Готово</DoneButtonText>
@@ -85,11 +74,16 @@ export function InputField({
 }
 
 const styles = StyleSheet.create({
-	container: {},
+	container: {
+		flexDirection: 'row',
+		alignItems: 'center',
+		gap: '10px',
+	},
 	textInput: {
+		flex: 1,
 		borderRadius: 10,
 		paddingLeft: 10,
-		paddingRight: 20,
+		paddingRight: 70,
 		paddingVertical: 20,
 		borderWidth: 1,
 	},

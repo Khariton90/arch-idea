@@ -27,6 +27,13 @@ export function CommentsList({ ideaId }: Props): JSX.Element {
 		refetch,
 	} = useFindCommentsQuery(ideaId)
 
+	const loadMore = async () => {
+		if (flatListRef.current && commentsData) {
+			flatListRef.current.scrollToEnd()
+		}
+		refetch()
+	}
+
 	useEffect(() => {
 		if (flatListRef.current && commentsData) {
 			flatListRef.current.scrollToEnd()
@@ -45,6 +52,7 @@ export function CommentsList({ ideaId }: Props): JSX.Element {
 	return (
 		<Container background={theme.colors.backdrop}>
 			{isLoading && <LoadingIndicator />}
+
 			<FlatList
 				refreshControl={
 					<RefreshControl
@@ -56,7 +64,10 @@ export function CommentsList({ ideaId }: Props): JSX.Element {
 				ref={flatListRef}
 				data={commentsData?.comments}
 				renderItem={({ item }) => <CommentItem comment={item} />}
+				onEndReachedThreshold={0.2}
+				onEndReached={() => loadMore()}
 			/>
+
 			<CreateCommentForm ideaId={ideaId} />
 		</Container>
 	)

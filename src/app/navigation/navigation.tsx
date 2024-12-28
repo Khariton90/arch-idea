@@ -13,7 +13,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>()
 
 const styles = {
 	headerStyle: {
-		backgroundColor: 'transparent',
+		backgroundColor: darkTheme.colors.backdrop,
 	},
 	headerTitleStyle: {
 		color: darkTheme.colors.primary,

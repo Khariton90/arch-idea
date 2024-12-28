@@ -14,7 +14,7 @@ export function CommentsNotFound(): JSX.Element {
 			<Image
 				width={200}
 				height={260}
-				source={require('../../../../assets/images/not-found-300.webp')}
+				source={require('../../../../assets/images/not-found-200.webp')}
 			/>
 			<Typography variant='h1' text='Оставить комментарий' />
 			<Typography

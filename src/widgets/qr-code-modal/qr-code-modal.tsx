@@ -33,17 +33,13 @@ export function QrCodeModal({ isOpen }: Props): JSX.Element {
 			setCurrentBrightness(currentValue)
 
 			await Brightness.setSystemBrightnessAsync(1)
-		} catch (error) {
-			console.error(error)
-		}
+		} catch (error) {}
 	}
 
 	const restoreBrightness = async () => {
 		try {
 			await Brightness.setSystemBrightnessAsync(currentBrightness)
-		} catch (error) {
-			console.error(error)
-		}
+		} catch (error) {}
 	}
 
 	useEffect(() => {

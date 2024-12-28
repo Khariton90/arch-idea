@@ -82,7 +82,7 @@ export function IdeaCard({
 				<Chip title={`Статус: ${idea.status}`} size='md' color='success' />
 				<Chip title={`Приоритет: ${idea.priority}`} size='md' color='success' />
 				<Chip
-					title={`Подразделение: ${idea.subDepartment}`}
+					title={`Категория: ${idea.subDepartment}`}
 					size='md'
 					color='success'
 				/>

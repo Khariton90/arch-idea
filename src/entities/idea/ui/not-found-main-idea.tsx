@@ -14,7 +14,7 @@ export function NotFoundMainIdea(): JSX.Element {
 			<Image
 				width={200}
 				height={260}
-				source={require('../../../../assets/images/not-found-ideas-300.webp')}
+				source={require('../../../../assets/images/my-not-found-200.webp')}
 			/>
 			<Typography variant='h1' text='Пока у вас нет новых идей?' />
 			<Typography variant='p' soft text='Начните добавлять их прямо сейчас!' />
