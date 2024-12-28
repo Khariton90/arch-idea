@@ -13,6 +13,7 @@ import {
 	mappingPriority,
 	mappingSubDepartment,
 } from '@/entities/idea/lib/mapIdea'
+import { InputField } from '@/shared/ui/input-field/input-field'
 
 const Container = styled.View<{ background: string }>`
 	flex: 1;
@@ -29,7 +30,7 @@ const Form = styled.View`
 	justify-content: center;
 `
 
-const InputField = styled.TextInput`
+const InputFields = styled.TextInput`
 	border-radius: 10px;
 	padding: 20px 40px 20px 10px;
 	border: 1px solid #ccc;
@@ -68,6 +69,7 @@ const initialFormValues: Idea = {
 export function NewIdeaForm(): JSX.Element {
 	const { theme } = useContext(ThemeContext)
 	const [form, setForm] = useState<Idea>(initialFormValues)
+	const [isActiveForm, setIsActiveForm] = useState(false)
 	const [createIdea, { data, isLoading, isError, isSuccess, error }] =
 		useCreateIdeaMutation()
 
@@ -85,11 +87,13 @@ export function NewIdeaForm(): JSX.Element {
 	)
 
 	const handleSubmit = async () => {
+		setIsActiveForm(() => false)
 		await createIdea(form)
 	}
 
 	useEffect(() => {
 		if (data) {
+			setIsActiveForm(() => true)
 			setForm(prev => ({ ...initialFormValues }))
 		}
 	}, [isSuccess, isLoading])
@@ -101,23 +105,23 @@ export function NewIdeaForm(): JSX.Element {
 			)}
 			<Form>
 				<Typography variant='h1' text='Описание идеи' align='center' />
+
 				<View>
 					<InputField
+						textKey={'title'}
 						value={form.title || ''}
-						onChangeText={text => handleChange('title', text)}
-						placeholder='Заголовок...'
-						placeholderTextColor={'#ccc'}
+						onChangeText={handleChange}
+						placeholder={'Заголовок...'}
 					/>
 				</View>
 				<View>
 					<InputField
+						textKey={'description'}
 						value={form.description || ''}
-						onChangeText={text => handleChange('description', text)}
+						onChangeText={handleChange}
 						placeholder='Описание...'
-						placeholderTextColor={'#ccc'}
 						multiline
 					/>
-					<CloseInputButton />
 				</View>
 				{accordion.map(item => (
 					<Accordion
@@ -126,6 +130,7 @@ export function NewIdeaForm(): JSX.Element {
 						key={item.id}
 						value={item.value}
 						content={item.content}
+						isActiveForm={isActiveForm}
 					/>
 				))}
 				<UniversalButton
@@ -133,6 +138,14 @@ export function NewIdeaForm(): JSX.Element {
 					title='Создать'
 					onPress={handleSubmit}
 				/>
+				{isActiveForm && (
+					<Typography
+						soft
+						align='center'
+						variant='span'
+						text={'Идея успешно создана'}
+					/>
+				)}
 			</Form>
 		</Container>
 	)

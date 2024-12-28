@@ -12,13 +12,13 @@ import Animated, {
 	Extrapolation,
 } from 'react-native-reanimated'
 import { TouchableOpacityProps } from 'react-native'
-import { useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Idea } from '@/entities/idea'
-import { darkTheme } from '../colors.styled'
+import { darkTheme, ThemeContext } from '../colors.styled'
 
-const Container = styled.View`
+const Container = styled.View<{ border: string }>`
 	border-radius: 10px;
-	border: 1px solid #ccc;
+	border: 1px solid ${({ border }) => border};
 	width: 100%;
 	overflow: hidden;
 `
@@ -30,8 +30,8 @@ const Pressable = styled.Pressable`
 	align-items: center;
 `
 
-const TextTitle = styled.Text`
-	color: #ccc;
+const TextTitle = styled.Text<{ color: string }>`
+	color: ${({ color }) => color};
 	font-size: 14px;
 `
 
@@ -53,6 +53,7 @@ interface Props {
 	content: string[][]
 	title: string
 	onSelected: (key: keyof Idea, value: string) => void
+	isActiveForm: boolean
 }
 
 export function Accordion({
@@ -60,7 +61,10 @@ export function Accordion({
 	content,
 	title,
 	onSelected,
+	isActiveForm,
 }: Props): JSX.Element {
+	const { theme } = useContext(ThemeContext)
+
 	const [activeSelect, setActiveSelect] = useState('')
 	const listRef = useAnimatedRef<Animated.View>()
 	const heightValue = useSharedValue(0)
@@ -82,8 +86,18 @@ export function Accordion({
 		setActiveSelect(prev => value)
 	}
 
+	useEffect(() => {
+		if (isActiveForm) {
+			setActiveSelect(() => '')
+		}
+	}, [isActiveForm])
+
+	const activeColor = !activeSelect
+		? theme.colors.secondary
+		: theme.colors.success
+
 	return (
-		<Container>
+		<Container border={activeColor}>
 			<Pressable
 				onPress={() => {
 					if (heightValue.value === 0) {
@@ -95,7 +109,7 @@ export function Accordion({
 					open.value = !open.value
 				}}
 			>
-				<TextTitle>{value}</TextTitle>
+				<TextTitle color={activeColor}>{value}</TextTitle>
 				<Chevron progress={progress} />
 			</Pressable>
 

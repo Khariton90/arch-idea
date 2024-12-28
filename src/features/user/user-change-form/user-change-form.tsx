@@ -1,21 +1,15 @@
 import { UpdateUserDto, useUpdateUserMutation } from '@/entities/user'
 import { setUserFullName } from '@/entities/user/model/slice'
-import { ThemeContext, ViewWithThemeProps } from '@/shared/colors.styled'
+import { ViewWithThemeProps } from '@/shared/colors.styled'
 import { useAppDispatch } from '@/shared/hooks/hooks'
 import { debounce } from '@/shared/lib/debounce'
+import { InputField } from '@/shared/ui/input-field/input-field'
 import { UniversalButton } from '@/shared/ui/universal-button/universal-button'
-import { useContext, useEffect, useState } from 'react'
+import { useState } from 'react'
 import styled from 'styled-components/native'
 
 const Form = styled.View<ViewWithThemeProps>`
 	gap: 10px;
-`
-
-const InputField = styled.TextInput<{ border: string; color: string }>`
-	border-radius: 10px;
-	padding: 20px 40px 20px 10px;
-	border: 1px solid ${({ border }) => border};
-	color: ${({ color }) => color};
 `
 
 const initialForm: UpdateUserDto = {
@@ -24,7 +18,6 @@ const initialForm: UpdateUserDto = {
 }
 
 export function UserChangeForm(): JSX.Element {
-	const { theme } = useContext(ThemeContext)
 	const [form, setForm] = useState<UpdateUserDto>(initialForm)
 	const dispatch = useAppDispatch()
 	const [updateUser, { data: user, isLoading, isError, isSuccess }] =
@@ -46,21 +39,17 @@ export function UserChangeForm(): JSX.Element {
 	return (
 		<Form>
 			<InputField
-				border={theme.colors.secondary}
-				color={theme.colors.text}
+				textKey={'firstName'}
 				value={form.firstName || ''}
-				onChangeText={text => handleChange('firstName', text)}
-				placeholder='Имя'
-				placeholderTextColor={'#ccc'}
+				onChangeText={handleChange}
+				placeholder={'Имя'}
 			/>
 
 			<InputField
-				border={theme.colors.secondary}
-				color={theme.colors.text}
+				textKey={'lastName'}
 				value={form.lastName || ''}
-				onChangeText={text => handleChange('lastName', text)}
-				placeholder='Фамилия'
-				placeholderTextColor={'#ccc'}
+				onChangeText={handleChange}
+				placeholder={'Фамилия'}
 			/>
 
 			<UniversalButton

@@ -13,23 +13,25 @@ const Container = styled.View<{ background: string }>`
 	background-color: ${({ background }) => background};
 `
 
-const Card = styled.View<{ background: string }>`
+const Card = styled.View<{ background: string; border: string }>`
 	flex: 1;
 	background-color: ${({ background }) => background};
-	border-radius: 20px;
-	margin: 40px 0;
+	border-radius: 10px;
+	border: 1px solid ${({ border }) => border};
+	margin: 40px 10px;
 	overflow: hidden;
+	padding: 10px 0;
 `
 
-const CardHeader = styled.View`
+const CardHeader = styled.View<{ border: string }>`
 	padding: 20px;
-	border-bottom-color: #6e6e6e;
+	border-bottom-color: ${({ border }) => border};
 	border-bottom-width: 1px;
 `
 
 const CardContent = styled.View`
-	padding: 20px;
-	gap: 10px;
+	padding: 20px 20px 0 20px;
+	gap: 6px;
 `
 
 const AuthorBox = styled.View`
@@ -69,6 +71,8 @@ interface Props {
 	commentsSlot: ReactNode
 }
 
+const MAX_USERNAME_LENGTH = 10
+
 export function IdeaDetailsCard({
 	idea,
 	likesDisLakesSlot,
@@ -77,33 +81,47 @@ export function IdeaDetailsCard({
 }: Props): JSX.Element {
 	const { theme } = useContext(ThemeContext)
 
+	const firstName =
+		idea.user.firstName.length >= MAX_USERNAME_LENGTH
+			? idea.user.firstName.slice(0, MAX_USERNAME_LENGTH)
+			: idea.user.firstName
+
 	return (
 		<Container background={theme.colors.background}>
-			<Card background={theme.colors.backdrop}>
-				<CardHeader>
+			<Card background={theme.colors.backdrop} border={theme.colors.border}>
+				<CardHeader border={theme.colors.border}>
 					<FavoriteBox>{wishListSlot}</FavoriteBox>
 					<Typography variant='h2' soft text={formatDate(idea.createdAt)} />
-					<Row>
-						<Typography variant='span' soft text='Cтатус: ' />
-						<Typography variant='span' text={idea.status} />
+					<Row style={{ marginVertical: 10 }}>
+						<Typography variant='p' soft text='Cтатус: ' />
+						<Typography variant='p' text={idea.status} />
 					</Row>
 				</CardHeader>
+
 				<CardContent>
 					<AuthorBox>
-						<Avatar size='md' name={idea.user.firstName} />
+						<Avatar size='sm' name={idea.user.firstName} />
 						<View>
 							<Typography variant='span' soft text='Автор' />
-							<Typography variant='span' soft text={idea.user.firstName} />
+							<Typography variant='span' soft text={firstName} />
 						</View>
 					</AuthorBox>
 					<Row>
+						<Typography variant='span' soft text='Подразделение: ' />
+						<Typography variant='span' text={idea.department} />
+					</Row>
+
+					<Row>
 						<Typography variant='span' soft text='Категория: ' />
-						<Typography variant='span' soft text={idea.subDepartment} />
+						<Typography variant='span' text={idea.subDepartment} />
 					</Row>
 					<Row>
 						<Typography variant='span' soft text='Приоритет: ' />
-						<Typography variant='span' soft text={idea.priority} />
+						<Typography variant='span' text={idea.priority} />
 					</Row>
+				</CardContent>
+
+				<CardContent>
 					<Typography variant='h1' text={idea.title} />
 					<Typography variant='p' text={idea.description} />
 				</CardContent>

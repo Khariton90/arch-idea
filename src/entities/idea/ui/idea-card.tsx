@@ -6,7 +6,8 @@ import { AppRoutes } from '@/shared/model/types'
 import { ThemeContext } from '@/shared/colors.styled'
 import { formatDate } from '@/shared/lib/format-date'
 import { Typography } from '@/shared/ui/typography/typography'
-import { TouchableOpacityProps } from 'react-native'
+import { TouchableOpacityProps, View } from 'react-native'
+import { Chip } from '@/shared/ui/chip'
 
 const Container = styled.TouchableOpacity<
 	TouchableOpacityProps & {
@@ -15,7 +16,7 @@ const Container = styled.TouchableOpacity<
 	}
 >`
 	width: 100%;
-	height: 200px;
+	min-height: 200px;
 	background: ${({ background }) => background};
 	border: 1px solid ${({ border }) => border};
 	border-radius: 20px;
@@ -31,6 +32,7 @@ const Row = styled.View<{ direction?: boolean }>`
 	justify-content: ${({ direction }) =>
 		direction ? 'flex-start' : 'space-between'};
 	align-items: ${({ direction }) => (direction ? 'flex-start' : 'flex-end')};
+	gap: 6px;
 `
 
 interface Props {
@@ -55,7 +57,7 @@ export function IdeaCard({
 			onPress={() => navigation.navigate(AppRoutes.IdeaDetailsPage, idea)}
 		>
 			<Row>
-				<Typography variant='p' soft text={`Статус: ${idea.status}`} />
+				<View />
 				{wishlistSlot}
 			</Row>
 
@@ -73,6 +75,16 @@ export function IdeaCard({
 					variant='span'
 					soft
 					text={idea.description}
+				/>
+			</Row>
+
+			<Row direction>
+				<Chip title={`Статус: ${idea.status}`} size='md' color='success' />
+				<Chip title={`Приоритет: ${idea.priority}`} size='md' color='success' />
+				<Chip
+					title={`Подразделение: ${idea.subDepartment}`}
+					size='md'
+					color='success'
 				/>
 			</Row>
 

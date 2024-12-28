@@ -1,5 +1,4 @@
 import { useFindCommentsQuery } from '@/entities/comment/api'
-import { CommentListRdo } from '@/entities/comment/model/types'
 import { CommentItem, CommentsNotFound } from '@/entities/comment/ui'
 import { CreateCommentForm } from '@/features/comment'
 import { ThemeContext } from '@/shared/colors.styled'
@@ -42,8 +41,6 @@ export function CommentsList({ ideaId }: Props): JSX.Element {
 			</Container>
 		)
 	}
-
-	console.log('aaa')
 
 	return (
 		<Container background={theme.colors.backdrop}>
