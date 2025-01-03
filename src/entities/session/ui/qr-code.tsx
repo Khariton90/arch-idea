@@ -10,12 +10,14 @@ import { StyleSheet, Text, View } from 'react-native'
 import { useAuthByQrCodeMutation } from '../api'
 import styled from 'styled-components/native'
 import { LayoutLogo } from '@/widgets'
-import { setIsAuthorized } from '../model/slice'
-import { saveAccessToken } from '../api/session-api'
+import { addSessionData } from '../model/slice'
 import { AuthRdo } from '../model/types'
 import { ThemeContext } from '@/shared/colors.styled'
 import { AppRoutes } from '@/shared/model/types'
 import { Typography } from '@/shared/ui/typography/typography'
+import * as Device from 'expo-device'
+import { saveToken } from '../api/session-api'
+import { delay } from '@/shared/lib/delay'
 
 const Container = styled.View<{ background: string }>`
 	flex: 1;
@@ -53,44 +55,38 @@ const Message = styled.Text`
 export function QrCode({ navigation }: any) {
 	const { theme } = useContext(ThemeContext)
 	const [permission, requestPermission] = useCameraPermissions()
-	const dispatch = useAppDispatch()
 	const [result, setResult] = useState('')
+	const [modelName] = useState(Device.modelName)
+	const [isLoading, setIsLoading] = useState(false)
+	const dispatch = useAppDispatch()
 
-	const isAuthorized = useAppSelector(
-		({ sessionSlice }) => sessionSlice.isAuthorized
-	)
-
-	const [authByQrCode, { data: account, isLoading, isSuccess, isError }] =
+	const [authByQrCode, { data: authData, isSuccess, isError }] =
 		useAuthByQrCodeMutation()
+
+	const openCamera = async () => {
+		setIsLoading(() => true)
+		await delay()
+		setIsLoading(() => false)
+		useCameraPermissions()
+	}
 
 	const authUser = async (result: BarcodeScanningResult) => {
 		setResult(state => result.data)
-
 		if (result.data) {
-			await authByQrCode({ sub: result.data })
+			await authByQrCode({ sub: result.data, modelName: modelName ?? '' })
 		}
 	}
 
-	const setTokenData = async (data: AuthRdo) => {
-		await saveAccessToken(data)
-		dispatch(setIsAuthorized(data.access_token))
-	}
-
 	useEffect(() => {
-		if (isAuthorized) {
-			navigation.replace(AppRoutes.HomePage)
-		}
-	}, [isAuthorized])
-
-	useEffect(() => {
-		if (account) {
-			setTokenData(account)
-		}
-	}, [isSuccess, account])
-
-	useEffect(() => {
-		requestPermission()
+		openCamera()
 	}, [])
+
+	useEffect(() => {
+		if (authData) {
+			dispatch(addSessionData(authData))
+			saveToken(authData)
+		}
+	}, [authData])
 
 	if (!permission || isLoading) {
 		return <LoadingIndicator />
@@ -118,7 +114,7 @@ export function QrCode({ navigation }: any) {
 					onBarcodeScanned={!result ? authUser : undefined}
 				></CameraView>
 			</CameraWrapper>
-			{isError && result ? (
+			{isError ? (
 				<View style={{ gap: 10 }}>
 					<Typography
 						variant='p'

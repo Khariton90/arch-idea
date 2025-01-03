@@ -1,17 +1,39 @@
 import { baseApi } from '@/shared/api/base-api'
 import { Idea, IdeaQuery, IdeaRdo } from '../model/types'
-import { IDEA_TAG, WISHLIST_TAG } from '@/shared/api/tags'
+import { IDEA_TAG, ONE_IDEA, VOTE_TAG, WISHLIST_TAG } from '@/shared/api/tags'
 import { mapIdea } from '../lib/mapIdea'
+import { createEntityAdapter } from '@reduxjs/toolkit'
+import { voteApi } from '@/entities/vote/api'
+
+const ideasAdapter = createEntityAdapter({
+	selectId: (item: IdeaRdo) => item.id,
+})
+
+const ideasSelector = ideasAdapter.getSelectors()
 
 export const ideaApi = baseApi.injectEndpoints({
 	endpoints: build => ({
-		findIdeas: build.query<IdeaRdo[], IdeaQuery>({
+		findTotalCountIdeas: build.query<number, IdeaQuery>({
 			query: queryParams => ({
-				url: '/idea',
+				url: `/idea/totalCount`,
 				method: 'GET',
+				providesTags: [IDEA_TAG],
 				params: { ...queryParams },
 			}),
-			providesTags: [IDEA_TAG, WISHLIST_TAG],
+			// providesTags: (result, error, arg) => {
+			// 	return [{ type: IDEA_TAG }, { type: VOTE_TAG }]
+			// },
+		}),
+		findIdeas: build.query<IdeaRdo[], IdeaQuery>({
+			query: queryParams => {
+				console.log(queryParams)
+				return {
+					url: '/idea',
+					method: 'GET',
+					params: { ...queryParams },
+				}
+			},
+			providesTags: [IDEA_TAG, VOTE_TAG, ONE_IDEA],
 			transformResponse: (response: IdeaRdo[]) => response.map(mapIdea),
 		}),
 		findMyIdeas: build.query<IdeaRdo[], IdeaQuery>({
@@ -36,7 +58,7 @@ export const ideaApi = baseApi.injectEndpoints({
 			query: id => ({
 				url: `/idea/${id}`,
 				method: 'GET',
-				providesTags: [IDEA_TAG, WISHLIST_TAG],
+				providesTags: [IDEA_TAG, WISHLIST_TAG, VOTE_TAG, ONE_IDEA],
 			}),
 			transformResponse: (response: IdeaRdo) => mapIdea(response),
 		}),
@@ -58,4 +80,7 @@ export const {
 	useFindByIdeaIdQuery,
 	useFindMyIdeasQuery,
 	useFindFavoriteIdeasQuery,
+	useFindTotalCountIdeasQuery,
 } = ideaApi
+
+export { ideasSelector, ideasAdapter }

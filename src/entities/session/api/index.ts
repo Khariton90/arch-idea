@@ -8,18 +8,33 @@ export const sessionApi = baseApi.injectEndpoints({
 			query: dto => ({
 				url: '/auth/register',
 				method: 'POST',
-				body: dto,
+				body: { ...dto },
 			}),
 			invalidatesTags: [SESSION_TAG],
 		}),
-		account: build.query<UserDto, void>({
-			query: () => ({
-				url: '/user/account',
-				method: 'GET',
-			}),
+		getAccount: build.query<UserDto, void>({
+			query() {
+				return {
+					url: '/user/account',
+					method: 'GET',
+				}
+			},
 			providesTags: [SESSION_TAG],
+		}),
+		sendRefreshToken: build.mutation({
+			query: (token: string) => ({
+				url: '/auth/refresh',
+				method: 'POST',
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}),
 		}),
 	}),
 })
 
-export const { useAuthByQrCodeMutation, useAccountQuery } = sessionApi
+export const {
+	useAuthByQrCodeMutation,
+	useGetAccountQuery,
+	useSendRefreshTokenMutation,
+} = sessionApi

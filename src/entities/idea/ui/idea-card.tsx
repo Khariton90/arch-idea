@@ -1,6 +1,5 @@
-import { IdeaRdo } from '../model/types'
-import { ReactNode, useContext } from 'react'
-import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { IdeaRdo, Priority } from '../model/types'
+import { memo, ReactNode, useCallback, useContext } from 'react'
 import styled from 'styled-components/native'
 import { AppRoutes } from '@/shared/model/types'
 import { ThemeContext } from '@/shared/colors.styled'
@@ -8,6 +7,7 @@ import { formatDate } from '@/shared/lib/format-date'
 import { Typography } from '@/shared/ui/typography/typography'
 import { TouchableOpacityProps, View } from 'react-native'
 import { Chip } from '@/shared/ui/chip'
+import useCustomNavigation from '@/shared/hooks/use-custom-navigation'
 
 const Container = styled.TouchableOpacity<
 	TouchableOpacityProps & {
@@ -20,7 +20,6 @@ const Container = styled.TouchableOpacity<
 	background: ${({ background }) => background};
 	border: 1px solid ${({ border }) => border};
 	border-radius: 20px;
-	margin: 10px 0;
 	padding: 16px 20px;
 	justify-content: space-between;
 	gap: 8px;
@@ -39,22 +38,25 @@ interface Props {
 	idea: IdeaRdo
 	likeDislikeSlot: ReactNode
 	wishlistSlot: ReactNode
-	navigation: NativeStackNavigationProp<any, any, any>
 }
 
-export function IdeaCard({
+function IdeaCardComponent({
 	idea,
 	likeDislikeSlot,
 	wishlistSlot,
-	navigation,
 }: Props): JSX.Element {
 	const { theme } = useContext(ThemeContext)
+	const navigation = useCustomNavigation()
+
+	const handlePress = () => {
+		navigation.navigate(AppRoutes.IdeaDetailsPage, idea)
+	}
 
 	return (
 		<Container
 			border={theme.colors.border}
 			background={theme.colors.backdrop}
-			onPress={() => navigation.navigate(AppRoutes.IdeaDetailsPage, idea)}
+			onPress={handlePress}
 		>
 			<Row>
 				<View />
@@ -79,11 +81,11 @@ export function IdeaCard({
 			</Row>
 
 			<Row direction>
-				<Chip title={`Статус: ${idea.status}`} size='md' color='success' />
-				<Chip title={`Приоритет: ${idea.priority}`} size='md' color='success' />
+				<Chip title={`Статус: ${idea.status}`} size='sm' color='success' />
+				<Chip title={`Приоритет: ${idea.priority}`} size='sm' color='success' />
 				<Chip
 					title={`Категория: ${idea.subDepartment}`}
-					size='md'
+					size='sm'
 					color='success'
 				/>
 			</Row>
@@ -95,3 +97,5 @@ export function IdeaCard({
 		</Container>
 	)
 }
+
+export const IdeaCard = memo(IdeaCardComponent)

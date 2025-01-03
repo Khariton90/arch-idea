@@ -1,10 +1,13 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import { selectToken } from '@/entities/session/model/slice'
 import { RootState } from '@/app/store'
-import { BASE_URL } from '@/shared/constants/consts'
+
+export const BASE_URL = process.env.EXPO_PUBLIC_API_URL
+
 import {
 	COMMENT_TAG,
 	IDEA_TAG,
+	ONE_IDEA,
 	SESSION_TAG,
 	USER_TAG,
 	VOTE_TAG,
@@ -19,6 +22,7 @@ export const baseApi = createApi({
 		COMMENT_TAG,
 		VOTE_TAG,
 		USER_TAG,
+		ONE_IDEA,
 	],
 	reducerPath: 'baseApi',
 	baseQuery: fetchBaseQuery({

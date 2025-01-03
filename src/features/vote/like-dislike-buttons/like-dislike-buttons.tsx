@@ -1,6 +1,6 @@
 import { ThumbDownIcon } from '@/shared/ui/icons/thumb-down-icon'
 import { ThumbUpIcon } from '@/shared/ui/icons/thumb-up-icon'
-import { useCallback, useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import styled from 'styled-components/native'
 import { ReactionType } from '@/entities/idea'
 import {
@@ -34,7 +34,7 @@ interface Props {
 	likes: number
 	disLikes: number
 	reactionType: ReactionType
-	onRefetch?: () => void
+	refetch?: () => void
 }
 
 export function LikeDislikeButtons({
@@ -42,28 +42,26 @@ export function LikeDislikeButtons({
 	likes,
 	disLikes,
 	reactionType,
-	onRefetch,
+	refetch,
 }: Props): JSX.Element {
 	const { theme } = useContext(ThemeContext)
 
-	const [toggleLike, { data: like, isLoading: isLoadingLike }] =
-		useToggleLikeMutation()
-	const [toggleDislike, { data: dislike, isLoading: isLoadingDislike }] =
-		useToggleDislikeMutation()
+	const [toggleLike] = useToggleLikeMutation()
+	const [toggleDislike] = useToggleDislikeMutation()
 
 	const handleLike = async () => {
 		await toggleLike({ ideaId: id })
+		if (refetch) {
+			refetch()
+		}
 	}
 
 	const handleDislike = async () => {
 		await toggleDislike({ ideaId: id })
-	}
-
-	useEffect(() => {
-		if (onRefetch) {
-			onRefetch()
+		if (refetch) {
+			refetch()
 		}
-	}, [like, dislike])
+	}
 
 	return (
 		<Box>

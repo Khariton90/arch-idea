@@ -5,5 +5,7 @@ export type VoteDto = {
 }
 
 export type VoteRdo = {
+	ideaId: string
+	userId: string
 	reactionType: ReactionType
 }

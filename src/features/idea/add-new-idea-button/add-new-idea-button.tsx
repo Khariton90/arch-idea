@@ -1,19 +1,16 @@
-import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import styled from 'styled-components/native'
 import { AppRoutes } from '@/shared/model/types'
 import { UniversalButton } from '@/shared/ui/universal-button/universal-button'
+import styled from 'styled-components/native'
+import useCustomNavigation from '@/shared/hooks/use-custom-navigation'
 
 const Box = styled.View`
 	flex-direction: row;
 	justify-content: center;
 	padding: 0 20px;
 `
+export function AddNewIdeaButton(): JSX.Element {
+	const navigation = useCustomNavigation()
 
-interface Props {
-	navigation: NativeStackNavigationProp<any, any, any>
-}
-
-export function AddNewIdeaButton({ navigation }: Props): JSX.Element {
 	return (
 		<Box>
 			<UniversalButton

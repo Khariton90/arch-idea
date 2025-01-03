@@ -5,10 +5,6 @@ import { LikeDislikeButtons } from '@/features/vote'
 import { useFindByIdeaIdQuery } from '@/entities/idea/api'
 import { LoadingIndicator } from '@/shared/ui/loading-indicator'
 import { WishListToggle } from '@/features/wishlist'
-import {
-	useAddToWishlistMutation,
-	useRemoveFromWishlistMutation,
-} from '@/entities/wishlist/api'
 import { ButtonToComments } from '@/entities/comment'
 import { RouteProp } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
@@ -30,32 +26,12 @@ export function IdeaDetailsPage({ route, navigation }: Props): JSX.Element {
 	const { theme } = useContext(ThemeContext)
 
 	const { id, isFavorite, title } = route.params
-	const [removeFromWishlist] = useRemoveFromWishlistMutation()
-	const [addToWishlist] = useAddToWishlistMutation()
 	const {
 		data: idea,
 		isLoading,
 		refetch,
 		isFetching,
 	} = useFindByIdeaIdQuery(id)
-
-	const handleAddToWishlist = async () => {
-		if (idea) {
-			await addToWishlist({ id: idea.id })
-			await refetch()
-		}
-	}
-
-	const handleRemoveFromWishlist = async () => {
-		if (idea) {
-			await removeFromWishlist({ id: idea.id })
-			await refetch()
-		}
-	}
-
-	const onRefetch = async () => {
-		await refetch()
-	}
 
 	useEffect(() => {
 		navigation.setOptions({
@@ -68,7 +44,7 @@ export function IdeaDetailsPage({ route, navigation }: Props): JSX.Element {
 
 	useEffect(() => {
 		refetch()
-	}, [isFavorite])
+	}, [idea?.isFavorite, isFavorite])
 
 	return (
 		<SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }}>
@@ -89,18 +65,18 @@ export function IdeaDetailsPage({ route, navigation }: Props): JSX.Element {
 							idea={idea}
 							likesDisLakesSlot={
 								<LikeDislikeButtons
+									refetch={refetch}
 									reactionType={idea.reactionType}
 									id={id}
 									likes={idea.likesCount}
 									disLikes={idea.dislikesCount}
-									onRefetch={onRefetch}
 								/>
 							}
 							wishListSlot={
 								<WishListToggle
+									refetch={refetch}
 									active={idea.isFavorite}
-									add={handleAddToWishlist}
-									remove={handleRemoveFromWishlist}
+									ideaId={idea.id}
 								/>
 							}
 							commentsSlot={

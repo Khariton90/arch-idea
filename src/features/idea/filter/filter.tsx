@@ -1,16 +1,12 @@
 import { LocationDepartment } from '@/entities/idea'
-import {
-	mappingDepartment,
-	mappingPriority,
-	mappingStatus,
-} from '@/entities/idea/lib/mapIdea'
+import { mappingDepartment } from '@/entities/idea/lib/mapIdea'
 import {
 	TextWithThemeProps,
 	ThemeContext,
 	TouchableOpacityWithThemeProps,
 } from '@/shared/colors.styled'
 
-import { memo, useCallback, useContext, useEffect, useState } from 'react'
+import { memo, useCallback, useContext, useState } from 'react'
 import { ScrollView } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -44,24 +40,23 @@ function FilterComponent({ onChangeFilter }: Props): JSX.Element {
 		undefined
 	)
 
-	const handlePress = (item: LocationDepartment) => {
-		if (activeItem === item) {
-			setActiveItem(() => undefined)
-			return
-		}
-		setActiveItem(prev => item)
-	}
-
-	useEffect(() => {
-		onChangeFilter(activeItem)
-	}, [activeItem])
-
-	const list = Object.entries(mappingDepartment)
+	const handlePress = useCallback(
+		(item: LocationDepartment) => {
+			if (activeItem === item) {
+				setActiveItem(() => undefined)
+				onChangeFilter(undefined)
+				return
+			}
+			setActiveItem(prev => item)
+			onChangeFilter(item)
+		},
+		[activeItem]
+	)
 
 	return (
 		<Container>
 			<ScrollView horizontal showsHorizontalScrollIndicator={false}>
-				{list.map(([key, value]) => (
+				{Object.entries(mappingDepartment).map(([key, value]) => (
 					<FilterItem
 						theme={theme}
 						key={key}

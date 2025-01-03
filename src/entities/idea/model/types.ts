@@ -62,8 +62,8 @@ export interface IdeaRdo extends Idea {
 }
 
 export interface IdeaQuery {
-	page?: number
-	limit?: number
+	page: number
+	limit: number
 	sortDirection?: 'asc' | 'desc'
 	department?: LocationDepartment
 }

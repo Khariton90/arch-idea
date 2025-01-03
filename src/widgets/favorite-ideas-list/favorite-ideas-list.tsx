@@ -37,16 +37,10 @@ export function FavoriteIdeasList({ navigation }: Props): JSX.Element {
 	const {
 		data: ideasList,
 		isLoading,
-		error,
-		isSuccess,
 		refetch,
 	} = useFindFavoriteIdeasQuery(query)
 	const [addToWishlist] = useAddToWishlistMutation()
 	const [removeFromWishlist] = useRemoveFromWishlistMutation()
-
-	if (ideasList && !ideasList.length) {
-		return <NotFoundFavoriteIdea />
-	}
 
 	return (
 		<>
@@ -55,6 +49,7 @@ export function FavoriteIdeasList({ navigation }: Props): JSX.Element {
 				{ideasList && (
 					<FlatList
 						showsVerticalScrollIndicator={false}
+						ListEmptyComponent={<NotFoundFavoriteIdea />}
 						refreshControl={
 							<RefreshControl
 								tintColor={theme.colors.primary}
@@ -66,7 +61,6 @@ export function FavoriteIdeasList({ navigation }: Props): JSX.Element {
 						data={ideasList}
 						renderItem={({ item }) => (
 							<IdeaCard
-								navigation={navigation}
 								key={item.id}
 								idea={item}
 								likeDislikeSlot={
@@ -78,11 +72,7 @@ export function FavoriteIdeasList({ navigation }: Props): JSX.Element {
 									/>
 								}
 								wishlistSlot={
-									<WishListToggle
-										active={item.isFavorite}
-										add={() => addToWishlist({ id: item.id })}
-										remove={() => removeFromWishlist({ id: item.id })}
-									/>
+									<WishListToggle active={item.isFavorite} ideaId={item.id} />
 								}
 							/>
 						)}

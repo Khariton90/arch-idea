@@ -2,9 +2,10 @@ import { Typography } from '@/shared/ui/typography/typography'
 import styled from 'styled-components/native'
 
 const Box = styled.View`
-	flex: 1;
+	padding: 20px 0;
 	justify-content: center;
 	align-items: center;
+	align-content: center;
 `
 
 export function EmptyIdeasList(): JSX.Element {

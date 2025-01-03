@@ -1,128 +1,85 @@
 import { IdeaCard, IdeaQuery, LocationDepartment } from '@/entities/idea'
-import { useFindIdeasQuery } from '@/entities/idea/api'
 import {
-	useAddToWishlistMutation,
-	useRemoveFromWishlistMutation,
-} from '@/entities/wishlist/api'
+	useFindIdeasQuery,
+	useFindTotalCountIdeasQuery,
+} from '@/entities/idea/api'
 import { Filter } from '@/features/idea'
 import { LikeDislikeButtons } from '@/features/vote'
 import { WishListToggle } from '@/features/wishlist'
-import { ThemeContext, ViewWithThemeProps } from '@/shared/colors.styled'
-import { useAppDispatch } from '@/shared/hooks/hooks'
-import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import React, { memo, useCallback, useContext } from 'react'
-import { ReactNode, useState } from 'react'
-import { ActivityIndicator, RefreshControl } from 'react-native'
+import { ThemeContext } from '@/shared/colors.styled'
+import React, { memo, useContext } from 'react'
+import { useState } from 'react'
+import { RefreshControl, View } from 'react-native'
 import { FlatList } from 'react-native'
-import styled from 'styled-components/native'
+import { EmptyIdeasList } from '../empty-ideas-list/empty-ideas-list'
 
-const IdeasContainer = styled.View<ViewWithThemeProps>`
-	gap: 10px;
-	background: ${({ theme }) => theme.colors.background};
-	padding: 10px;
-	border-radius: 20px 20px 0 0;
-	flex: 1;
-`
-
-interface Props {
-	navigation: NativeStackNavigationProp<any, any, any>
-	emptySlot: ReactNode
-}
-
-const LIMIT = 10
-let SKIP = 1
-
-function BaseIdeasListComponent({ navigation, emptySlot }: Props): JSX.Element {
-	const dispatch = useAppDispatch()
+function BaseIdeasListComponent(): JSX.Element {
 	const { theme } = useContext(ThemeContext)
 	const [query, setQuery] = useState<IdeaQuery>({
-		page: 0,
-		sortDirection: 'desc',
-		limit: LIMIT,
-		department: undefined,
+		page: 1,
+		limit: 10,
 	})
 
-	const {
-		data: ideasList,
-		isLoading,
-		isFetching,
-		refetch,
-	} = useFindIdeasQuery(query)
-	const [addToWishlist] = useAddToWishlistMutation()
-	const [removeFromWishlist] = useRemoveFromWishlistMutation()
+	const { data: totalCount } = useFindTotalCountIdeasQuery(query)
 
-	const loadMore = () => {
-		if (isFetching) return
-		setQuery(prev => ({
-			...prev,
-			limit: (SKIP += LIMIT),
-		}))
+	const { data: ideas, isLoading, isFetching } = useFindIdeasQuery(query)
+	const onChangeFilter = (value: LocationDepartment | undefined) => {
+		setQuery(prev => ({ ...prev, department: value }))
 	}
 
-	const onChangeFilter = useCallback(
-		(value: LocationDepartment | undefined) => {
-			setQuery(prev => ({ ...prev, department: value }))
-		},
-		[ideasList]
-	)
-
-	if (ideasList && !ideasList.length) {
-		return (
-			<>
-				<Filter onChangeFilter={onChangeFilter} />
-				<IdeasContainer theme={theme}>{emptySlot}</IdeasContainer>
-			</>
-		)
+	const loadMore = () => {
+		if (totalCount) {
+			if (query.limit < totalCount && !isFetching) {
+				setQuery(prev => ({
+					...prev,
+					limit: prev.limit + 10,
+				}))
+			}
+		}
 	}
 
 	return (
 		<>
 			<Filter onChangeFilter={onChangeFilter} />
-			<IdeasContainer theme={theme}>
-				{ideasList && (
-					<FlatList
-						showsVerticalScrollIndicator={false}
-						refreshControl={
-							<RefreshControl
-								tintColor={theme.colors.primary}
-								refreshing={isLoading}
-								onRefresh={refetch}
-							/>
-						}
-						refreshing={isLoading}
-						data={ideasList.flat()}
-						keyExtractor={(item, index) => String(index)}
-						onEndReachedThreshold={0.5}
-						onEndReached={() => loadMore()}
-						renderItem={({ item }) => (
-							<IdeaCard
-								navigation={navigation}
-								key={item.id}
-								idea={item}
-								likeDislikeSlot={
-									<LikeDislikeButtons
-										id={item.id}
-										likes={item.likesCount}
-										disLikes={item.dislikesCount}
-										reactionType={item.reactionType}
-									/>
-								}
-								wishlistSlot={
-									<WishListToggle
-										active={item.isFavorite}
-										add={() => addToWishlist({ id: item.id })}
-										remove={() => removeFromWishlist({ id: item.id })}
-									/>
-								}
-							/>
-						)}
-					/>
-				)}
-
-				{isFetching && (
-					<ActivityIndicator color={theme.colors.primary} size={'small'} />
-				)}
-			</IdeasContainer>
+			{ideas && (
+				<FlatList
+					style={{
+						flex: 1,
+						paddingVertical: 10,
+						paddingHorizontal: 10,
+						backgroundColor: theme.colors.background,
+					}}
+					ListEmptyComponent={<EmptyIdeasList />}
+					refreshControl={
+						<RefreshControl
+							tintColor={theme.colors.primary}
+							refreshing={isLoading}
+						/>
+					}
+					refreshing={isLoading}
+					data={ideas}
+					renderItem={({ item }) => (
+						<IdeaCard
+							key={item.id}
+							idea={item}
+							likeDislikeSlot={
+								<LikeDislikeButtons
+									id={item.id}
+									likes={item.likesCount}
+									disLikes={item.dislikesCount}
+									reactionType={item.reactionType}
+								/>
+							}
+							wishlistSlot={
+								<WishListToggle ideaId={item.id} active={item.isFavorite} />
+							}
+						/>
+					)}
+					onEndReached={loadMore}
+					onEndReachedThreshold={0.5}
+					ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
+				/>
+			)}
 		</>
 	)
 }

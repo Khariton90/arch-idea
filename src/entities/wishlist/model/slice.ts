@@ -1,5 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { wishlistApi } from '../api'
+import { sessionApi } from '@/entities/session/api'
 
 interface WishlistState {
 	count: number
@@ -12,12 +13,14 @@ const initialState: WishlistState = {
 export const wishlistSlice = createSlice({
 	name: 'wishlistSlice',
 	initialState,
-	reducers: {
-		setWishlistCount(state, action: PayloadAction<number>) {
-			state.count = action.payload
-		},
-	},
+	reducers: {},
 	extraReducers: builder => {
+		builder.addMatcher(
+			sessionApi.endpoints.getAccount.matchFulfilled,
+			(state, { payload }) => {
+				state.count = payload.favoriteIdeasCount
+			}
+		)
 		builder.addMatcher(
 			wishlistApi.endpoints.addToWishlist.matchFulfilled,
 			state => {
@@ -26,11 +29,10 @@ export const wishlistSlice = createSlice({
 		),
 			builder.addMatcher(
 				wishlistApi.endpoints.removeFromWishlist.matchFulfilled,
+
 				state => {
 					state.count -= 1
 				}
 			)
 	},
 })
-
-export const { setWishlistCount } = wishlistSlice.actions

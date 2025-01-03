@@ -1,12 +1,15 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ideaApi } from '../api'
+import { sessionApi } from '@/entities/session/api'
 
 interface State {
 	myIdeasCount: number
+	totalCount: number
 }
 
 const initialState: State = {
 	myIdeasCount: 0,
+	totalCount: 0,
 }
 
 export const ideaSlice = createSlice({
@@ -20,7 +23,19 @@ export const ideaSlice = createSlice({
 	extraReducers: builder => {
 		builder.addMatcher(ideaApi.endpoints.createIdea.matchFulfilled, state => {
 			state.myIdeasCount += 1
-		})
+		}),
+			builder.addMatcher(
+				sessionApi.endpoints.getAccount.matchFulfilled,
+				(state, { payload }) => {
+					state.myIdeasCount = payload.myIdeasCount
+				}
+			)
+		builder.addMatcher(
+			ideaApi.endpoints.findIdeas.matchFulfilled,
+			(state, { payload }) => {
+				state.totalCount = payload.length
+			}
+		)
 	},
 })
 

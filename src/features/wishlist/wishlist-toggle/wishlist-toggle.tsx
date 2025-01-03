@@ -1,3 +1,7 @@
+import {
+	useAddToWishlistMutation,
+	useRemoveFromWishlistMutation,
+} from '@/entities/wishlist/api'
 import { FavoriteIcon } from '@/shared/ui/icons/favorite-icon'
 import styled from 'styled-components/native'
 
@@ -6,14 +10,33 @@ const WishlistButton = styled.TouchableOpacity`
 `
 
 interface WishListToggleProps {
-	add: () => void
-	remove: () => void
 	active: boolean
+	ideaId: string
+	refetch?: () => void
 }
 
-export function WishListToggle({ add, remove, active }: WishListToggleProps) {
+export function WishListToggle({
+	active,
+	ideaId,
+	refetch,
+}: WishListToggleProps) {
+	const [addToWishlist] = useAddToWishlistMutation()
+	const [removeFromWishlist] = useRemoveFromWishlistMutation()
+
+	const toggleToWishlist = async () => {
+		if (!active) {
+			await addToWishlist({ id: ideaId })
+		} else {
+			await removeFromWishlist({ id: ideaId })
+		}
+
+		if (refetch) {
+			refetch()
+		}
+	}
+
 	return (
-		<WishlistButton onPress={!active ? add : remove}>
+		<WishlistButton onPress={toggleToWishlist}>
 			{<FavoriteIcon active={active} />}
 		</WishlistButton>
 	)

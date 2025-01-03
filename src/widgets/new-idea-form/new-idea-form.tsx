@@ -1,8 +1,7 @@
 import { ActivityIndicator, View } from 'react-native'
 import styled from 'styled-components/native'
 import { Accordion } from '@/shared/ui/accordion'
-import { CloseInputButton } from '@/shared/ui/close-input-button'
-import { useContext, useEffect, useMemo, useState } from 'react'
+import { useContext, useMemo, useState } from 'react'
 import { Idea } from '@/entities/idea'
 import { useCreateIdeaMutation } from '@/entities/idea/api'
 import { UniversalButton } from '@/shared/ui/universal-button/universal-button'
@@ -14,6 +13,8 @@ import {
 	mappingSubDepartment,
 } from '@/entities/idea/lib/mapIdea'
 import { InputField } from '@/shared/ui/input-field/input-field'
+import useCustomNavigation from '@/shared/hooks/use-custom-navigation'
+import { AppRoutes } from '@/shared/model/types'
 
 const Container = styled.View<{ background: string }>`
 	flex: 1;
@@ -69,6 +70,7 @@ const initialFormValues: Idea = {
 export function NewIdeaForm(): JSX.Element {
 	const { theme } = useContext(ThemeContext)
 	const [form, setForm] = useState<Idea>(initialFormValues)
+	const navigation = useCustomNavigation()
 	const [isActiveForm, setIsActiveForm] = useState(false)
 	const [createIdea, { data, isLoading, isError, isSuccess, error }] =
 		useCreateIdeaMutation()
@@ -88,15 +90,14 @@ export function NewIdeaForm(): JSX.Element {
 
 	const handleSubmit = async () => {
 		setIsActiveForm(() => false)
-		await createIdea(form)
+		createIdea(form).then(data => {
+			if (!data.error) {
+				setIsActiveForm(() => true)
+				setForm(prev => ({ ...initialFormValues }))
+				navigation.navigate(AppRoutes.HomePage)
+			}
+		})
 	}
-
-	useEffect(() => {
-		if (data) {
-			setIsActiveForm(() => true)
-			setForm(prev => ({ ...initialFormValues }))
-		}
-	}, [isSuccess, isLoading])
 
 	return (
 		<Container background={theme.colors.backdrop}>
@@ -144,6 +145,15 @@ export function NewIdeaForm(): JSX.Element {
 						align='center'
 						variant='span'
 						text={'Идея успешно создана'}
+					/>
+				)}
+
+				{!isActiveForm && isError && (
+					<Typography
+						soft
+						align='center'
+						variant='span'
+						text={'Ошибка сервера попробуйте позже...'}
 					/>
 				)}
 			</Form>

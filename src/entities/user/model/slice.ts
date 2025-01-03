@@ -1,3 +1,4 @@
+import { sessionApi } from '@/entities/session/api'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 interface UserState {
@@ -6,7 +7,7 @@ interface UserState {
 }
 
 const initialState: UserState = {
-	firstName: 'Пользователь',
+	firstName: '',
 	lastName: '',
 }
 
@@ -18,6 +19,15 @@ export const userSlice = createSlice({
 			state.firstName = action.payload.firstName
 			state.lastName = action.payload.lastName
 		},
+	},
+	extraReducers: builder => {
+		builder.addMatcher(
+			sessionApi.endpoints.getAccount.matchFulfilled,
+			(state, { payload }) => {
+				state.firstName = payload.firstName
+				state.lastName = payload.lastName
+			}
+		)
 	},
 })
 

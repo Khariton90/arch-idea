@@ -4,9 +4,11 @@ export type SessionDto = {
 
 export type QrCodeDto = {
 	sub: string
+	modelName: string
 }
 
 export type AuthRdo = {
+	userId: string
 	access_token: string
 	refresh_token: string
 }
@@ -26,4 +28,10 @@ export type UserRdo = {
 	status: string
 	firstName: string
 	lastName: string
+}
+
+export enum AuthorizationStatus {
+	Auth = 'AUTH',
+	NoAuth = 'NO_AUTH',
+	Unknown = 'UNKNOWN',
 }

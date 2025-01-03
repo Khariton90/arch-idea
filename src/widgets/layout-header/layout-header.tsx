@@ -4,6 +4,7 @@ import {
 	ViewWithThemeProps,
 } from '@/shared/colors.styled'
 import { useAppSelector } from '@/shared/hooks/hooks'
+import useCustomNavigation from '@/shared/hooks/use-custom-navigation'
 import { formatIdea } from '@/shared/lib/format-idea'
 import { AppRoutes } from '@/shared/model/types'
 import { Avatar } from '@/shared/ui/avatar/avatar'
@@ -45,24 +46,23 @@ const WrapperProfile = styled.TouchableOpacity`
 	align-items: center;
 `
 
-export function LayoutHeader({ navigation }: any): JSX.Element {
+export function LayoutHeader(): JSX.Element {
 	const { theme } = useContext(ThemeContext)
-
+	const navigation = useCustomNavigation()
 	const wishlistCount = useAppSelector(
 		({ wishlistSlice }) => wishlistSlice.count
 	)
-
 	const myIdeasCount = useAppSelector(({ ideaSlice }) => ideaSlice.myIdeasCount)
-	const firstName = useAppSelector(({ userSlice }) => userSlice.firstName)
+	const user = useAppSelector(({ userSlice }) => userSlice)
 
 	return (
 		<Header theme={theme}>
 			<WrapperProfile
 				onPress={() => navigation.navigate(AppRoutes.ProfilePage)}
 			>
-				<Avatar size='lg' name={firstName} />
+				<Avatar size='lg' name={user.firstName} />
 				<View>
-					<Typography variant='p' text={firstName} />
+					<Typography variant='p' text={user.firstName} />
 					<Typography variant='span' soft text='Перейти к профилю' />
 				</View>
 			</WrapperProfile>

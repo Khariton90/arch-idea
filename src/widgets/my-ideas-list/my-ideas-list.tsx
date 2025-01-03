@@ -1,9 +1,5 @@
 import { IdeaCard, IdeaQuery, NotFoundMainIdea } from '@/entities/idea'
 import { useFindMyIdeasQuery } from '@/entities/idea/api'
-import {
-	useAddToWishlistMutation,
-	useRemoveFromWishlistMutation,
-} from '@/entities/wishlist/api'
 import { LikeDislikeButtons } from '@/features/vote'
 import { WishListToggle } from '@/features/wishlist'
 import { ThemeContext, ViewWithThemeProps } from '@/shared/colors.styled'
@@ -37,12 +33,9 @@ export function MyIdeasList({ navigation }: Props): JSX.Element {
 	const {
 		data: ideasList,
 		isLoading,
-		error,
-		isSuccess,
+
 		refetch,
 	} = useFindMyIdeasQuery(query)
-	const [addToWishlist] = useAddToWishlistMutation()
-	const [removeFromWishlist] = useRemoveFromWishlistMutation()
 
 	if (ideasList && !ideasList.length) {
 		return <NotFoundMainIdea />
@@ -66,7 +59,6 @@ export function MyIdeasList({ navigation }: Props): JSX.Element {
 						data={ideasList}
 						renderItem={({ item }) => (
 							<IdeaCard
-								navigation={navigation}
 								key={item.id}
 								idea={item}
 								likeDislikeSlot={
@@ -78,11 +70,7 @@ export function MyIdeasList({ navigation }: Props): JSX.Element {
 									/>
 								}
 								wishlistSlot={
-									<WishListToggle
-										active={item.isFavorite}
-										add={() => addToWishlist({ id: item.id })}
-										remove={() => removeFromWishlist({ id: item.id })}
-									/>
+									<WishListToggle active={item.isFavorite} ideaId={item.id} />
 								}
 							/>
 						)}
