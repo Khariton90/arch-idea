@@ -58,15 +58,13 @@ export function ProfilePage(): JSX.Element {
 
 	const { theme } = useContext(ThemeContext)
 
-	const fullname = `${firstName} ${lastName}`
-
 	return (
 		<GestureHandlerRootView>
 			<Container background={theme.colors.background}>
 				<Box background={theme.colors.backdrop} top>
 					<Avatar size='xl' name={firstName} />
 					<BottomSheetButton
-						title={fullname}
+						title={`${firstName} ${lastName}`}
 						subTitle={'Публичное имя'}
 						onPress={() => toggleModal(0)}
 					/>

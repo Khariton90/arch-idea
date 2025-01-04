@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react'
 import { Image } from 'react-native'
 import styled from 'styled-components/native'
 import * as Brightness from 'expo-brightness'
+import { BASE_URL } from '@/shared/api/base-api'
+import { useAppSelector } from '@/shared/hooks/hooks'
 
 const Box = styled.View`
 	padding: 20px 10px;
@@ -17,7 +19,8 @@ interface Props {
 }
 
 export function QrCodeModal({ isOpen }: Props): JSX.Element {
-	const [currentBrightness, setCurrentBrightness] = useState<number>(0.7)
+	const [currentBrightness, setCurrentBrightness] = useState<number>(0.8)
+	const token = useAppSelector(({ sessionSlice }) => sessionSlice.accessToken)
 
 	const setBrightness = async () => {
 		try {
@@ -57,7 +60,12 @@ export function QrCodeModal({ isOpen }: Props): JSX.Element {
 				<Image
 					width={200}
 					height={200}
-					source={require('../../../assets/images/qr-code-200.jpg')}
+					source={{
+						uri: `${BASE_URL}/images/image-qr.png`,
+						headers: {
+							Authorization: `Bearer ${token}`,
+						},
+					}}
 				/>
 			</Box>
 		</>

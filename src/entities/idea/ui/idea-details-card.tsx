@@ -1,12 +1,13 @@
 import { View } from 'react-native'
 import styled from 'styled-components/native'
-import { ReactNode, useContext } from 'react'
+import { memo, ReactNode, useContext } from 'react'
 import React from 'react'
 import { IdeaRdo } from '../model/types'
 import { Avatar } from '@/shared/ui/avatar/avatar'
 import { ThemeContext } from '@/shared/colors.styled'
 import { formatDate } from '@/shared/lib/format-date'
 import { Typography } from '@/shared/ui/typography/typography'
+import { Chip } from '@/shared/ui/chip'
 
 const Container = styled.View<{ background: string }>`
 	flex: 1;
@@ -19,8 +20,9 @@ const Card = styled.View<{ background: string; border: string }>`
 	border-radius: 10px;
 	border: 1px solid ${({ border }) => border};
 	margin: 40px 10px;
-	overflow: hidden;
 	padding: 10px 0;
+	transition: 0.2s ease;
+	box-shadow: 0 0 1px #6e6e6e;
 `
 
 const CardHeader = styled.View<{ border: string }>`
@@ -73,7 +75,7 @@ interface Props {
 
 const MAX_USERNAME_LENGTH = 10
 
-export function IdeaDetailsCard({
+function IdeaDetailsCardComponent({
 	idea,
 	likesDisLakesSlot,
 	wishListSlot,
@@ -91,13 +93,19 @@ export function IdeaDetailsCard({
 			<Card background={theme.colors.backdrop} border={theme.colors.border}>
 				<CardHeader border={theme.colors.border}>
 					<FavoriteBox>{wishListSlot}</FavoriteBox>
-					<Typography variant='h2' soft text={formatDate(idea.createdAt)} />
-					<Row style={{ marginVertical: 10 }}>
-						<Typography variant='p' soft text='Cтатус: ' />
-						<Typography variant='p' text={idea.status} />
+					<Typography
+						variant='span'
+						soft
+						text={`Идея от ${formatDate(idea.createdAt)}`}
+					/>
+					<Row style={{ marginVertical: 8 }}>
+						<Chip
+							title={`Cтатус: ${idea.status}`}
+							size={'lg'}
+							color={'success'}
+						/>
 					</Row>
 				</CardHeader>
-
 				<CardContent>
 					<AuthorBox>
 						<Avatar size='sm' name={idea.user.firstName} />
@@ -107,17 +115,25 @@ export function IdeaDetailsCard({
 						</View>
 					</AuthorBox>
 					<Row>
-						<Typography variant='span' soft text='Подразделение: ' />
-						<Typography variant='span' text={idea.department} />
-					</Row>
-
-					<Row>
-						<Typography variant='span' soft text='Категория: ' />
-						<Typography variant='span' text={idea.subDepartment} />
+						<Chip
+							title={`Приоритет: ${idea.priority}`}
+							size={'md'}
+							color={'success'}
+						/>
 					</Row>
 					<Row>
-						<Typography variant='span' soft text='Приоритет: ' />
-						<Typography variant='span' text={idea.priority} />
+						<Chip
+							title={`Подразделение: ${idea.department}`}
+							size={'md'}
+							color={'success'}
+						/>
+					</Row>
+					<Row>
+						<Chip
+							title={`Категория: ${idea.subDepartment}`}
+							size={'md'}
+							color={'success'}
+						/>
 					</Row>
 				</CardContent>
 
@@ -133,3 +149,5 @@ export function IdeaDetailsCard({
 		</Container>
 	)
 }
+
+export const IdeaDetailsCard = memo(IdeaDetailsCardComponent)

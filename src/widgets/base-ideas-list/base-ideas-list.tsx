@@ -22,7 +22,12 @@ function BaseIdeasListComponent(): JSX.Element {
 
 	const { data: totalCount } = useFindTotalCountIdeasQuery(query)
 
-	const { data: ideas, isLoading, isFetching } = useFindIdeasQuery(query)
+	const {
+		data: ideas,
+		isLoading,
+		isFetching,
+		refetch,
+	} = useFindIdeasQuery(query)
 	const onChangeFilter = (value: LocationDepartment | undefined) => {
 		setQuery(prev => ({ ...prev, department: value }))
 	}
@@ -54,6 +59,7 @@ function BaseIdeasListComponent(): JSX.Element {
 						<RefreshControl
 							tintColor={theme.colors.primary}
 							refreshing={isLoading}
+							onRefresh={refetch}
 						/>
 					}
 					refreshing={isLoading}

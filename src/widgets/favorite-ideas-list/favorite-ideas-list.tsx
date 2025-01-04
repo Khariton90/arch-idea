@@ -1,19 +1,16 @@
-import { IdeaCard, IdeaQuery, NotFoundFavoriteIdea } from '@/entities/idea'
+import { IdeaCard, IdeaQuery } from '@/entities/idea'
 import { useFindFavoriteIdeasQuery } from '@/entities/idea/api'
-import {
-	useAddToWishlistMutation,
-	useRemoveFromWishlistMutation,
-} from '@/entities/wishlist/api'
+
 import { LikeDislikeButtons } from '@/features/vote'
 import { WishListToggle } from '@/features/wishlist'
 import { ThemeContext, ViewWithThemeProps } from '@/shared/colors.styled'
-import { LoadingIndicator } from '@/shared/ui/loading-indicator'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import React, { useContext } from 'react'
 import { useState } from 'react'
-import { RefreshControl } from 'react-native'
+import { RefreshControl, View } from 'react-native'
 import { FlatList } from 'react-native'
 import styled from 'styled-components/native'
+import { useAppSelector } from '@/shared/hooks/hooks'
 
 const IdeasContainer = styled.View<ViewWithThemeProps>`
 	background: ${({ theme }) => theme.colors.background};
@@ -28,28 +25,41 @@ interface Props {
 
 export function FavoriteIdeasList({ navigation }: Props): JSX.Element {
 	const { theme } = useContext(ThemeContext)
+	const totalCount = useAppSelector(({ wishlistSlice }) => wishlistSlice.count)
 	const [query, setQuery] = useState<IdeaQuery>({
-		page: 0,
-		sortDirection: 'desc',
+		page: 1,
 		limit: 10,
 	})
 
 	const {
-		data: ideasList,
+		data: ideas,
 		isLoading,
 		refetch,
+		isFetching,
 	} = useFindFavoriteIdeasQuery(query)
-	const [addToWishlist] = useAddToWishlistMutation()
-	const [removeFromWishlist] = useRemoveFromWishlistMutation()
+
+	const loadMore = () => {
+		if (totalCount) {
+			if (query.limit < totalCount && !isFetching) {
+				setQuery(prev => ({
+					...prev,
+					limit: prev.limit + 10,
+				}))
+			}
+		}
+	}
 
 	return (
 		<>
 			<IdeasContainer theme={theme}>
-				{isLoading && <LoadingIndicator />}
-				{ideasList && (
+				{ideas && (
 					<FlatList
-						showsVerticalScrollIndicator={false}
-						ListEmptyComponent={<NotFoundFavoriteIdea />}
+						style={{
+							flex: 1,
+							paddingVertical: 10,
+							paddingHorizontal: 10,
+							backgroundColor: theme.colors.background,
+						}}
 						refreshControl={
 							<RefreshControl
 								tintColor={theme.colors.primary}
@@ -58,7 +68,7 @@ export function FavoriteIdeasList({ navigation }: Props): JSX.Element {
 							/>
 						}
 						refreshing={isLoading}
-						data={ideasList}
+						data={ideas}
 						renderItem={({ item }) => (
 							<IdeaCard
 								key={item.id}
@@ -72,10 +82,13 @@ export function FavoriteIdeasList({ navigation }: Props): JSX.Element {
 									/>
 								}
 								wishlistSlot={
-									<WishListToggle active={item.isFavorite} ideaId={item.id} />
+									<WishListToggle ideaId={item.id} active={item.isFavorite} />
 								}
 							/>
 						)}
+						onEndReached={loadMore}
+						onEndReachedThreshold={0.5}
+						ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
 					/>
 				)}
 			</IdeasContainer>

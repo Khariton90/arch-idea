@@ -1,9 +1,9 @@
 import { useFindCommentsQuery } from '@/entities/comment/api'
 import { CommentItem, CommentsNotFound } from '@/entities/comment/ui'
+import { IdeaQuery } from '@/entities/idea'
 import { CreateCommentForm } from '@/features/comment'
 import { ThemeContext } from '@/shared/colors.styled'
-import { LoadingIndicator } from '@/shared/ui/loading-indicator'
-import { useContext, useEffect, useRef } from 'react'
+import { useContext, useEffect, useRef, useState } from 'react'
 import { FlatList, RefreshControl } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -21,17 +21,31 @@ export function CommentsList({ ideaId }: Props): JSX.Element {
 	const { theme } = useContext(ThemeContext)
 	const flatListRef = useRef<FlatList>(null)
 
+	const [query, setQuery] = useState<IdeaQuery>({
+		page: 1,
+		limit: 10,
+	})
+
 	const {
 		data: commentsData,
 		isLoading,
 		refetch,
-	} = useFindCommentsQuery(ideaId)
+		isFetching,
+	} = useFindCommentsQuery({ ideaId, query })
 
 	const loadMore = async () => {
+		if (commentsData?.totalCount) {
+			if (query.limit < commentsData.totalCount && !isFetching) {
+				setQuery(prev => ({
+					...prev,
+					limit: prev.limit + 10,
+				}))
+			}
+		}
+
 		if (flatListRef.current && commentsData) {
 			flatListRef.current.scrollToEnd()
 		}
-		refetch()
 	}
 
 	useEffect(() => {
@@ -40,33 +54,26 @@ export function CommentsList({ ideaId }: Props): JSX.Element {
 		}
 	}, [commentsData])
 
-	if (commentsData && !commentsData.totalCount) {
-		return (
-			<Container background={theme.colors.backdrop}>
-				<CommentsNotFound />
-				<CreateCommentForm ideaId={ideaId} />
-			</Container>
-		)
-	}
-
 	return (
 		<Container background={theme.colors.backdrop}>
-			{isLoading && <LoadingIndicator />}
-
-			<FlatList
-				refreshControl={
-					<RefreshControl
-						tintColor={theme.colors.primary}
-						refreshing={isLoading}
-						onRefresh={refetch}
-					/>
-				}
-				ref={flatListRef}
-				data={commentsData?.comments}
-				renderItem={({ item }) => <CommentItem comment={item} />}
-				onEndReachedThreshold={0.2}
-				onEndReached={() => loadMore()}
-			/>
+			{!commentsData?.totalCount ? (
+				<CommentsNotFound />
+			) : (
+				<FlatList
+					refreshControl={
+						<RefreshControl
+							tintColor={theme.colors.primary}
+							refreshing={isLoading}
+							onRefresh={refetch}
+						/>
+					}
+					ref={flatListRef}
+					data={commentsData.comments}
+					renderItem={({ item }) => <CommentItem comment={item} />}
+					onEndReachedThreshold={0.2}
+					onEndReached={loadMore}
+				/>
+			)}
 
 			<CreateCommentForm ideaId={ideaId} />
 		</Container>

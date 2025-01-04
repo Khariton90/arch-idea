@@ -15,7 +15,7 @@ const ButtonContainer = styled.TouchableOpacity<
 	width: ${({ fillWidth }) => (fillWidth ? '100%' : 'auto')};
 	opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
 	pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
-	box-shadow: 0 0 1px #6e6e6e;
+	box-shadow: 0 0 2px #6e6e6e;
 `
 
 const ButtonText = styled.Text`

@@ -1,14 +1,18 @@
 import { baseApi } from '@/shared/api/base-api'
 import { CommentDto, CommentListRdo, CommentRdo } from '../model/types'
 import { COMMENT_TAG } from '@/shared/api/tags'
+import { IdeaQuery } from '@/entities/idea'
 
 export const commentApi = baseApi.injectEndpoints({
 	endpoints: build => ({
-		findComments: build.query<CommentListRdo, string>({
-			query: ideId => ({
-				url: `/comment/${ideId}`,
+		findComments: build.query<
+			CommentListRdo,
+			{ ideaId: string; query: IdeaQuery }
+		>({
+			query: ({ ideaId, query }) => ({
+				url: `/comment/${ideaId}`,
 				method: 'GET',
-				params: {},
+				params: { ...query },
 			}),
 			providesTags: [COMMENT_TAG],
 		}),

@@ -18,13 +18,15 @@ const Form = styled.View<{ background: string }>`
 	gap: 10px;
 `
 
-const Button = styled.TouchableOpacity`
+const Button = styled.TouchableOpacity<{ disabled: boolean }>`
 	border-radius: 50%;
-	width: 40px;
-	height: 40px;
+	width: 50px;
+	height: 50px;
 	justify-content: center;
 	align-items: center;
-	width: 40px;
+	opacity: ${({ disabled }) => (disabled ? 0.2 : 1)};
+	pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
+	margin-left: 10px;
 `
 
 interface Props {
@@ -42,7 +44,7 @@ export function CreateCommentForm({ ideaId }: Props): JSX.Element {
 	}
 
 	const handleSubmit = async () => {
-		await createComment({ ideaId, content: value.comment })
+		await createComment({ ideaId, content: value.comment.trim() })
 	}
 
 	useEffect(() => {
@@ -54,12 +56,13 @@ export function CreateCommentForm({ ideaId }: Props): JSX.Element {
 	return (
 		<Form background={theme.colors.backdrop}>
 			<InputField
+				disabledButton
 				textKey={'comment'}
 				value={value.comment || ''}
 				onChangeText={handleChange}
 				placeholder={'Комментарий...'}
 			>
-				<Button onPress={handleSubmit}>
+				<Button onPress={handleSubmit} disabled={!value.comment}>
 					<ArrowUpCircleIcon />
 				</Button>
 			</InputField>

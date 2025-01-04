@@ -3,11 +3,15 @@ import { ReactNode, useContext, useState } from 'react'
 import styled from 'styled-components/native'
 import { TextInput, StyleSheet, KeyboardAvoidingView, View } from 'react-native'
 
-const DoneButton = styled.TouchableOpacity<{ background: string }>`
+const DoneButton = styled.TouchableOpacity<{
+	background: string
+	dnone: boolean
+}>`
 	padding: 2px;
 	border-radius: 4px;
 	right: 10;
 	position: absolute;
+	display: ${({ dnone }) => (dnone ? 'none' : 'auto')};
 `
 const DoneButtonText = styled.Text<{ color: string }>`
 	color: ${({ color }) => color};
@@ -22,6 +26,7 @@ interface Props {
 	placeholder: string
 	multiline?: boolean
 	children?: ReactNode
+	disabledButton?: boolean
 }
 
 export function InputField({
@@ -31,6 +36,7 @@ export function InputField({
 	placeholder,
 	multiline,
 	children,
+	disabledButton,
 }: Props): JSX.Element {
 	const { theme } = useContext(ThemeContext)
 	const [showDoneButton, setShowDoneButton] = useState(false)
@@ -63,8 +69,13 @@ export function InputField({
 				/>
 
 				{children}
+
 				{showDoneButton && (
-					<DoneButton background={theme.colors.backdrop} onPress={handleBlur}>
+					<DoneButton
+						dnone={disabledButton}
+						background={theme.colors.backdrop}
+						onPress={handleBlur}
+					>
 						<DoneButtonText color={theme.colors.accent}>Готово</DoneButtonText>
 					</DoneButton>
 				)}

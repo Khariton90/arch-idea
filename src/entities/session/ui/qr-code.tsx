@@ -6,7 +6,7 @@ import {
 	useCameraPermissions,
 } from 'expo-camera'
 import { useContext, useEffect, useState } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, Vibration, View } from 'react-native'
 import { useAuthByQrCodeMutation } from '../api'
 import styled from 'styled-components/native'
 import { LayoutLogo } from '@/widgets'
@@ -87,6 +87,12 @@ export function QrCode({ navigation }: any) {
 			saveToken(authData)
 		}
 	}, [authData])
+
+	useEffect(() => {
+		if (isError) {
+			Vibration.vibrate(100)
+		}
+	}, [isError])
 
 	if (!permission || isLoading) {
 		return <LoadingIndicator />

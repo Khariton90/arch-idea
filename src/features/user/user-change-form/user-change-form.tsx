@@ -28,12 +28,17 @@ export function UserChangeForm(): JSX.Element {
 	})
 
 	const handleSubmit = async () => {
-		const user = await updateUser(form)
-
-		if (user) {
-			dispatch(setUserFullName(form))
-			setForm(state => ({ ...initialForm }))
-		}
+		await updateUser(form).then(({ data }) => {
+			if (data) {
+				dispatch(
+					setUserFullName({
+						firstName: data?.firstName,
+						lastName: data?.lastName,
+					})
+				)
+				setForm(state => ({ ...initialForm }))
+			}
+		})
 	}
 
 	return (

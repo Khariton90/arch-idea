@@ -12,11 +12,7 @@ import { useAppDispatch, useAppSelector } from '@/shared/hooks/hooks'
 import { AuthorizationStatus } from '@/entities/session/model/types'
 import React, { useEffect, useState } from 'react'
 import { LoadingIndicator } from '@/shared/ui/loading-indicator'
-import {
-	getToken,
-	resetToken,
-	saveToken,
-} from '@/entities/session/api/session-api'
+import { getToken, saveToken } from '@/entities/session/api/session-api'
 import { useSendRefreshTokenMutation } from '@/entities/session/api'
 import {
 	addSessionData,
@@ -42,8 +38,7 @@ export default function Navigation() {
 		({ sessionSlice }) => sessionSlice.isAuthorized
 	)
 	const dispatch = useAppDispatch()
-	const [sendRefreshToken, { data, isError, isSuccess }] =
-		useSendRefreshTokenMutation()
+	const [sendRefreshToken] = useSendRefreshTokenMutation()
 
 	const getTokenByAuth = async () => {
 		setIsLoading(() => true)
@@ -90,7 +85,11 @@ export default function Navigation() {
 					<Stack.Screen
 						name={AppRoutes.HomePage}
 						component={HomePage}
-						options={{ title: 'Главная', ...styles, headerBackVisible: false }}
+						options={{
+							title: 'Главная',
+							...styles,
+							headerBackVisible: false,
+						}}
 					/>
 					<Stack.Screen
 						name={AppRoutes.IdeaDetailsPage}

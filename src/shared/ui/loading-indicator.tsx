@@ -15,7 +15,7 @@ export function LoadingIndicator(): JSX.Element {
 
 	return (
 		<Container background={theme.colors.background}>
-			<ActivityIndicator size={'large'} color={theme.colors.accent} />
+			<ActivityIndicator size={'small'} color={theme.colors.accent} />
 		</Container>
 	)
 }

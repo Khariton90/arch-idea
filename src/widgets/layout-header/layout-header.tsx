@@ -62,7 +62,7 @@ export function LayoutHeader(): JSX.Element {
 			>
 				<Avatar size='lg' name={user.firstName} />
 				<View>
-					<Typography variant='p' text={user.firstName} />
+					<Typography variant='p' text={`${user.firstName} ${user.lastName}`} />
 					<Typography variant='span' soft text='Перейти к профилю' />
 				</View>
 			</WrapperProfile>
