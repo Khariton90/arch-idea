@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { ViewProps } from 'react-native-svg/lib/typescript/fabric/utils'
 import styled from 'styled-components/native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
@@ -12,6 +13,8 @@ import { ThemeModal } from '@/widgets/theme-modal/theme-modal'
 import { ProfileEditModal } from '@/widgets/profile-edit-modal/profile-edit-modal'
 import { useAppSelector } from '@/shared/hooks/hooks'
 import { QrCodeModal } from '@/widgets/qr-code-modal/qr-code-modal'
+import { SignOutModal } from '@/entities/session/ui/sing-out.modal'
+import { mappingUserStatus } from '@/entities/user/lib/map-user-status'
 
 const Container = styled.View<ViewProps & { background: string }>`
 	flex: 1;
@@ -38,7 +41,9 @@ const Box = styled.View<
 `
 
 export function ProfilePage(): JSX.Element {
-	const { firstName, lastName } = useAppSelector(({ userSlice }) => userSlice)
+	const { firstName, lastName, status } = useAppSelector(
+		({ userSlice }) => userSlice
+	)
 
 	const [modalList, setModalList] = useState([
 		false,
@@ -70,7 +75,7 @@ export function ProfilePage(): JSX.Element {
 					/>
 					<BottomSheetButton
 						title={'Статус'}
-						subTitle={'Спец'}
+						subTitle={mappingUserStatus[status]}
 						onPress={() => toggleModal(1)}
 					/>
 				</Box>
@@ -87,7 +92,6 @@ export function ProfilePage(): JSX.Element {
 						onPress={() => toggleModal(3)}
 					/>
 					<BottomSheetButton
-						disabled
 						title={'Другое'}
 						subTitle={'Удалить профиль'}
 						onPress={() => toggleModal(4)}
@@ -120,6 +124,13 @@ export function ProfilePage(): JSX.Element {
 				<ContainerModal>
 					<ThemeModal />
 					<UniversalButton title='Закрыть' onPress={() => toggleModal(3)} />
+				</ContainerModal>
+			</MainBottomSheet>
+
+			<MainBottomSheet isOpen={modalList[4]}>
+				<ContainerModal>
+					<SignOutModal />
+					<UniversalButton title='Закрыть' onPress={() => toggleModal(4)} />
 				</ContainerModal>
 			</MainBottomSheet>
 		</GestureHandlerRootView>

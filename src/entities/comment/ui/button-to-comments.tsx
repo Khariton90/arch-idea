@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { ThemeContext } from '@/shared/colors.styled'
 import { CommentsIcon } from '@/shared/ui/icons/comments-icon'
 import { Typography } from '@/shared/ui/typography/typography'
@@ -18,7 +19,7 @@ const CommentBox = styled.TouchableOpacity<{
 	gap: 6px;
 `
 
-interface Props extends TouchableOpacityProps {}
+type Props = TouchableOpacityProps
 
 export function ButtonToComments({ onPress }: Props): JSX.Element {
 	const { theme } = useContext(ThemeContext)

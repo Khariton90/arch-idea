@@ -30,6 +30,12 @@ export const sessionApi = baseApi.injectEndpoints({
 				},
 			}),
 		}),
+		signOut: build.mutation({
+			query: () => ({
+				url: '/auth/signOut',
+				method: 'POST',
+			}),
+		}),
 	}),
 })
 
@@ -37,4 +43,5 @@ export const {
 	useAuthByQrCodeMutation,
 	useGetAccountQuery,
 	useSendRefreshTokenMutation,
+	useSignOutMutation,
 } = sessionApi

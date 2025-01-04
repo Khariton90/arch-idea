@@ -1,3 +1,5 @@
+import { UserStatus } from '@/entities/user'
+
 export type SessionDto = {
 	accessToken: string
 }
@@ -17,7 +19,7 @@ export type UserDto = {
 	id: string
 	firstName: string
 	lastName: string
-	status: string
+	status: UserStatus
 	department: string
 	favoriteIdeasCount: number
 	myIdeasCount: number

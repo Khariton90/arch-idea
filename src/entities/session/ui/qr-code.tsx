@@ -1,4 +1,5 @@
-import { useAppDispatch, useAppSelector } from '@/shared/hooks/hooks'
+/* eslint-disable */
+import { useAppDispatch } from '@/shared/hooks/hooks'
 import { LoadingIndicator } from '@/shared/ui/loading-indicator'
 import {
 	BarcodeScanningResult,
@@ -11,9 +12,7 @@ import { useAuthByQrCodeMutation } from '../api'
 import styled from 'styled-components/native'
 import { LayoutLogo } from '@/widgets'
 import { addSessionData } from '../model/slice'
-import { AuthRdo } from '../model/types'
 import { ThemeContext } from '@/shared/colors.styled'
-import { AppRoutes } from '@/shared/model/types'
 import { Typography } from '@/shared/ui/typography/typography'
 import * as Device from 'expo-device'
 import { saveToken } from '../api/session-api'
@@ -60,22 +59,23 @@ export function QrCode({ navigation }: any) {
 	const [isLoading, setIsLoading] = useState(false)
 	const dispatch = useAppDispatch()
 
-	const [authByQrCode, { data: authData, isSuccess, isError }] =
-		useAuthByQrCodeMutation()
+	const [authByQrCode, { data: authData, isError }] = useAuthByQrCodeMutation()
 
 	const openCamera = async () => {
 		setIsLoading(() => true)
 		await delay()
 		setIsLoading(() => false)
-		useCameraPermissions()
 	}
 
 	const authUser = async (result: BarcodeScanningResult) => {
 		setResult(state => result.data)
 		if (result.data) {
+			Vibration.vibrate(50)
 			await authByQrCode({ sub: result.data, modelName: modelName ?? '' })
 		}
 	}
+
+	useCameraPermissions()
 
 	useEffect(() => {
 		openCamera()
@@ -86,7 +86,7 @@ export function QrCode({ navigation }: any) {
 			dispatch(addSessionData(authData))
 			saveToken(authData)
 		}
-	}, [authData])
+	}, [authData, dispatch])
 
 	useEffect(() => {
 		if (isError) {

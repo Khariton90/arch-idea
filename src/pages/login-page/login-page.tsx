@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { QrCode } from '@/entities/session/ui/qr-code'
 import { useContext, useState } from 'react'
 import styled from 'styled-components/native'

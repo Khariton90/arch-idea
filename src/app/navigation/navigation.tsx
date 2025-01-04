@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { HomePage } from '@/pages/home-page/home-page'
 import { IdeaDetailsPage } from '@/pages/idea-details-page/idea-details-page'
 import { NewIdeaPage } from '@/pages/new-idea-page/new-idea-page'

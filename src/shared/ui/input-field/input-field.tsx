@@ -26,7 +26,7 @@ interface Props {
 	placeholder: string
 	multiline?: boolean
 	children?: ReactNode
-	disabledButton?: boolean
+	disabledButton: boolean
 }
 
 export function InputField({

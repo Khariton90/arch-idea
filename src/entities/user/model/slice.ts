@@ -1,14 +1,17 @@
 import { sessionApi } from '@/entities/session/api'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import { UserStatus } from './types'
 
 interface UserState {
 	firstName: string
 	lastName: string
+	status: UserStatus
 }
 
 const initialState: UserState = {
 	firstName: '',
 	lastName: '',
+	status: UserStatus.NotVerified,
 }
 
 export const userSlice = createSlice({
@@ -26,6 +29,7 @@ export const userSlice = createSlice({
 			(state, { payload }) => {
 				state.firstName = payload.firstName
 				state.lastName = payload.lastName
+				state.status = payload.status
 			}
 		)
 	},
