@@ -1,7 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { RootState } from '@/app/store'
 import { AuthorizationStatus, AuthRdo } from './types'
-import { saveToken } from '../api/session-api'
 
 interface SessionState {
 	isAuthorized: AuthorizationStatus

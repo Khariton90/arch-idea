@@ -1,6 +1,7 @@
 import { sessionApi } from '@/entities/session/api'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { UserStatus } from './types'
+import { userApi } from '../api'
 
 interface UserState {
 	firstName: string
@@ -31,7 +32,15 @@ export const userSlice = createSlice({
 				state.lastName = payload.lastName
 				state.status = payload.status
 			}
-		)
+		),
+			builder.addMatcher(
+				userApi.endpoints.updateUser.matchFulfilled,
+				(state, { payload }) => {
+					state.firstName = payload.firstName
+					state.lastName = payload.lastName
+					state.status = payload.status
+				}
+			)
 	},
 })
 

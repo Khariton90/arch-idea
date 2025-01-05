@@ -3,10 +3,11 @@ import { UniversalButton } from '@/shared/ui/universal-button/universal-button'
 import React, { useContext, useState } from 'react'
 import styled from 'styled-components/native'
 import { useSignOutMutation } from '../api'
-import { useAppDispatch } from '@/shared/hooks/hooks'
+import { useAppDispatch, useAppSelector } from '@/shared/hooks/hooks'
 import { clearSessionData } from '../model/slice'
 import { resetToken } from '../api/session-api'
 import { ThemeContext, ViewWithThemeProps } from '@/shared/colors.styled'
+import { UserStatus } from '@/entities/user'
 
 const Box = styled.View`
 	padding: 20px 10px;
@@ -27,10 +28,11 @@ export function SignOutModal(): JSX.Element {
 	const { theme } = useContext(ThemeContext)
 	const [signOut] = useSignOutMutation()
 	const [isSignOutMessage, setIsSignOutMessage] = useState(false)
+	const userStatus = useAppSelector(({ userSlice }) => userSlice.status)
 	const dispatch = useAppDispatch()
 
 	const handleSignOut = async () => {
-		if (!isSignOutMessage) {
+		if (userStatus === UserStatus.NotVerified && !isSignOutMessage) {
 			return setIsSignOutMessage(true)
 		}
 

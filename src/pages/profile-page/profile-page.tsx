@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { ViewProps } from 'react-native-svg/lib/typescript/fabric/utils'
 import styled from 'styled-components/native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
@@ -57,7 +56,6 @@ export function ProfilePage(): JSX.Element {
 		const array = modalList.map((element, idx) =>
 			idx === index ? (element = !element) : false
 		)
-
 		setModalList(prev => [...array])
 	}
 

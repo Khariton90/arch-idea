@@ -5,6 +5,7 @@ import {
 	ThemeContext,
 	TouchableOpacityWithThemeProps,
 } from '@/shared/colors.styled'
+import { SortIcon } from '@/shared/ui/icons/sort-icon'
 
 import { memo, useCallback, useContext, useState } from 'react'
 import { ScrollView } from 'react-native'
@@ -56,6 +57,9 @@ function FilterComponent({ onChangeFilter }: Props): JSX.Element {
 	return (
 		<Container>
 			<ScrollView horizontal showsHorizontalScrollIndicator={false}>
+				<FilterItem theme={theme}>
+					<SortIcon />
+				</FilterItem>
 				{Object.entries(mappingDepartment).map(([key, value]) => (
 					<FilterItem
 						theme={theme}

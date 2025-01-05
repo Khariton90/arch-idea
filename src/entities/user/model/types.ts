@@ -1,6 +1,8 @@
 export interface UpdateUserDto {
 	firstName: string
 	lastName: string
+	email: string
+	password: string
 }
 
 export enum UserStatus {

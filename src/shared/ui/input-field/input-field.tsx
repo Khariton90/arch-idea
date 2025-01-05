@@ -5,13 +5,13 @@ import { TextInput, StyleSheet, KeyboardAvoidingView, View } from 'react-native'
 
 const DoneButton = styled.TouchableOpacity<{
 	background: string
-	dnone: boolean
+	dnone?: boolean
 }>`
 	padding: 2px;
 	border-radius: 4px;
-	right: 10;
+	right: 10px;
 	position: absolute;
-	display: ${({ dnone }) => (dnone ? 'none' : 'auto')};
+	display: ${({ dnone }) => (dnone ? 'none' : 'block')};
 `
 const DoneButtonText = styled.Text<{ color: string }>`
 	color: ${({ color }) => color};
@@ -26,12 +26,14 @@ interface Props {
 	placeholder: string
 	multiline?: boolean
 	children?: ReactNode
-	disabledButton: boolean
+	disabledButton?: boolean
+	defaultValue?: string
 }
 
 export function InputField({
 	textKey,
 	value,
+	defaultValue,
 	onChangeText,
 	placeholder,
 	multiline,
@@ -66,6 +68,7 @@ export function InputField({
 					placeholderTextColor={theme.colors.secondary}
 					placeholder={placeholder}
 					value={value}
+					defaultValue={defaultValue}
 				/>
 
 				{children}
