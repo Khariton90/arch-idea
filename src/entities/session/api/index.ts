@@ -21,7 +21,7 @@ export const sessionApi = baseApi.injectEndpoints({
 			},
 			providesTags: [SESSION_TAG],
 		}),
-		sendRefreshToken: build.mutation({
+		sendRefreshToken: build.mutation<AuthRdo, string>({
 			query: (token: string) => ({
 				url: '/auth/refresh',
 				method: 'POST',

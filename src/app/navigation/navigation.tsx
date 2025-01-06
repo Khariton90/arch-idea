@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { HomePage } from '@/pages/home-page/home-page'
 import { IdeaDetailsPage } from '@/pages/idea-details-page/idea-details-page'
 import { NewIdeaPage } from '@/pages/new-idea-page/new-idea-page'
@@ -48,8 +47,10 @@ export default function Navigation() {
 		if (token) {
 			await sendRefreshToken(token)
 				.then(response => {
-					dispatch(addSessionData(response.data))
-					saveToken(response.data)
+					if (response.data) {
+						dispatch(addSessionData(response.data))
+						saveToken(response.data)
+					}
 				})
 				.catch(() => {
 					dispatch(clearSessionData())

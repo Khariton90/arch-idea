@@ -31,11 +31,7 @@ export function CommentItem({ comment }: Props): JSX.Element {
 		<Box key={comment.id} background={theme.colors.background}>
 			<UserBox>
 				<Avatar name={comment.user.firstName} />
-				<Typography
-					variant='p'
-					soft
-					text={comment.user.firstName || 'Пользователь'}
-				/>
+				<Typography variant='p' soft text={comment.user.firstName} />
 			</UserBox>
 			<Typography variant='h2' text={comment.content} />
 			<Typography

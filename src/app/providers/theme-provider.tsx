@@ -4,10 +4,6 @@ import { darkTheme, lightTheme, ThemeContext } from '@/shared/colors.styled'
 import { ReactNode, useEffect, useState } from 'react'
 import { useColorScheme } from 'react-native'
 
-const getTheme = async () => {
-	return await getCurrentTheme()
-}
-
 type Props = {
 	children: ReactNode
 }
@@ -18,13 +14,13 @@ function ThemeProvider({ children }: Props) {
 	const colorScheme = useColorScheme()
 
 	const ThemeAction = {
-		[ThemeList.Auto]: () => (colorScheme === 'dark' ? darkTheme : lightTheme),
-		[ThemeList.Dark]: () => darkTheme,
-		[ThemeList.Light]: () => lightTheme,
+		[ThemeList.Auto]: colorScheme === 'dark' ? darkTheme : lightTheme,
+		[ThemeList.Dark]: darkTheme,
+		[ThemeList.Light]: lightTheme,
 	}
 
 	const changeTheme = (currentTheme: ThemeList) => {
-		setCurrentTheme(() => ThemeAction[currentTheme]())
+		setCurrentTheme(() => ThemeAction[currentTheme])
 		setCurrentType(() => currentTheme)
 	}
 
@@ -34,7 +30,7 @@ function ThemeProvider({ children }: Props) {
 	}
 
 	useEffect(() => {
-		getTheme().then(changeTheme)
+		getCurrentTheme().then(changeTheme)
 	})
 
 	return (

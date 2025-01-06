@@ -1,6 +1,5 @@
 import { IdeaCard, IdeaQuery } from '@/entities/idea'
 import { useFindFavoriteIdeasQuery } from '@/entities/idea/api'
-
 import { LikeDislikeButtons } from '@/features/vote'
 import { WishListToggle } from '@/features/wishlist'
 import { ThemeContext, ViewWithThemeProps } from '@/shared/colors.styled'
@@ -19,11 +18,7 @@ const IdeasContainer = styled.View<ViewWithThemeProps>`
 	flex: 1;
 `
 
-interface Props {
-	navigation: NativeStackNavigationProp<any, any, any>
-}
-
-export function FavoriteIdeasList({ navigation }: Props): JSX.Element {
+export function FavoriteIdeasList(): JSX.Element {
 	const { theme } = useContext(ThemeContext)
 	const totalCount = useAppSelector(({ wishlistSlice }) => wishlistSlice.count)
 	const [query, setQuery] = useState<IdeaQuery>({

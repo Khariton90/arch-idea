@@ -3,7 +3,6 @@ import { Idea, IdeaQuery, IdeaRdo } from '../model/types'
 import { IDEA_TAG, ONE_IDEA, VOTE_TAG, WISHLIST_TAG } from '@/shared/api/tags'
 import { mapIdea } from '../lib/mapIdea'
 import { createEntityAdapter } from '@reduxjs/toolkit'
-import { voteApi } from '@/entities/vote/api'
 
 const ideasAdapter = createEntityAdapter({
 	selectId: (item: IdeaRdo) => item.id,
@@ -20,9 +19,6 @@ export const ideaApi = baseApi.injectEndpoints({
 				providesTags: [IDEA_TAG],
 				params: { ...queryParams },
 			}),
-			// providesTags: (result, error, arg) => {
-			// 	return [{ type: IDEA_TAG }, { type: VOTE_TAG }]
-			// },
 		}),
 		findIdeas: build.query<IdeaRdo[], IdeaQuery>({
 			query: queryParams => {

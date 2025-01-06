@@ -1,7 +1,12 @@
 import { ThemeContext } from '@/shared/colors.styled'
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet'
-import { ReactNode, useCallback, useContext, useEffect, useRef } from 'react'
-import { Dimensions } from 'react-native'
+import { ReactNode, useContext, useEffect, useRef } from 'react'
+import styled from 'styled-components/native'
+
+const ContainerModal = styled.View`
+	gap: 10px;
+	padding: 20px 10px;
+`
 
 interface Props {
 	children: ReactNode
@@ -11,8 +16,6 @@ interface Props {
 export function MainBottomSheet({ children, isOpen }: Props): JSX.Element {
 	const { theme } = useContext(ThemeContext)
 	const bottomSheetRef = useRef<BottomSheet>(null)
-
-	const height = Dimensions.get('window').height
 
 	const handleOpen = () => {
 		if (bottomSheetRef.current) {
@@ -43,7 +46,9 @@ export function MainBottomSheet({ children, isOpen }: Props): JSX.Element {
 			index={-1}
 			enableContentPanningGesture={false}
 		>
-			<BottomSheetView style={{ height: 'auto' }}>{children}</BottomSheetView>
+			<BottomSheetView style={{ height: 'auto' }}>
+				<ContainerModal>{children}</ContainerModal>
+			</BottomSheetView>
 		</BottomSheet>
 	)
 }

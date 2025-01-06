@@ -1,6 +1,5 @@
 import { ViewProps } from 'react-native-svg/lib/typescript/fabric/utils'
 import styled from 'styled-components/native'
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import React, { useContext, useState } from 'react'
 import { MainBottomSheet } from '@/widgets/bottom-sheet/main-bottom-sheet'
 import { UniversalButton } from '@/shared/ui/universal-button/universal-button'
@@ -19,11 +18,6 @@ const Container = styled.View<ViewProps & { background: string }>`
 	flex: 1;
 	background-color: ${({ background }) => background};
 	gap: 20px;
-`
-
-const ContainerModal = styled.View`
-	gap: 10px;
-	padding: 20px 10px;
 `
 
 const Box = styled.View<
@@ -62,7 +56,7 @@ export function ProfilePage(): JSX.Element {
 	const { theme } = useContext(ThemeContext)
 
 	return (
-		<GestureHandlerRootView>
+		<>
 			<Container background={theme.colors.background}>
 				<Box background={theme.colors.backdrop} top>
 					<Avatar size='xl' name={firstName} />
@@ -98,39 +92,29 @@ export function ProfilePage(): JSX.Element {
 			</Container>
 
 			<MainBottomSheet isOpen={modalList[0]}>
-				<ContainerModal>
-					<ProfileEditModal />
-					<UniversalButton title='Закрыть' onPress={() => toggleModal(0)} />
-				</ContainerModal>
+				<ProfileEditModal />
+				<UniversalButton title='Закрыть' onPress={() => toggleModal(0)} />
 			</MainBottomSheet>
 
 			<MainBottomSheet isOpen={modalList[1]}>
-				<ContainerModal>
-					<UserStatusModal background={theme.colors.backdrop} />
-					<UniversalButton title='Закрыть' onPress={() => toggleModal(1)} />
-				</ContainerModal>
+				<UserStatusModal background={theme.colors.backdrop} />
+				<UniversalButton title='Закрыть' onPress={() => toggleModal(1)} />
 			</MainBottomSheet>
 
 			<MainBottomSheet isOpen={modalList[2]}>
-				<ContainerModal>
-					<QrCodeModal isOpen={modalList[2]} />
-					<UniversalButton title='Закрыть' onPress={() => toggleModal(2)} />
-				</ContainerModal>
+				<QrCodeModal isOpen={modalList[2]} />
+				<UniversalButton title='Закрыть' onPress={() => toggleModal(2)} />
 			</MainBottomSheet>
 
 			<MainBottomSheet isOpen={modalList[3]}>
-				<ContainerModal>
-					<ThemeModal />
-					<UniversalButton title='Закрыть' onPress={() => toggleModal(3)} />
-				</ContainerModal>
+				<ThemeModal />
+				<UniversalButton title='Закрыть' onPress={() => toggleModal(3)} />
 			</MainBottomSheet>
 
 			<MainBottomSheet isOpen={modalList[4]}>
-				<ContainerModal>
-					<SignOutModal />
-					<UniversalButton title='Закрыть' onPress={() => toggleModal(4)} />
-				</ContainerModal>
+				<SignOutModal />
+				<UniversalButton title='Закрыть' onPress={() => toggleModal(4)} />
 			</MainBottomSheet>
-		</GestureHandlerRootView>
+		</>
 	)
 }

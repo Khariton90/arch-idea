@@ -13,3 +13,9 @@ export enum UserStatus {
 	Expert = 'Expert',
 	SuperExpert = 'SuperExpert',
 }
+
+export enum UserRole {
+	Admin = 'Admin',
+	Manager = 'Manager',
+	User = 'User',
+}

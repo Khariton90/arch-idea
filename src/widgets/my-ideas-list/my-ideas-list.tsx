@@ -1,11 +1,9 @@
-import { IdeaCard, IdeaQuery, NotFoundMainIdea } from '@/entities/idea'
+import { IdeaCard, IdeaQuery } from '@/entities/idea'
 import { useFindMyIdeasQuery } from '@/entities/idea/api'
 import { LikeDislikeButtons } from '@/features/vote'
 import { WishListToggle } from '@/features/wishlist'
 import { ThemeContext, ViewWithThemeProps } from '@/shared/colors.styled'
 import { useAppSelector } from '@/shared/hooks/hooks'
-import { LoadingIndicator } from '@/shared/ui/loading-indicator'
-import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import React, { useContext } from 'react'
 import { useState } from 'react'
 import { RefreshControl, View } from 'react-native'
@@ -18,12 +16,7 @@ const IdeasContainer = styled.View<ViewWithThemeProps>`
 	width: 100%;
 	flex: 1;
 `
-
-interface Props {
-	navigation: NativeStackNavigationProp<any, any, any>
-}
-
-export function MyIdeasList({ navigation }: Props): JSX.Element {
+export function MyIdeasList(): JSX.Element {
 	const { theme } = useContext(ThemeContext)
 	const totalCount = useAppSelector(({ ideaSlice }) => ideaSlice.myIdeasCount)
 

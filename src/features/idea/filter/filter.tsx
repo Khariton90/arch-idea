@@ -44,7 +44,7 @@ function FilterComponent({ onChangeFilter }: Props): JSX.Element {
 	const handlePress = useCallback(
 		(item: LocationDepartment) => {
 			if (activeItem === item) {
-				setActiveItem(() => undefined)
+				setActiveItem(undefined)
 				onChangeFilter(undefined)
 				return
 			}

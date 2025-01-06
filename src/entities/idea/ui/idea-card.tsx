@@ -1,5 +1,5 @@
-import { IdeaRdo, Priority } from '../model/types'
-import { memo, ReactNode, useCallback, useContext } from 'react'
+import { IdeaRdo } from '../model/types'
+import { memo, ReactNode, useContext } from 'react'
 import styled from 'styled-components/native'
 import { AppRoutes } from '@/shared/model/types'
 import { ThemeContext } from '@/shared/colors.styled'
