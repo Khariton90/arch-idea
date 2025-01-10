@@ -43,21 +43,13 @@ export function ProfileIdeasPage({ route, navigation }: Props): JSX.Element {
 	if (page === 'Favorite') {
 		return (
 			<Container background={theme.colors.backdrop}>
-				{totalWishlistCount ? (
-					<FavoriteIdeasList navigation={navigation} />
-				) : (
-					<NotFoundFavoriteIdea />
-				)}
+				{totalWishlistCount ? <FavoriteIdeasList /> : <NotFoundFavoriteIdea />}
 			</Container>
 		)
 	}
 	return (
 		<Container background={theme.colors.backdrop}>
-			{totalMyIdeasCount ? (
-				<MyIdeasList navigation={navigation} />
-			) : (
-				<NotFoundMainIdea />
-			)}
+			{totalMyIdeasCount ? <MyIdeasList /> : <NotFoundMainIdea />}
 		</Container>
 	)
 }

@@ -13,16 +13,25 @@ const Container = styled.View<{ background: string }>`
 	flex: 1;
 	background-color: ${({ background }) => background};
 `
+const Box = styled.View<{ border: string }>`
+	border-radius: 10px;
+	overflow: hidden;
+	margin: 10px 0;
+	border-width: 1px;
+	border-color: ${({ border }) => border};
+	padding: 20px 10px;
+	gap: 10px;
+`
 
 const Card = styled.View<{ background: string; border: string }>`
-	flex: 1;
 	background-color: ${({ background }) => background};
 	border-radius: 10px;
 	border: 1px solid ${({ border }) => border};
-	margin: 40px 10px;
+	margin: 10px;
 	padding: 10px 0;
 	transition: 0.2s ease;
 	box-shadow: 0 0 1px #6e6e6e;
+	height: 100%;
 `
 
 const CardHeader = styled.View<{ border: string }>`
@@ -71,6 +80,7 @@ interface Props {
 	likesDisLakesSlot: ReactNode
 	wishListSlot: ReactNode
 	commentsSlot: ReactNode
+	solutionSlot: ReactNode
 }
 
 const MAX_USERNAME_LENGTH = 10
@@ -80,6 +90,7 @@ function IdeaDetailsCardComponent({
 	likesDisLakesSlot,
 	wishListSlot,
 	commentsSlot,
+	solutionSlot,
 }: Props): JSX.Element {
 	const { theme } = useContext(ThemeContext)
 
@@ -105,6 +116,13 @@ function IdeaDetailsCardComponent({
 							color={'success'}
 						/>
 					</Row>
+
+					{idea.solution && (
+						<Box theme={theme} border={theme.colors.border}>
+							<Typography variant='h2' text='Решение' />
+							<Typography variant='p' text={idea.solution} />
+						</Box>
+					)}
 				</CardHeader>
 				<CardContent>
 					<AuthorBox>
@@ -140,6 +158,7 @@ function IdeaDetailsCardComponent({
 				<CardContent>
 					<Typography variant='h1' text={idea.title} />
 					<Typography variant='p' text={idea.description} />
+					{solutionSlot}
 				</CardContent>
 				<CardFooter>
 					{commentsSlot}

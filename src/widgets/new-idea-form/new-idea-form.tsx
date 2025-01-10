@@ -5,7 +5,7 @@ import { useContext, useMemo, useState } from 'react'
 import { Idea } from '@/entities/idea'
 import { useCreateIdeaMutation } from '@/entities/idea/api'
 import { UniversalButton } from '@/shared/ui/universal-button/universal-button'
-import { ThemeContext } from '@/shared/colors.styled'
+import { darkTheme, ThemeContext } from '@/shared/colors.styled'
 import { Typography } from '@/shared/ui/typography/typography'
 import {
 	mappingDepartment,
@@ -15,6 +15,10 @@ import {
 import { InputField } from '@/shared/ui/input-field/input-field'
 import useCustomNavigation from '@/shared/hooks/use-custom-navigation'
 import { AppRoutes } from '@/shared/model/types'
+import { ImageUploadIcon } from '@/shared/ui/icons/image-upload-icon'
+import { MainBottomSheet } from '../bottom-sheet/main-bottom-sheet'
+import React from 'react'
+import { CameraIcon } from '@/shared/ui/icons/camera-icon'
 
 const Container = styled.View<{ background: string }>`
 	flex: 1;
@@ -31,11 +35,17 @@ const Form = styled.View`
 	justify-content: center;
 `
 
-const InputFields = styled.TextInput`
+const Row = styled.View`
+	flex-direction: row;
+	justify-content: space-evenly;
+`
+
+const ModalButton = styled.TouchableOpacity`
+	padding: 10px 20px;
+	width: 100px;
+	align-items: center;
 	border-radius: 10px;
-	padding: 20px 40px 20px 10px;
-	border: 1px solid #ccc;
-	color: #fff;
+	border: 1px solid ${darkTheme.colors.border};
 `
 
 const accordion = [
@@ -90,7 +100,7 @@ export function NewIdeaForm(): JSX.Element {
 
 	const handleSubmit = async () => {
 		setIsActiveForm(() => false)
-		createIdea(form).then(data => {
+		createIdea({ ...form }).then(async data => {
 			if (!data.error) {
 				setIsActiveForm(() => true)
 				setForm(prev => ({ ...initialFormValues }))
@@ -158,5 +168,32 @@ export function NewIdeaForm(): JSX.Element {
 				)}
 			</Form>
 		</Container>
+	)
+}
+
+type ModalProps = {
+	isOpen: boolean
+	uploadImage: (mode: any) => void
+	uploadImageFromGallery: (mode: string) => void
+}
+
+export function ModalUploadImage({
+	isOpen,
+	uploadImage,
+	uploadImageFromGallery,
+}: ModalProps): JSX.Element {
+	return (
+		<MainBottomSheet isOpen={isOpen}>
+			<Row>
+				<ModalButton onPress={() => uploadImage('')}>
+					<CameraIcon />
+					<Typography soft variant='span' text={'Камера'} />
+				</ModalButton>
+				<ModalButton onPress={() => uploadImageFromGallery('gallery')}>
+					<ImageUploadIcon />
+					<Typography soft variant='p' text={'Галерея'} />
+				</ModalButton>
+			</Row>
+		</MainBottomSheet>
 	)
 }

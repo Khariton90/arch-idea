@@ -5,6 +5,8 @@ import { LayoutLogo } from '@/widgets'
 import { ThemeContext, ViewWithThemeProps } from '@/shared/colors.styled'
 import { UniversalButton } from '@/shared/ui/universal-button/universal-button'
 import { Typography } from '@/shared/ui/typography/typography'
+import { InputField } from '@/shared/ui/input-field/input-field'
+import { SignInLocal } from '@/entities/session/ui/sign-in-local'
 
 const Container = styled.View<ViewWithThemeProps>`
 	flex: 1;
@@ -22,6 +24,8 @@ const Row = styled.View`
 export function LoginPage({ navigation }: any): JSX.Element {
 	const { theme } = useContext(ThemeContext)
 	const [isOpenCamera, setIsOpenCamera] = useState(false)
+
+	return <SignInLocal />
 
 	if (!isOpenCamera) {
 		return (

@@ -1,4 +1,3 @@
-/* eslint-disable */
 import { useAppDispatch } from '@/shared/hooks/hooks'
 import { LoadingIndicator } from '@/shared/ui/loading-indicator'
 import {

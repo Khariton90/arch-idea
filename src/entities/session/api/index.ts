@@ -1,5 +1,5 @@
 import { baseApi } from '@/shared/api/base-api'
-import { AuthRdo, UserDto, type QrCodeDto } from '../model/types'
+import { AuthRdo, SignInForm, UserDto, type QrCodeDto } from '../model/types'
 import { SESSION_TAG } from '@/shared/api/tags'
 
 export const sessionApi = baseApi.injectEndpoints({
@@ -36,6 +36,14 @@ export const sessionApi = baseApi.injectEndpoints({
 				method: 'POST',
 			}),
 		}),
+		signIn: build.mutation<AuthRdo, SignInForm>({
+			query: dto => ({
+				url: '/auth/login',
+				method: 'POST',
+				body: { ...dto },
+			}),
+			invalidatesTags: [SESSION_TAG],
+		}),
 	}),
 })
 
@@ -44,4 +52,5 @@ export const {
 	useGetAccountQuery,
 	useSendRefreshTokenMutation,
 	useSignOutMutation,
+	useSignInMutation,
 } = sessionApi

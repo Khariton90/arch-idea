@@ -34,6 +34,7 @@ const Box = styled.View<
 `
 
 export function ProfilePage(): JSX.Element {
+	const { theme } = useContext(ThemeContext)
 	const { firstName, lastName, status } = useAppSelector(
 		({ userSlice }) => userSlice
 	)
@@ -52,8 +53,6 @@ export function ProfilePage(): JSX.Element {
 		)
 		setModalList(prev => [...array])
 	}
-
-	const { theme } = useContext(ThemeContext)
 
 	return (
 		<>
@@ -91,30 +90,18 @@ export function ProfilePage(): JSX.Element {
 				</Box>
 			</Container>
 
-			<MainBottomSheet isOpen={modalList[0]}>
-				<ProfileEditModal />
-				<UniversalButton title='Закрыть' onPress={() => toggleModal(0)} />
-			</MainBottomSheet>
-
-			<MainBottomSheet isOpen={modalList[1]}>
-				<UserStatusModal background={theme.colors.backdrop} />
-				<UniversalButton title='Закрыть' onPress={() => toggleModal(1)} />
-			</MainBottomSheet>
-
-			<MainBottomSheet isOpen={modalList[2]}>
-				<QrCodeModal isOpen={modalList[2]} />
-				<UniversalButton title='Закрыть' onPress={() => toggleModal(2)} />
-			</MainBottomSheet>
-
-			<MainBottomSheet isOpen={modalList[3]}>
-				<ThemeModal />
-				<UniversalButton title='Закрыть' onPress={() => toggleModal(3)} />
-			</MainBottomSheet>
-
-			<MainBottomSheet isOpen={modalList[4]}>
-				<SignOutModal />
-				<UniversalButton title='Закрыть' onPress={() => toggleModal(4)} />
-			</MainBottomSheet>
+			{[
+				<ProfileEditModal />,
+				<UserStatusModal background={theme.colors.backdrop} />,
+				<QrCodeModal />,
+				<ThemeModal />,
+				<SignOutModal />,
+			].map((element, index) => (
+				<MainBottomSheet isOpen={modalList[index]} key={index}>
+					{element}
+					<UniversalButton title='Закрыть' onPress={() => toggleModal(index)} />
+				</MainBottomSheet>
+			))}
 		</>
 	)
 }

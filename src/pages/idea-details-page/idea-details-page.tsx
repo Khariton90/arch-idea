@@ -13,6 +13,7 @@ import { RefreshControl } from 'react-native-gesture-handler'
 import { ThemeContext } from '@/shared/colors.styled'
 import { delay } from '@/shared/lib/delay'
 import React from 'react'
+import { CreateSolutionAboutIdea } from '@/features/idea/create-solution-about-idea/create-solution-about-idea'
 
 const TITLE_LENGTH = 12
 
@@ -51,7 +52,11 @@ export function IdeaDetailsPage({ route, navigation }: Props): JSX.Element {
 	return (
 		<SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }}>
 			<ScrollView
-				contentContainerStyle={{ flex: 1 }}
+				contentContainerStyle={{
+					height: 'auto',
+					paddingBottom: 80,
+					minHeight: '100%',
+				}}
 				showsVerticalScrollIndicator={false}
 				refreshControl={
 					<RefreshControl
@@ -90,6 +95,9 @@ export function IdeaDetailsPage({ route, navigation }: Props): JSX.Element {
 											navigation.navigate(AppRoutes.CommentsPage, { id })
 										}
 									/>
+								}
+								solutionSlot={
+									<CreateSolutionAboutIdea id={idea.id} fetchData={fetchData} />
 								}
 							/>
 						)}

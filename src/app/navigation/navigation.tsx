@@ -7,10 +7,10 @@ import { ProfilePage } from '@/pages/profile-page/profile-page'
 import { CommentsPage } from '@/pages/comments-page/comments-page'
 import { AppRoutes, RootStackParamList } from '@/shared/model/types'
 import { ProfileIdeasPage } from '@/pages/profile-ideas-page/profile-ideas-page'
-import { darkTheme } from '@/shared/colors.styled'
+import { darkTheme, ThemeContext } from '@/shared/colors.styled'
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/hooks'
 import { AuthorizationStatus } from '@/entities/session/model/types'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { LoadingIndicator } from '@/shared/ui/loading-indicator'
 import { getToken, saveToken } from '@/entities/session/api/session-api'
 import { useSendRefreshTokenMutation } from '@/entities/session/api'
@@ -19,6 +19,10 @@ import {
 	clearSessionData,
 } from '@/entities/session/model/slice'
 import { delay } from '@/shared/lib/delay'
+import { StatusBar } from 'react-native'
+import { UserRole } from '@/entities/user'
+import { DashboardPage } from '@/pages/dashboard-page/dashboard-page'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
@@ -33,97 +37,104 @@ const styles = {
 	headerTintColor: '#6e6e6e',
 }
 export default function Navigation() {
-	const [isLoading, setIsLoading] = useState(false)
+	const { theme } = useContext(ThemeContext)
 	const authStatus = useAppSelector(
 		({ sessionSlice }) => sessionSlice.isAuthorized
 	)
+	const role = useAppSelector(({ userSlice }) => userSlice.role)
 	const dispatch = useAppDispatch()
 	const [sendRefreshToken] = useSendRefreshTokenMutation()
 
 	const getTokenByAuth = async () => {
-		setIsLoading(() => true)
 		const token = await getToken()
+		await delay()
 
 		if (token) {
-			await sendRefreshToken(token)
-				.then(response => {
-					if (response.data) {
-						dispatch(addSessionData(response.data))
-						saveToken(response.data)
-					}
-				})
-				.catch(() => {
-					dispatch(clearSessionData())
-				})
+			await sendRefreshToken(token).then(async ({ data }) => {
+				if (data) {
+					await saveToken(data)
+					dispatch(addSessionData(data))
+				}
+			})
 		} else {
 			dispatch(clearSessionData())
 		}
-
-		await delay()
-		setIsLoading(() => false)
 	}
 
 	useEffect(() => {
 		getTokenByAuth()
 	}, [])
 
-	if (authStatus === AuthorizationStatus.Unknown || isLoading) {
+	if (authStatus === AuthorizationStatus.Unknown) {
 		return <LoadingIndicator />
 	}
 
 	return (
-		<Stack.Navigator>
-			{authStatus === AuthorizationStatus.NoAuth ? (
-				<Stack.Screen
-					name={AppRoutes.LoginPage}
-					component={LoginPage}
-					options={{
-						headerBackVisible: false,
-						headerShown: false,
-					}}
-				/>
-			) : (
-				<>
+		<GestureHandlerRootView>
+			<StatusBar backgroundColor={theme.colors.backdrop} />
+			<Stack.Navigator>
+				{authStatus === AuthorizationStatus.NoAuth ? (
 					<Stack.Screen
-						name={AppRoutes.HomePage}
-						component={HomePage}
+						name={AppRoutes.LoginPage}
+						component={LoginPage}
 						options={{
-							title: 'Главная',
-							...styles,
 							headerBackVisible: false,
+							headerShown: false,
 						}}
 					/>
-					<Stack.Screen
-						name={AppRoutes.IdeaDetailsPage}
-						component={IdeaDetailsPage}
-						options={{ title: 'Главная', ...styles }}
-					/>
-					<Stack.Screen
-						name={AppRoutes.NewIdeaPage}
-						component={NewIdeaPage}
-						options={{ title: 'Новая идея', ...styles }}
-					/>
-					<Stack.Screen
-						name={AppRoutes.ProfilePage}
-						component={ProfilePage}
-						options={{ title: 'Профиль', ...styles }}
-					/>
-					<Stack.Screen
-						name={AppRoutes.CommentsPage}
-						component={CommentsPage}
-						options={{
-							title: 'Комментарии',
-							...styles,
-							headerBackTitle: 'Назад',
-						}}
-					/>
-					<Stack.Screen
-						name={AppRoutes.ProfileIdeasPage}
-						component={ProfileIdeasPage}
-						options={{ title: 'Идеи', ...styles }}
-					/>
-				</>
-			)}
-		</Stack.Navigator>
+				) : (
+					<>
+						<Stack.Screen
+							name={AppRoutes.HomePage}
+							component={HomePage}
+							options={{
+								title: 'Главная',
+								...styles,
+								headerBackVisible: false,
+							}}
+						/>
+						{role !== UserRole.User && (
+							<Stack.Screen
+								name={AppRoutes.DashboardPage}
+								component={DashboardPage}
+								options={{
+									title: 'Участники',
+									...styles,
+								}}
+							/>
+						)}
+						<Stack.Screen
+							name={AppRoutes.IdeaDetailsPage}
+							component={IdeaDetailsPage}
+							options={{ title: 'Главная', ...styles }}
+						/>
+						<Stack.Screen
+							name={AppRoutes.NewIdeaPage}
+							component={NewIdeaPage}
+							options={{ title: 'Новая идея', ...styles }}
+						/>
+						<Stack.Screen
+							name={AppRoutes.ProfilePage}
+							component={ProfilePage}
+							options={{ title: 'Профиль', ...styles }}
+						/>
+						<Stack.Screen
+							name={AppRoutes.CommentsPage}
+							component={CommentsPage}
+							options={{
+								title: 'Комментарии',
+								...styles,
+								headerBackTitle: 'Назад',
+							}}
+						/>
+						<Stack.Screen
+							name={AppRoutes.ProfileIdeasPage}
+							component={ProfileIdeasPage}
+							options={{ title: 'Идеи', ...styles }}
+						/>
+					</>
+				)}
+			</Stack.Navigator>
+		</GestureHandlerRootView>
 	)
 }

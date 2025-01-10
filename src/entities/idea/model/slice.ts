@@ -1,15 +1,21 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ideaApi } from '../api'
 import { sessionApi } from '@/entities/session/api'
+import { IdeaQuery } from './types'
 
 interface State {
 	myIdeasCount: number
 	totalCount: number
+	currentFilter: IdeaQuery
 }
 
 const initialState: State = {
 	myIdeasCount: 0,
 	totalCount: 0,
+	currentFilter: {
+		page: 0,
+		limit: 10,
+	},
 }
 
 export const ideaSlice = createSlice({
@@ -18,6 +24,9 @@ export const ideaSlice = createSlice({
 	reducers: {
 		setMyIdeasCount(state, action: PayloadAction<number>) {
 			state.myIdeasCount = action.payload
+		},
+		setCurrentFilter(state, { payload }: PayloadAction<IdeaQuery>) {
+			state.currentFilter = payload
 		},
 	},
 	extraReducers: builder => {
@@ -39,4 +48,4 @@ export const ideaSlice = createSlice({
 	},
 })
 
-export const { setMyIdeasCount } = ideaSlice.actions
+export const { setMyIdeasCount, setCurrentFilter } = ideaSlice.actions

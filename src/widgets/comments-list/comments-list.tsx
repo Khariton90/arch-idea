@@ -72,6 +72,11 @@ export function CommentsList({ ideaId }: Props): JSX.Element {
 					renderItem={({ item }) => <CommentItem comment={item} />}
 					onEndReachedThreshold={0.2}
 					onEndReached={loadMore}
+					contentContainerStyle={{
+						height: 'auto',
+						paddingVertical: 20,
+						minHeight: '100%',
+					}}
 				/>
 			)}
 

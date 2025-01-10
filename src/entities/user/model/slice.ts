@@ -1,18 +1,22 @@
 import { sessionApi } from '@/entities/session/api'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import { UserStatus } from './types'
+import { UserRole, UserStatus } from './types'
 import { userApi } from '../api'
 
 interface UserState {
 	firstName: string
 	lastName: string
 	status: UserStatus
+	role: UserRole
+	login: string
 }
 
 const initialState: UserState = {
 	firstName: '',
 	lastName: '',
+	role: UserRole.Admin,
 	status: UserStatus.NotVerified,
+	login: '',
 }
 
 export const userSlice = createSlice({
@@ -28,9 +32,11 @@ export const userSlice = createSlice({
 		builder.addMatcher(
 			sessionApi.endpoints.getAccount.matchFulfilled,
 			(state, { payload }) => {
+				state.role = payload.role
 				state.firstName = payload.firstName
 				state.lastName = payload.lastName
 				state.status = payload.status
+				state.login = payload.login
 			}
 		),
 			builder.addMatcher(

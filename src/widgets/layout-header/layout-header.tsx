@@ -1,3 +1,4 @@
+import { UserRole } from '@/entities/user'
 import {
 	ThemeContext,
 	TouchableOpacityWithThemeProps,
@@ -6,10 +7,12 @@ import {
 import { useAppSelector } from '@/shared/hooks/hooks'
 import useCustomNavigation from '@/shared/hooks/use-custom-navigation'
 import { formatIdea } from '@/shared/lib/format-idea'
+import { formatUsers } from '@/shared/lib/format-users'
 import { AppRoutes } from '@/shared/model/types'
 import { Avatar } from '@/shared/ui/avatar/avatar'
 import { FavoriteIcon } from '@/shared/ui/icons/favorite-icon'
 import { IdeaIcon } from '@/shared/ui/icons/idea-icon'
+import { PersonIcon } from '@/shared/ui/icons/person-icon'
 import { Typography } from '@/shared/ui/typography/typography'
 import { useContext } from 'react'
 import { View } from 'react-native'
@@ -25,7 +28,7 @@ const Header = styled.View<ViewWithThemeProps>`
 const NavList = styled.View`
 	flex-direction: row;
 	justify-content: space-between;
-	gap: 10px;
+	gap: 6px;
 `
 
 const NavLink = styled.TouchableOpacity<TouchableOpacityWithThemeProps>`
@@ -33,7 +36,7 @@ const NavLink = styled.TouchableOpacity<TouchableOpacityWithThemeProps>`
 	justify-content: space-between;
 	flex-direction: row;
 	background-color: ${({ theme }) => theme.colors.backdrop};
-	padding: 12px;
+	padding: 10px;
 	border-radius: 10px;
 	border: 1px solid ${({ theme }) => theme.colors.border};
 `
@@ -97,6 +100,24 @@ export function LayoutHeader(): JSX.Element {
 					</View>
 					<IdeaIcon active={!!myIdeasCount} />
 				</NavLink>
+
+				{user.role !== UserRole.User && (
+					<NavLink
+						theme={theme}
+						onPress={() =>
+							navigation.navigate(AppRoutes.DashboardPage, {
+								title: 'Участники',
+								page: 'DashboardPage',
+							})
+						}
+					>
+						<View>
+							<Typography variant='span' text='Участники' />
+							<Typography variant='span' soft text={'Все'} />
+						</View>
+						<PersonIcon active />
+					</NavLink>
+				)}
 			</NavList>
 		</Header>
 	)

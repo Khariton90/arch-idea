@@ -23,11 +23,13 @@ const Text = styled.Text<
 		fontSize: string
 		soft?: boolean
 		align: string
+		active: boolean
 	}
 >`
 	font-weight: ${({ weight }) => weight};
 	font-size: ${({ fontSize }) => fontSize};
-	color: ${({ theme }) => theme.colors.text};
+	color: ${({ active, theme }) =>
+		active ? theme.colors.primary : theme.colors.text};
 	opacity: ${({ soft }) => (soft ? 0.7 : 1)};
 	line-height: 18px;
 	text-align: ${({ align }) => align};
@@ -40,6 +42,7 @@ interface Props extends TextProps {
 	align?: 'left' | 'right' | 'center'
 	ellipsizeMode?: 'head' | 'middle' | 'tail' | 'clip' | undefined
 	numberOfLines?: number
+	active?: boolean
 }
 
 export function Typography({
@@ -49,11 +52,13 @@ export function Typography({
 	align = 'left',
 	ellipsizeMode,
 	numberOfLines,
+	active,
 }: Props): JSX.Element {
 	const { theme } = useContext(ThemeContext)
 
 	return (
 		<Text
+			active={active ?? false}
 			numberOfLines={numberOfLines}
 			ellipsizeMode={ellipsizeMode}
 			align={align}

@@ -1,12 +1,10 @@
 import { UpdateUserDto, useUpdateUserMutation } from '@/entities/user'
 import { ViewWithThemeProps } from '@/shared/colors.styled'
 import { useAppSelector } from '@/shared/hooks/hooks'
-import { validateEmail } from '@/shared/lib/validate-email'
 import { InputField } from '@/shared/ui/input-field/input-field'
 import { Typography } from '@/shared/ui/typography/typography'
 import { UniversalButton } from '@/shared/ui/universal-button/universal-button'
 import { useEffect, useState } from 'react'
-import { Vibration } from 'react-native'
 import styled from 'styled-components/native'
 
 const Form = styled.View<ViewWithThemeProps>`
@@ -16,17 +14,19 @@ const Form = styled.View<ViewWithThemeProps>`
 const initialForm: UpdateUserDto = {
 	firstName: '',
 	lastName: '',
-	email: '',
+	login: '',
 	password: '',
 }
 
 export function UserChangeForm(): JSX.Element {
-	const { firstName, lastName } = useAppSelector(({ userSlice }) => userSlice)
+	const { firstName, lastName, login } = useAppSelector(
+		({ userSlice }) => userSlice
+	)
 	const [errorMessage, setErrorMessage] = useState(false)
 	const [form, setForm] = useState<UpdateUserDto>({
 		firstName,
 		lastName,
-		email: '',
+		login,
 		password: '',
 	})
 
@@ -42,20 +42,10 @@ export function UserChangeForm(): JSX.Element {
 	}
 
 	const handleSubmit = async () => {
-		if (!validateEmail(form.email)) {
-			Vibration.vibrate(100)
-			setErrorMessage(() => true)
-			return
-		}
-
 		await updateUser(form)
 	}
 
-	useEffect(() => {
-		if (isSuccess) {
-			setForm(state => ({ ...initialForm }))
-		}
-	}, [isSuccess])
+	useEffect(() => {}, [isSuccess])
 
 	const invalidForm = Object.values(form).some(
 		element => !element || element === ''
@@ -78,10 +68,10 @@ export function UserChangeForm(): JSX.Element {
 				placeholder={'Фамилия'}
 			/>
 			<InputField
-				textKey={'email'}
-				value={form.email || ''}
+				textKey={'login'}
+				value={form.login || ''}
 				onChangeText={handleChange}
-				placeholder={'Email'}
+				placeholder={'Login'}
 			/>
 			<InputField
 				textKey={'password'}
@@ -89,14 +79,6 @@ export function UserChangeForm(): JSX.Element {
 				onChangeText={handleChange}
 				placeholder={'Пароль'}
 			/>
-			{errorMessage && (
-				<Typography
-					align='center'
-					variant='span'
-					soft
-					text={'Email некорректен'}
-				/>
-			)}
 
 			{isSuccess && (
 				<Typography

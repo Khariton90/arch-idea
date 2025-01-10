@@ -16,7 +16,7 @@ export const mappingSubDepartment: Record<SubDepartment, string> = {
 export const mappingStatus: Record<IdeaStatus, string> = {
 	[IdeaStatus.New]: 'Новая',
 	[IdeaStatus.InProgress]: 'В работе',
-	[IdeaStatus.Completed]: 'Завершена',
+	[IdeaStatus.Completed]: 'Внедрена',
 	[IdeaStatus.Canceled]: 'Отменена',
 }
 

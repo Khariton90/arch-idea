@@ -1,13 +1,12 @@
-import { LocationDepartment } from '@/entities/idea'
+import { LocationDepartment, setCurrentFilter } from '@/entities/idea'
 import { mappingDepartment } from '@/entities/idea/lib/mapIdea'
 import {
 	TextWithThemeProps,
 	ThemeContext,
 	TouchableOpacityWithThemeProps,
 } from '@/shared/colors.styled'
-import { SortIcon } from '@/shared/ui/icons/sort-icon'
-
-import { memo, useCallback, useContext, useState } from 'react'
+import { useAppDispatch, useAppSelector } from '@/shared/hooks/hooks'
+import { memo, ReactNode, useCallback, useContext, useState } from 'react'
 import { ScrollView } from 'react-native'
 import styled from 'styled-components/native'
 
@@ -32,11 +31,13 @@ const FilterItemText = styled.Text<TextWithThemeProps & { active: boolean }>`
 `
 
 interface Props {
-	onChangeFilter: (value: LocationDepartment | undefined) => void
+	sortingSlot: ReactNode
 }
 
-function FilterComponent({ onChangeFilter }: Props): JSX.Element {
+function FilterComponent({ sortingSlot }: Props): JSX.Element {
 	const { theme } = useContext(ThemeContext)
+	const query = useAppSelector(({ ideaSlice }) => ideaSlice.currentFilter)
+	const dispatch = useAppDispatch()
 	const [activeItem, setActiveItem] = useState<LocationDepartment | undefined>(
 		undefined
 	)
@@ -44,12 +45,12 @@ function FilterComponent({ onChangeFilter }: Props): JSX.Element {
 	const handlePress = useCallback(
 		(item: LocationDepartment) => {
 			if (activeItem === item) {
-				setActiveItem(undefined)
-				onChangeFilter(undefined)
+				setActiveItem(prev => undefined)
+				dispatch(setCurrentFilter({ ...query, department: undefined }))
 				return
 			}
 			setActiveItem(prev => item)
-			onChangeFilter(item)
+			dispatch(setCurrentFilter({ ...query, department: item }))
 		},
 		[activeItem]
 	)
@@ -57,9 +58,7 @@ function FilterComponent({ onChangeFilter }: Props): JSX.Element {
 	return (
 		<Container>
 			<ScrollView horizontal showsHorizontalScrollIndicator={false}>
-				<FilterItem theme={theme}>
-					<SortIcon />
-				</FilterItem>
+				{sortingSlot}
 				{Object.entries(mappingDepartment).map(([key, value]) => (
 					<FilterItem
 						theme={theme}

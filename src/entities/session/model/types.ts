@@ -1,4 +1,4 @@
-import { UserStatus } from '@/entities/user'
+import { UserRole, UserStatus } from '@/entities/user'
 
 export type SessionDto = {
 	accessToken: string
@@ -23,6 +23,12 @@ export type UserDto = {
 	department: string
 	favoriteIdeasCount: number
 	myIdeasCount: number
+	role: UserRole
+	login: string
+}
+
+export interface UserListDto extends UserDto {
+	role: UserRole
 }
 
 export type UserRdo = {
@@ -32,8 +38,20 @@ export type UserRdo = {
 	lastName: string
 }
 
+export type UserOptionsDto = {
+	id: string
+	role?: UserRole
+	status?: UserStatus
+}
+
 export enum AuthorizationStatus {
 	Auth = 'AUTH',
 	NoAuth = 'NO_AUTH',
 	Unknown = 'UNKNOWN',
+}
+
+export type SignInForm = {
+	login: string
+	password: string
+	modelName?: string
 }

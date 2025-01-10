@@ -1,4 +1,4 @@
-import { IdeaCard, IdeaQuery, LocationDepartment } from '@/entities/idea'
+import { IdeaCard, setCurrentFilter } from '@/entities/idea'
 import {
 	useFindIdeasQuery,
 	useFindTotalCountIdeasQuery,
@@ -7,45 +7,55 @@ import { Filter } from '@/features/idea'
 import { LikeDislikeButtons } from '@/features/vote'
 import { WishListToggle } from '@/features/wishlist'
 import { ThemeContext } from '@/shared/colors.styled'
-import React, { memo, useContext } from 'react'
+import React, { memo, ReactNode, useContext } from 'react'
 import { useState } from 'react'
 import { RefreshControl, View } from 'react-native'
 import { FlatList } from 'react-native'
 import { EmptyIdeasList } from '../empty-ideas-list/empty-ideas-list'
+import { Typography } from '@/shared/ui/typography/typography'
+import { UniversalButton } from '@/shared/ui/universal-button/universal-button'
+import { useAppDispatch, useAppSelector } from '@/shared/hooks/hooks'
 
-function BaseIdeasListComponent(): JSX.Element {
+interface Props {
+	filterSlot: ReactNode
+}
+
+function BaseIdeasListComponent({ filterSlot }: Props): JSX.Element {
 	const { theme } = useContext(ThemeContext)
-	const [query, setQuery] = useState<IdeaQuery>({
-		page: 1,
-		limit: 10,
-	})
-
-	const { data: totalCount } = useFindTotalCountIdeasQuery(query)
+	const query = useAppSelector(({ ideaSlice }) => ideaSlice.currentFilter)
+	const dispatch = useAppDispatch()
+	const { data: totalCount = 0 } = useFindTotalCountIdeasQuery(query)
 
 	const {
 		data: ideas,
 		isLoading,
 		isFetching,
+		isError,
 		refetch,
 	} = useFindIdeasQuery(query)
-	const onChangeFilter = (value: LocationDepartment | undefined) => {
-		setQuery(prev => ({ ...prev, department: value }))
-	}
 
 	const loadMore = () => {
-		if (totalCount) {
-			if (query.limit < totalCount && !isFetching) {
-				setQuery(prev => ({
-					...prev,
-					limit: prev.limit + 10,
-				}))
-			}
+		if (query.limit < totalCount && !isFetching) {
+			dispatch(
+				setCurrentFilter({
+					...query,
+					limit: query.limit + 10,
+				})
+			)
 		}
 	}
 
+	if (isError) {
+		return (
+			<View>
+				<Typography variant='h2' align='center' text={'Произошла ошибка'} />
+				<UniversalButton onPress={refetch} title='Попробовать снова' />
+			</View>
+		)
+	}
 	return (
 		<>
-			<Filter onChangeFilter={onChangeFilter} />
+			{filterSlot}
 			{ideas && (
 				<FlatList
 					style={{
@@ -84,6 +94,11 @@ function BaseIdeasListComponent(): JSX.Element {
 					onEndReached={loadMore}
 					onEndReachedThreshold={0.5}
 					ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
+					contentContainerStyle={{
+						height: 'auto',
+						paddingVertical: 20,
+						minHeight: '100%',
+					}}
 				/>
 			)}
 		</>

@@ -1,5 +1,6 @@
+import { CreateIdea, CreateIdeaSolution } from './../model/types'
 import { baseApi } from '@/shared/api/base-api'
-import { Idea, IdeaQuery, IdeaRdo } from '../model/types'
+import { IdeaQuery, IdeaRdo } from '../model/types'
 import { IDEA_TAG, ONE_IDEA, VOTE_TAG, WISHLIST_TAG } from '@/shared/api/tags'
 import { mapIdea } from '../lib/mapIdea'
 import { createEntityAdapter } from '@reduxjs/toolkit'
@@ -22,7 +23,6 @@ export const ideaApi = baseApi.injectEndpoints({
 		}),
 		findIdeas: build.query<IdeaRdo[], IdeaQuery>({
 			query: queryParams => {
-				console.log(queryParams)
 				return {
 					url: '/idea',
 					method: 'GET',
@@ -54,11 +54,26 @@ export const ideaApi = baseApi.injectEndpoints({
 			query: id => ({
 				url: `/idea/${id}`,
 				method: 'GET',
-				providesTags: [IDEA_TAG, WISHLIST_TAG, VOTE_TAG, ONE_IDEA],
+				providesTags: (result: Pick<IdeaRdo, 'id'>) => [
+					{ type: ONE_IDEA, id: result?.id || undefined },
+				],
 			}),
 			transformResponse: (response: IdeaRdo) => mapIdea(response),
 		}),
-		createIdea: build.mutation<IdeaRdo, Idea>({
+		createIdeaSolution: build.mutation<IdeaRdo, CreateIdeaSolution>({
+			query: ({ id, ...body }) => ({
+				url: `/idea/create-solution/${id}`,
+				method: 'PUT',
+				body,
+				invalidatesTags: (
+					result: any,
+					error: any,
+					arg: Pick<IdeaRdo, 'id'>
+				) => [{ type: ONE_IDEA, id: arg.id }],
+				transformResponse: (response: IdeaRdo) => mapIdea(response),
+			}),
+		}),
+		createIdea: build.mutation<IdeaRdo, CreateIdea>({
 			query: dto => ({
 				url: '/idea/create',
 				method: 'POST',
@@ -66,6 +81,13 @@ export const ideaApi = baseApi.injectEndpoints({
 			}),
 			invalidatesTags: [IDEA_TAG, WISHLIST_TAG],
 			transformResponse: (response: IdeaRdo) => mapIdea(response),
+		}),
+		uploadImage: build.mutation<string, FormData>({
+			query: dto => ({
+				url: '/images/upload',
+				method: 'POST',
+				body: dto,
+			}),
 		}),
 	}),
 })
@@ -77,6 +99,8 @@ export const {
 	useFindMyIdeasQuery,
 	useFindFavoriteIdeasQuery,
 	useFindTotalCountIdeasQuery,
+	useCreateIdeaSolutionMutation,
+	useUploadImageMutation,
 } = ideaApi
 
 export { ideasSelector, ideasAdapter }

@@ -14,44 +14,8 @@ const Box = styled.View`
 	min-height: 200px;
 `
 
-interface Props {
-	isOpen: boolean
-}
-
-export function QrCodeModal({ isOpen }: Props): JSX.Element {
-	const [currentBrightness, setCurrentBrightness] = useState<number>(0.8)
+export function QrCodeModal(): JSX.Element {
 	const token = useAppSelector(({ sessionSlice }) => sessionSlice.accessToken)
-
-	const setBrightness = async () => {
-		try {
-			const { status } = await Brightness.getPermissionsAsync()
-			if (status !== 'granted') {
-				const { status } = await Brightness.requestPermissionsAsync()
-				if (status !== 'granted') {
-					return
-				}
-			}
-
-			const currentValue = await Brightness.getSystemBrightnessAsync()
-			setCurrentBrightness(currentValue)
-
-			await Brightness.setSystemBrightnessAsync(1)
-		} catch (error) {}
-	}
-
-	const restoreBrightness = async () => {
-		try {
-			await Brightness.setSystemBrightnessAsync(currentBrightness)
-		} catch (error) {}
-	}
-
-	useEffect(() => {
-		if (isOpen) {
-			setBrightness()
-		} else {
-			restoreBrightness()
-		}
-	}, [isOpen])
 
 	return (
 		<>

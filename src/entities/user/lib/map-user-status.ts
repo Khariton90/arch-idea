@@ -1,4 +1,4 @@
-import { UserStatus } from '../model/types'
+import { UserRole, UserStatus } from '../model/types'
 
 export const mappingUserStatus: Record<UserStatus, string> = {
 	[UserStatus.NotVerified]: 'Не верифицирован',
@@ -7,4 +7,10 @@ export const mappingUserStatus: Record<UserStatus, string> = {
 	[UserStatus.Pro]: 'Профи',
 	[UserStatus.Expert]: 'Эксперт',
 	[UserStatus.SuperExpert]: 'Супер-эксперт',
+}
+
+export const mappingUserRole: Record<UserRole, string> = {
+	[UserRole.Admin]: 'Супер-пользователь',
+	[UserRole.User]: 'Пользователь',
+	[UserRole.Manager]: 'Администратор',
 }

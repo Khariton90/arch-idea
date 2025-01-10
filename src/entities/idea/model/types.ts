@@ -47,6 +47,10 @@ export interface Idea {
 	priority: string
 }
 
+export interface CreateIdea extends Idea {
+	file?: File | Blob
+}
+
 export interface IdeaRdo extends Idea {
 	id: string
 	user: UserRdo
@@ -59,6 +63,7 @@ export interface IdeaRdo extends Idea {
 	likesCount: number
 	dislikesCount: number
 	reactionType: ReactionType
+	solution: string
 }
 
 export interface IdeaQuery {
@@ -66,4 +71,11 @@ export interface IdeaQuery {
 	limit: number
 	sortDirection?: 'asc' | 'desc'
 	department?: LocationDepartment
+	sortOptions?: string
+}
+
+export interface CreateIdeaSolution {
+	id: string
+	status: IdeaStatus
+	solution: string
 }
