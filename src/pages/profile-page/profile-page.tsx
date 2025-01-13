@@ -84,7 +84,7 @@ export function ProfilePage(): JSX.Element {
 					/>
 					<BottomSheetButton
 						title={'Другое'}
-						subTitle={'Удалить профиль'}
+						subTitle={'Выход'}
 						onPress={() => toggleModal(4)}
 					/>
 				</Box>

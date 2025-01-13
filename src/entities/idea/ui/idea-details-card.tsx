@@ -8,6 +8,8 @@ import { ThemeContext } from '@/shared/colors.styled'
 import { formatDate } from '@/shared/lib/format-date'
 import { Typography } from '@/shared/ui/typography/typography'
 import { Chip } from '@/shared/ui/chip'
+import { mappingUserStatus } from '@/entities/user/lib/map-user-status'
+import { UserStatus } from '@/entities/user'
 
 const Container = styled.View<{ background: string }>`
 	flex: 1;
@@ -45,16 +47,6 @@ const CardContent = styled.View`
 	gap: 6px;
 `
 
-const AuthorBox = styled.View`
-	flex-direction: row;
-	gap: 6px;
-	align-items: center;
-	position: absolute;
-	right: 10px;
-	top: 20px;
-	padding: 0 10px;
-`
-
 const Row = styled.View`
 	flex-direction: row;
 	align-items: center;
@@ -83,8 +75,6 @@ interface Props {
 	solutionSlot: ReactNode
 }
 
-const MAX_USERNAME_LENGTH = 10
-
 function IdeaDetailsCardComponent({
 	idea,
 	likesDisLakesSlot,
@@ -93,11 +83,6 @@ function IdeaDetailsCardComponent({
 	solutionSlot,
 }: Props): JSX.Element {
 	const { theme } = useContext(ThemeContext)
-
-	const firstName =
-		idea.user.firstName.length >= MAX_USERNAME_LENGTH
-			? idea.user.firstName.slice(0, MAX_USERNAME_LENGTH)
-			: idea.user.firstName
 
 	return (
 		<Container background={theme.colors.background}>
@@ -116,22 +101,24 @@ function IdeaDetailsCardComponent({
 							color={'success'}
 						/>
 					</Row>
-
-					{idea.solution && (
-						<Box theme={theme} border={theme.colors.border}>
-							<Typography variant='h2' text='Решение' />
-							<Typography variant='p' text={idea.solution} />
-						</Box>
-					)}
 				</CardHeader>
+
 				<CardContent>
-					<AuthorBox>
+					<Row style={{ gap: 10, paddingVertical: 10 }}>
 						<Avatar size='sm' name={idea.user.firstName} />
 						<View>
-							<Typography variant='span' soft text='Автор' />
-							<Typography variant='span' soft text={firstName} />
+							<Typography
+								variant='span'
+								soft
+								text={mappingUserStatus[idea.user.status as UserStatus]}
+							/>
+							<Typography
+								variant='span'
+								soft
+								text={`${idea.user.firstName} ${idea.user.lastName}`}
+							/>
 						</View>
-					</AuthorBox>
+					</Row>
 					<Row>
 						<Chip
 							title={`Приоритет: ${idea.priority}`}
@@ -158,6 +145,13 @@ function IdeaDetailsCardComponent({
 				<CardContent>
 					<Typography variant='h1' text={idea.title} />
 					<Typography variant='p' text={idea.description} />
+					{idea.solution && (
+						<Box theme={theme} border={theme.colors.border}>
+							<Typography variant='h2' text='Итоговое решение' />
+							<Typography variant='p' text={idea.solution} />
+						</Box>
+					)}
+
 					{solutionSlot}
 				</CardContent>
 				<CardFooter>

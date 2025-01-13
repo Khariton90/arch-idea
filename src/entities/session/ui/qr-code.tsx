@@ -6,7 +6,7 @@ import {
 	useCameraPermissions,
 } from 'expo-camera'
 import { useContext, useEffect, useState } from 'react'
-import { StyleSheet, Text, Vibration, View } from 'react-native'
+import { StyleSheet, Vibration } from 'react-native'
 import { useAuthByQrCodeMutation } from '../api'
 import styled from 'styled-components/native'
 import { LayoutLogo } from '@/widgets'
@@ -16,6 +16,7 @@ import { Typography } from '@/shared/ui/typography/typography'
 import * as Device from 'expo-device'
 import { saveToken } from '../api/session-api'
 import { delay } from '@/shared/lib/delay'
+import { UniversalButton } from '@/shared/ui/universal-button/universal-button'
 
 const Container = styled.View<{ background: string }>`
 	flex: 1;
@@ -23,14 +24,6 @@ const Container = styled.View<{ background: string }>`
 	align-items: center;
 	background-color: ${({ background }) => background};
 	gap: 20px;
-`
-
-const Button = styled.TouchableOpacity<{ background: string }>`
-	background-color: ${({ background }) => background};
-	padding: 10px;
-	align-items: center;
-	justify-content: center;
-	border-radius: 10px;
 `
 
 const CameraWrapper = styled.View<{ border: string }>`
@@ -45,12 +38,17 @@ const CameraWrapper = styled.View<{ border: string }>`
 	border: 2px solid ${({ border }) => border};
 `
 
-const Message = styled.Text`
-	text-align: center;
-	padding-bottom: 10px;
+const Row = styled.View`
+	padding: 0 40px;
+	gap: 12px;
+	width: 100%;
 `
 
-export function QrCode({ navigation }: any) {
+interface Props {
+	onChangeScreen: () => void
+}
+
+export function QrCode({ onChangeScreen }: Props) {
 	const { theme } = useContext(ThemeContext)
 	const [permission, requestPermission] = useCameraPermissions()
 	const [result, setResult] = useState('')
@@ -100,8 +98,19 @@ export function QrCode({ navigation }: any) {
 	if (!permission.granted) {
 		return (
 			<Container background={theme.colors.background}>
-				<Message>Мы нуждаемся в вашем разрешении для показа камеры</Message>
-				<Button background={theme.colors.primary} onPress={requestPermission} />
+				<Row>
+					<LayoutLogo />
+					<Typography
+						variant='h2'
+						align='center'
+						text={'Мы нуждаемся в вашем разрешении для показа камеры'}
+					/>
+
+					<UniversalButton
+						title='Попробовать еще'
+						onPress={requestPermission}
+					/>
+				</Row>
 			</Container>
 		)
 	}
@@ -119,20 +128,26 @@ export function QrCode({ navigation }: any) {
 					onBarcodeScanned={!result ? authUser : undefined}
 				></CameraView>
 			</CameraWrapper>
-			{isError ? (
-				<View style={{ gap: 10 }}>
+			{isError && result ? (
+				<Row>
 					<Typography
 						variant='p'
 						text={'Невозможно войти qr code недействителен'}
 					/>
-					<Button
-						background={theme.colors.primary}
+					<UniversalButton
+						title='Попробовать еще'
 						onPress={() => setResult('')}
-					>
-						<Text>Попробовать еще</Text>
-					</Button>
-				</View>
+					/>
+				</Row>
 			) : null}
+			<Row>
+				<Typography align='center' variant='span' soft text={'или'} />
+				<UniversalButton
+					fullWidth
+					title='К логину и паролю'
+					onPress={onChangeScreen}
+				/>
+			</Row>
 		</Container>
 	)
 }

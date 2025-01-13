@@ -3,12 +3,12 @@ import { ThemeContext } from '@/shared/colors.styled'
 import { ArrowUpCircleIcon } from '@/shared/ui/icons/arrow-up-circle-icon'
 import { InputField } from '@/shared/ui/input-field/input-field'
 import { useContext, useEffect, useState } from 'react'
-import { StyleSheet } from 'react-native'
 import styled from 'styled-components/native'
+import { Keyboard } from 'react-native'
 
 const Form = styled.View<{ background: string }>`
 	position: absolute;
-	bottom: 0;
+	bottom: 80px;
 	width: 100%;
 	height: 80px;
 	background-color: ${({ background }) => background};
@@ -45,6 +45,7 @@ export function CreateCommentForm({ ideaId }: Props): JSX.Element {
 
 	const handleSubmit = async () => {
 		await createComment({ ideaId, content: value.comment.trim() })
+		Keyboard.dismiss()
 	}
 
 	useEffect(() => {
@@ -69,14 +70,3 @@ export function CreateCommentForm({ ideaId }: Props): JSX.Element {
 		</Form>
 	)
 }
-
-const styles = StyleSheet.create({
-	textInput: {
-		borderRadius: '10px',
-		paddingLeft: 10,
-		paddingRight: 20,
-		paddingVertical: 20,
-		borderWidth: 1,
-		flex: 1,
-	},
-})

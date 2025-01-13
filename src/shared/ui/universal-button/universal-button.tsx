@@ -6,16 +6,20 @@ import {
 } from '@/shared/colors.styled'
 
 const ButtonContainer = styled.TouchableOpacity<
-	TouchableOpacityWithThemeProps & { fillWidth?: boolean; disabled?: boolean }
+	TouchableOpacityWithThemeProps & {
+		fillWidth?: boolean
+		disabled?: boolean
+		background: string
+	}
 >`
-	background-color: ${props => props.theme.colors.primary};
+	background-color: ${({ background }) => background};
 	padding: 12px 20px;
 	border-radius: 10px;
 	align-items: center;
 	width: ${({ fillWidth }) => (fillWidth ? '100%' : 'auto')};
 	opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
 	pointer-events: ${({ disabled }) => (disabled ? 'none' : 'auto')};
-	box-shadow: 0 0 2px #6e6e6e;
+	box-shadow: 0 0 1px #6e6e6e;
 `
 
 const ButtonText = styled.Text`
@@ -30,6 +34,7 @@ interface Props {
 	width?: number
 	fullWidth?: boolean
 	disabled?: boolean
+	outlined?: boolean
 }
 
 export function UniversalButton({
@@ -37,11 +42,15 @@ export function UniversalButton({
 	title,
 	fullWidth,
 	disabled,
+	outlined,
 }: Props) {
 	const { theme } = useContext(ThemeContext)
 
+	const background = outlined ? theme.colors.backdrop : theme.colors.primary
+
 	return (
 		<ButtonContainer
+			background={background}
 			theme={theme}
 			onPress={onPress}
 			fillWidth={fullWidth}

@@ -5,7 +5,6 @@ import { LayoutLogo } from '@/widgets'
 import { ThemeContext, ViewWithThemeProps } from '@/shared/colors.styled'
 import { UniversalButton } from '@/shared/ui/universal-button/universal-button'
 import { Typography } from '@/shared/ui/typography/typography'
-import { InputField } from '@/shared/ui/input-field/input-field'
 import { SignInLocal } from '@/entities/session/ui/sign-in-local'
 
 const Container = styled.View<ViewWithThemeProps>`
@@ -19,13 +18,18 @@ const Container = styled.View<ViewWithThemeProps>`
 const Row = styled.View`
 	gap: 10px;
 	justify-content: center;
+	padding: 0 40px;
+	width: 100%;
 `
 
 export function LoginPage({ navigation }: any): JSX.Element {
 	const { theme } = useContext(ThemeContext)
 	const [isOpenCamera, setIsOpenCamera] = useState(false)
+	const [isLocalAuth, setIsLocalAuth] = useState(false)
 
-	return <SignInLocal />
+	if (isLocalAuth) {
+		return <SignInLocal onChangeScreen={() => setIsLocalAuth(() => false)} />
+	}
 
 	if (!isOpenCamera) {
 		return (
@@ -37,11 +41,14 @@ export function LoginPage({ navigation }: any): JSX.Element {
 						title='Войти по QR-коду'
 					/>
 					<Typography align='center' variant='span' soft text='или' />
-					<UniversalButton onPress={() => {}} title='По логину и паролю' />
+					<UniversalButton
+						onPress={() => setIsLocalAuth(() => true)}
+						title='По логину и паролю'
+					/>
 				</Row>
 			</Container>
 		)
 	}
 
-	return <QrCode navigation={navigation} />
+	return <QrCode onChangeScreen={() => setIsLocalAuth(() => true)} />
 }

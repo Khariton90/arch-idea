@@ -46,10 +46,13 @@ export function SignOutModal(): JSX.Element {
 
 	return (
 		<>
-			<Typography variant='h1' text='Выход и удаление профиля' />
-			<Box>
-				<UniversalButton title='Выйти' onPress={handleSignOut} fullWidth />
-			</Box>
+			<Typography variant='h1' text='Выход из профиля' />
+			<UniversalButton
+				outlined
+				title='Выйти'
+				onPress={handleSignOut}
+				fullWidth
+			/>
 
 			{isSignOutMessage && (
 				<BoxMessage theme={theme}>

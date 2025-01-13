@@ -1,22 +1,23 @@
-import { LocationDepartment, setCurrentFilter } from '@/entities/idea'
-import { mappingDepartment } from '@/entities/idea/lib/mapIdea'
+import { IdeaStatus } from '@/entities/idea'
+import { mappingStatus } from '@/entities/idea/lib/mapIdea'
 import {
 	TextWithThemeProps,
 	ThemeContext,
 	TouchableOpacityWithThemeProps,
 } from '@/shared/colors.styled'
-import { useAppDispatch, useAppSelector } from '@/shared/hooks/hooks'
-import { memo, ReactNode, useCallback, useContext, useState } from 'react'
+import { memo, ReactNode, useContext, useState } from 'react'
 import { ScrollView } from 'react-native'
 import styled from 'styled-components/native'
 
 const Container = styled.View`
 	height: 40px;
+	width: 100%;
+	padding: 0 10px;
 `
 
 const FilterItem = styled.TouchableOpacity<TouchableOpacityWithThemeProps>`
 	background-color: ${({ theme }) => theme.colors.backdrop};
-	padding: 0 16px;
+	padding: 0 30px;
 	border-radius: 10px;
 	border: 1px solid ${({ theme }) => theme.colors.border};
 	justify-content: center;
@@ -32,38 +33,38 @@ const FilterItemText = styled.Text<TextWithThemeProps & { active: boolean }>`
 
 interface Props {
 	sortingSlot?: ReactNode
+	onChangeFilterStatus: (status: IdeaStatus | undefined) => void
 }
 
-function FilterComponent({ sortingSlot }: Props): JSX.Element {
+function FilterComponent({
+	sortingSlot,
+	onChangeFilterStatus,
+}: Props): JSX.Element {
 	const { theme } = useContext(ThemeContext)
-	const query = useAppSelector(({ ideaSlice }) => ideaSlice.currentFilter)
-	const dispatch = useAppDispatch()
-	const [activeItem, setActiveItem] = useState<LocationDepartment | undefined>(
+
+	const [activeItem, setActiveItem] = useState<IdeaStatus | undefined>(
 		undefined
 	)
 
-	const handlePress = useCallback(
-		(item: LocationDepartment) => {
-			if (activeItem === item) {
-				setActiveItem(prev => undefined)
-				dispatch(setCurrentFilter({ ...query, department: undefined }))
-				return
-			}
-			setActiveItem(prev => item)
-			dispatch(setCurrentFilter({ ...query, department: item }))
-		},
-		[activeItem]
-	)
+	const handlePress = (item: IdeaStatus) => {
+		if (activeItem === item) {
+			setActiveItem(prev => undefined)
+			onChangeFilterStatus(undefined)
+			return
+		}
+		setActiveItem(prev => item)
+		onChangeFilterStatus(item)
+	}
 
 	return (
 		<Container>
 			<ScrollView horizontal showsHorizontalScrollIndicator={false}>
 				{sortingSlot}
-				{Object.entries(mappingDepartment).map(([key, value]) => (
+				{Object.entries(mappingStatus).map(([key, value]) => (
 					<FilterItem
 						theme={theme}
 						key={key}
-						onPress={() => handlePress(key as LocationDepartment)}
+						onPress={() => handlePress(key as IdeaStatus)}
 					>
 						<FilterItemText theme={theme} active={activeItem === key}>
 							{value}
@@ -75,4 +76,4 @@ function FilterComponent({ sortingSlot }: Props): JSX.Element {
 	)
 }
 
-export const Filter = memo(FilterComponent)
+export const FilterIdeaStatus = memo(FilterComponent)

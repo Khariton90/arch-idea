@@ -29,29 +29,26 @@ export function HomePage(): JSX.Element {
 	}
 
 	return (
-		<>
-			<SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.backdrop }}>
-				<Main>
-					{data && (
-						<>
-							<LayoutHeader />
-							<LayoutLogo />
-							<AddNewIdeaButton />
-							<BaseIdeasList
-								filterSlot={
-									<Filter
-										sortingSlot={
-											<SortingButton toggleSortingModal={toggleSortingModal} />
-										}
-									/>
-								}
-							/>
-						</>
-					)}
-				</Main>
-			</SafeAreaView>
-
+		<SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.backdrop }}>
+			<Main>
+				{data && (
+					<>
+						<LayoutHeader />
+						<LayoutLogo />
+						<AddNewIdeaButton />
+						<BaseIdeasList
+							filterSlot={
+								<Filter
+									sortingSlot={
+										<SortingButton toggleSortingModal={toggleSortingModal} />
+									}
+								/>
+							}
+						/>
+					</>
+				)}
+			</Main>
 			<SortingModal isOpen={isOpen} toggleSortingModal={toggleSortingModal} />
-		</>
+		</SafeAreaView>
 	)
 }

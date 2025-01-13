@@ -1,3 +1,5 @@
+import { mappingUserStatus } from '@/entities/user/lib/map-user-status'
+import { useAppSelector } from '@/shared/hooks/hooks'
 import { Typography } from '@/shared/ui/typography/typography'
 import React from 'react'
 import { ViewProps } from 'react-native-svg/lib/typescript/fabric/utils'
@@ -21,11 +23,13 @@ interface Props {
 }
 
 export function UserStatusModal({ background }: Props): JSX.Element {
+	const status = useAppSelector(({ userSlice }) => userSlice.status)
+
 	return (
 		<>
 			<Row>
 				<Typography variant='h1' text='Ваш статус' />
-				<Typography variant='h1' text='Спец' />
+				<Typography variant='h1' text={mappingUserStatus[status]} />
 			</Row>
 
 			<DescriptionBox style={{ backgroundColor: background }}>

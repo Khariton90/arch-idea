@@ -15,7 +15,7 @@ const Box = styled.View<{ background: string }>`
 
 const RadioButton = styled.TouchableOpacity`
 	width: 100%;
-	padding: 10px;
+	padding: 20px 10px;
 	border: 1px solid ${darkTheme.colors.secondary};
 	border-radius: 10px;
 `

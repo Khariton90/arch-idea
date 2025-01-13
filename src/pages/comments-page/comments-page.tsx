@@ -1,6 +1,4 @@
-import { useFindCommentsQuery } from '@/entities/comment/api'
 import { AppRoutes, RootStackParamList } from '@/shared/model/types'
-import { LoadingIndicator } from '@/shared/ui/loading-indicator'
 import { CommentsList } from '@/widgets/comments-list/comments-list'
 import { RouteProp } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'

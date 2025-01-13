@@ -31,7 +31,7 @@ function getColor(color: 'primary' | 'info' | 'success', theme: ITheme) {
 const Box = styled.View<{ background: string; border: string }>`
 	justify-content: center;
 	align-items: center;
-	border-radius: 10px;
+	border-radius: 6px;
 	background-color: ${({ background }) => background};
 	border: 1px solid ${({ border }) => border};
 `

@@ -72,6 +72,7 @@ export interface IdeaQuery {
 	sortDirection?: 'asc' | 'desc'
 	department?: LocationDepartment
 	sortOptions?: string
+	status?: IdeaStatus
 }
 
 export interface CreateIdeaSolution {

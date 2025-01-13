@@ -54,11 +54,17 @@ export function CommentsList({ ideaId }: Props): JSX.Element {
 		}
 	}, [commentsData])
 
+	if (commentsData && !commentsData.totalCount) {
+		return (
+			<Container background={theme.colors.backdrop}>
+				<CommentsNotFound />
+				<CreateCommentForm ideaId={ideaId} />
+			</Container>
+		)
+	}
 	return (
 		<Container background={theme.colors.backdrop}>
-			{!commentsData?.totalCount ? (
-				<CommentsNotFound />
-			) : (
+			{commentsData && (
 				<FlatList
 					refreshControl={
 						<RefreshControl
@@ -74,12 +80,12 @@ export function CommentsList({ ideaId }: Props): JSX.Element {
 					onEndReached={loadMore}
 					contentContainerStyle={{
 						height: 'auto',
-						paddingVertical: 20,
+						paddingTop: 20,
+						paddingBottom: 100,
 						minHeight: '100%',
 					}}
 				/>
 			)}
-
 			<CreateCommentForm ideaId={ideaId} />
 		</Container>
 	)

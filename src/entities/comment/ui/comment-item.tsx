@@ -5,6 +5,9 @@ import { useContext } from 'react'
 import styled from 'styled-components/native'
 import { CommentRdo } from '../model/types'
 import { setCommentFormatDate } from '../lib/set-comment-format-date'
+import { View } from 'react-native'
+import { mappingUserStatus } from '@/entities/user/lib/map-user-status'
+import { UserStatus } from '@/entities/user'
 
 const Box = styled.View<{ background: string }>`
 	background-color: ${({ background }) => background};
@@ -31,7 +34,18 @@ export function CommentItem({ comment }: Props): JSX.Element {
 		<Box key={comment.id} background={theme.colors.background}>
 			<UserBox>
 				<Avatar name={comment.user.firstName} />
-				<Typography variant='p' soft text={comment.user.firstName} />
+				<View>
+					<Typography
+						variant='span'
+						soft
+						text={`${comment.user.firstName} ${comment.user.lastName}`}
+					/>
+					<Typography
+						variant='span'
+						soft
+						text={mappingUserStatus[comment.user.status as UserStatus]}
+					/>
+				</View>
 			</UserBox>
 			<Typography variant='h2' text={comment.content} />
 			<Typography

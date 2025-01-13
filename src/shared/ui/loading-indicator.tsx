@@ -8,6 +8,7 @@ const Container = styled.View<{ background: string }>`
 	background-color: ${({ background }) => background};
 	justify-content: center;
 	align-items: center;
+	width: 100%;
 `
 
 export function LoadingIndicator(): JSX.Element {

@@ -9,6 +9,7 @@ import * as Device from 'expo-device'
 import { useAppDispatch } from '@/shared/hooks/hooks'
 import { addSessionData } from '../model/slice'
 import { saveToken } from '../api/session-api'
+import { LayoutLogo } from '@/widgets'
 
 const Container = styled.View<ViewWithThemeProps>`
 	flex: 1;
@@ -21,10 +22,13 @@ const Row = styled.View`
 	width: 100%;
 	gap: 20px;
 	justify-content: center;
-	padding: 10px;
+	padding: 0 40px;
 `
+interface Props {
+	onChangeScreen: () => void
+}
 
-export function SignInLocal(): JSX.Element {
+export function SignInLocal({ onChangeScreen }: Props): JSX.Element {
 	const { theme } = useContext(ThemeContext)
 	const dispatch = useAppDispatch()
 	const [signIn, { data, isLoading, isError, error, isSuccess }] =
@@ -52,7 +56,8 @@ export function SignInLocal(): JSX.Element {
 	return (
 		<Container theme={theme}>
 			<Row>
-				<Typography variant='h1' align='center' text='Вход' />
+				<LayoutLogo />
+
 				<InputField
 					textKey={'login'}
 					value={form.login || ''}
@@ -67,9 +72,19 @@ export function SignInLocal(): JSX.Element {
 					placeholder={'Пароль'}
 				/>
 
-				<UniversalButton fullWidth onPress={handleSubmit} title='Войти' />
+				<UniversalButton
+					disabled={!form.login || !form.password}
+					fullWidth
+					onPress={handleSubmit}
+					title='Войти'
+				/>
 
-				<UniversalButton fullWidth onPress={() => {}} title='Назад' />
+				<UniversalButton
+					fullWidth
+					onPress={onChangeScreen}
+					title='Назад'
+					outlined
+				/>
 				{error && (
 					<Typography
 						soft

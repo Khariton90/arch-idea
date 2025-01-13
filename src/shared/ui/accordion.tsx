@@ -40,7 +40,7 @@ const Content = styled.TouchableOpacity<
 >`
 	padding: 10px;
 	background-color: ${({ activeLink }) =>
-		activeLink ? darkTheme.colors.primary : darkTheme.colors.border};
+		activeLink ? darkTheme.colors.primary : darkTheme.colors.success};
 `
 
 const TextContent = styled.Text`

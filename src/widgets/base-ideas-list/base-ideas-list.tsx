@@ -3,12 +3,10 @@ import {
 	useFindIdeasQuery,
 	useFindTotalCountIdeasQuery,
 } from '@/entities/idea/api'
-import { Filter } from '@/features/idea'
 import { LikeDislikeButtons } from '@/features/vote'
 import { WishListToggle } from '@/features/wishlist'
 import { ThemeContext } from '@/shared/colors.styled'
 import React, { memo, ReactNode, useContext } from 'react'
-import { useState } from 'react'
 import { RefreshControl, View } from 'react-native'
 import { FlatList } from 'react-native'
 import { EmptyIdeasList } from '../empty-ideas-list/empty-ideas-list'
@@ -95,9 +93,7 @@ function BaseIdeasListComponent({ filterSlot }: Props): JSX.Element {
 					onEndReachedThreshold={0.5}
 					ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
 					contentContainerStyle={{
-						height: 'auto',
 						paddingVertical: 20,
-						minHeight: '100%',
 					}}
 				/>
 			)}

@@ -11,18 +11,14 @@ const Form = styled.View<ViewWithThemeProps>`
 	gap: 10px;
 `
 
-const initialForm: UpdateUserDto = {
-	firstName: '',
-	lastName: '',
-	login: '',
-	password: '',
-}
+const MIN_LINE_LENGTH = 6
 
 export function UserChangeForm(): JSX.Element {
 	const { firstName, lastName, login } = useAppSelector(
 		({ userSlice }) => userSlice
 	)
 	const [errorMessage, setErrorMessage] = useState(false)
+
 	const [form, setForm] = useState<UpdateUserDto>({
 		firstName,
 		lastName,
@@ -42,6 +38,12 @@ export function UserChangeForm(): JSX.Element {
 	}
 
 	const handleSubmit = async () => {
+		if (
+			form.login.length < MIN_LINE_LENGTH ||
+			form.password.length < MIN_LINE_LENGTH
+		) {
+			return setErrorMessage(() => true)
+		}
 		await updateUser(form)
 	}
 
@@ -73,12 +75,46 @@ export function UserChangeForm(): JSX.Element {
 				onChangeText={handleChange}
 				placeholder={'Login'}
 			/>
+
+			{errorMessage && form.login.length < MIN_LINE_LENGTH ? (
+				<Typography
+					align='center'
+					variant='span'
+					soft
+					text={`Минимальная длина ${MIN_LINE_LENGTH} символов`}
+				/>
+			) : null}
+
 			<InputField
 				textKey={'password'}
 				value={form.password || ''}
 				onChangeText={handleChange}
 				placeholder={'Пароль'}
 			/>
+
+			{errorMessage && form.password.length < MIN_LINE_LENGTH ? (
+				<Typography
+					align='center'
+					variant='span'
+					soft
+					text={`Минимальная длина ${MIN_LINE_LENGTH} символов`}
+				/>
+			) : null}
+
+			<UniversalButton
+				disabled={invalidForm}
+				title={'Сохранить'}
+				onPress={handleSubmit}
+			/>
+
+			{isError && (
+				<Typography
+					align='center'
+					variant='span'
+					soft
+					text={'Ошибка данные не изменены'}
+				/>
+			)}
 
 			{isSuccess && (
 				<Typography
@@ -88,12 +124,6 @@ export function UserChangeForm(): JSX.Element {
 					text={'Данные профиля изменены'}
 				/>
 			)}
-
-			<UniversalButton
-				disabled={invalidForm}
-				title={'Сохранить'}
-				onPress={handleSubmit}
-			/>
 		</Form>
 	)
 }
