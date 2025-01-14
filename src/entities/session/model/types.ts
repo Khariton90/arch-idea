@@ -27,8 +27,9 @@ export type UserDto = {
 	login: string
 }
 
-export interface UserListDto extends UserDto {
-	role: UserRole
+export interface UserListDto {
+	users: UserDto[]
+	count: number
 }
 
 export type UserRdo = {

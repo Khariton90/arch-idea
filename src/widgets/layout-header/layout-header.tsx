@@ -1,4 +1,5 @@
 import { UserRole } from '@/entities/user'
+import { UserListNavLink } from '@/entities/user/ui/user-list-nav-link'
 import {
 	ThemeContext,
 	TouchableOpacityWithThemeProps,
@@ -12,7 +13,6 @@ import { AppRoutes } from '@/shared/model/types'
 import { Avatar } from '@/shared/ui/avatar/avatar'
 import { FavoriteIcon } from '@/shared/ui/icons/favorite-icon'
 import { IdeaIcon } from '@/shared/ui/icons/idea-icon'
-import { PersonIcon } from '@/shared/ui/icons/person-icon'
 import { Typography } from '@/shared/ui/typography/typography'
 import { useContext } from 'react'
 import { View } from 'react-native'
@@ -101,23 +101,7 @@ export function LayoutHeader(): JSX.Element {
 					<IdeaIcon active={!!myIdeasCount} />
 				</NavLink>
 
-				{user.role !== UserRole.User && (
-					<NavLink
-						theme={theme}
-						onPress={() =>
-							navigation.navigate(AppRoutes.DashboardPage, {
-								title: 'Участники',
-								page: 'DashboardPage',
-							})
-						}
-					>
-						<View>
-							<Typography variant='span' text='Участники' />
-							<Typography variant='span' soft text={'Все'} />
-						</View>
-						<PersonIcon active />
-					</NavLink>
-				)}
+				{user.role !== UserRole.User && <UserListNavLink />}
 			</NavList>
 		</Header>
 	)

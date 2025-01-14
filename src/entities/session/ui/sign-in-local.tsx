@@ -70,6 +70,7 @@ export function SignInLocal({ onChangeScreen }: Props): JSX.Element {
 					value={form.password || ''}
 					onChangeText={handleChange}
 					placeholder={'Пароль'}
+					password
 				/>
 
 				<UniversalButton

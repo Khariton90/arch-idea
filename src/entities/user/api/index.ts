@@ -1,5 +1,5 @@
 import { baseApi } from '@/shared/api/base-api'
-import { UpdateUserDto } from '../model/types'
+import { UpdateUserDto, UserQuery } from '../model/types'
 import {
 	UserDto,
 	UserListDto,
@@ -9,9 +9,16 @@ import { USER_TAG } from '@/shared/api/tags'
 
 export const userApi = baseApi.injectEndpoints({
 	endpoints: build => ({
-		fetchUsers: build.query<UserListDto[], string>({
+		findTotalCount: build.query<number, void>({
 			query: () => ({
+				url: '/user/totalCount',
+			}),
+		}),
+
+		fetchUsers: build.query<UserListDto, UserQuery>({
+			query: params => ({
 				url: '/user/all',
+				params: { ...params },
 			}),
 			providesTags: [USER_TAG],
 		}),
@@ -37,4 +44,5 @@ export const {
 	useUpdateUserMutation,
 	useFetchUsersQuery,
 	useUpdateUserOptionsMutation,
+	useFindTotalCountQuery,
 } = userApi

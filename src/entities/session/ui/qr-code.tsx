@@ -1,12 +1,8 @@
 import { useAppDispatch } from '@/shared/hooks/hooks'
 import { LoadingIndicator } from '@/shared/ui/loading-indicator'
-import {
-	BarcodeScanningResult,
-	CameraView,
-	useCameraPermissions,
-} from 'expo-camera'
+import { CameraView, useCameraPermissions } from 'expo-camera'
 import { useContext, useEffect, useState } from 'react'
-import { StyleSheet, Vibration } from 'react-native'
+import { StyleSheet, Vibration, View } from 'react-native'
 import { useAuthByQrCodeMutation } from '../api'
 import styled from 'styled-components/native'
 import { LayoutLogo } from '@/widgets'
@@ -39,9 +35,8 @@ const CameraWrapper = styled.View<{ border: string }>`
 `
 
 const Row = styled.View`
-	padding: 0 40px;
+	margin: 0 20px;
 	gap: 12px;
-	width: 100%;
 `
 
 interface Props {
@@ -54,6 +49,7 @@ export function QrCode({ onChangeScreen }: Props) {
 	const [result, setResult] = useState('')
 	const [modelName] = useState(Device.modelName)
 	const [isLoading, setIsLoading] = useState(false)
+	const [count, setCount] = useState(0)
 	const dispatch = useAppDispatch()
 
 	const [authByQrCode, { data: authData, isError }] = useAuthByQrCodeMutation()
@@ -64,19 +60,23 @@ export function QrCode({ onChangeScreen }: Props) {
 		setIsLoading(() => false)
 	}
 
-	const authUser = async (result: BarcodeScanningResult) => {
-		setResult(state => result.data)
-		if (result.data) {
-			Vibration.vibrate(50)
-			await authByQrCode({ sub: result.data, modelName: modelName ?? '' })
-		}
+	const authUser = async (result: string) => {
+		setCount(prev => (prev += 1))
+		Vibration.vibrate(50)
+		await authByQrCode({ sub: result, modelName: modelName ?? '' })
 	}
-
-	useCameraPermissions()
 
 	useEffect(() => {
 		openCamera()
 	}, [])
+
+	useEffect(() => {
+		if (result && !count) {
+			let data = result
+			setResult(() => '')
+			authUser(data)
+		}
+	}, [result])
 
 	useEffect(() => {
 		if (authData) {
@@ -125,11 +125,11 @@ export function QrCode({ onChangeScreen }: Props) {
 					barcodeScannerSettings={{
 						barcodeTypes: ['qr'],
 					}}
-					onBarcodeScanned={!result ? authUser : undefined}
+					onBarcodeScanned={scanned => setResult(() => scanned.data)}
 				></CameraView>
 			</CameraWrapper>
 			{isError && result ? (
-				<Row>
+				<View style={{ gap: 10 }}>
 					<Typography
 						variant='p'
 						text={'Невозможно войти qr code недействителен'}
@@ -138,16 +138,10 @@ export function QrCode({ onChangeScreen }: Props) {
 						title='Попробовать еще'
 						onPress={() => setResult('')}
 					/>
-				</Row>
+				</View>
 			) : null}
-			<Row>
-				<Typography align='center' variant='span' soft text={'или'} />
-				<UniversalButton
-					fullWidth
-					title='К логину и паролю'
-					onPress={onChangeScreen}
-				/>
-			</Row>
+			<Typography variant='span' soft text={'или'} />
+			<UniversalButton title='К логину и паролю' onPress={onChangeScreen} />
 		</Container>
 	)
 }

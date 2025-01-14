@@ -1,3 +1,5 @@
+import { LocationDepartment } from '@/entities/idea'
+
 export interface UpdateUserDto {
 	firstName: string
 	lastName: string
@@ -18,4 +20,11 @@ export enum UserRole {
 	Admin = 'Admin',
 	Manager = 'Manager',
 	User = 'User',
+}
+
+export interface UserQuery {
+	limit: number
+	page: number
+	sortDirection?: string
+	department?: LocationDepartment
 }

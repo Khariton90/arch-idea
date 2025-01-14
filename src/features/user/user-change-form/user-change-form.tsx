@@ -90,6 +90,7 @@ export function UserChangeForm(): JSX.Element {
 				value={form.password || ''}
 				onChangeText={handleChange}
 				placeholder={'Пароль'}
+				password
 			/>
 
 			{errorMessage && form.password.length < MIN_LINE_LENGTH ? (

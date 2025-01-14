@@ -14,6 +14,8 @@ import { Typography } from '@/shared/ui/typography/typography'
 import { UniversalButton } from '@/shared/ui/universal-button/universal-button'
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/hooks'
 
+const PAGE_LIMIT_COUNT = 10
+
 interface Props {
 	filterSlot: ReactNode
 }
@@ -37,7 +39,7 @@ function BaseIdeasListComponent({ filterSlot }: Props): JSX.Element {
 			dispatch(
 				setCurrentFilter({
 					...query,
-					limit: query.limit + 10,
+					limit: query.limit + PAGE_LIMIT_COUNT,
 				})
 			)
 		}
@@ -52,13 +54,12 @@ function BaseIdeasListComponent({ filterSlot }: Props): JSX.Element {
 		)
 	}
 	return (
-		<>
+		<View style={{ flex: 1 }}>
 			{filterSlot}
 			{ideas && (
 				<FlatList
 					style={{
 						flex: 1,
-						paddingVertical: 10,
 						paddingHorizontal: 10,
 						backgroundColor: theme.colors.background,
 					}}
@@ -97,7 +98,7 @@ function BaseIdeasListComponent({ filterSlot }: Props): JSX.Element {
 					}}
 				/>
 			)}
-		</>
+		</View>
 	)
 }
 

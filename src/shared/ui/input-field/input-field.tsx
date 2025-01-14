@@ -28,6 +28,7 @@ interface Props {
 	children?: ReactNode
 	disabledButton?: boolean
 	defaultValue?: string
+	password?: boolean
 }
 
 export function InputField({
@@ -39,9 +40,11 @@ export function InputField({
 	multiline,
 	children,
 	disabledButton,
+	password,
 }: Props): JSX.Element {
 	const { theme } = useContext(ThemeContext)
 	const [showDoneButton, setShowDoneButton] = useState(false)
+	const [secure, setSecure] = useState(password)
 
 	const handleFocus = () => {
 		setShowDoneButton(() => true)
@@ -69,9 +72,22 @@ export function InputField({
 					placeholder={placeholder}
 					value={value}
 					defaultValue={defaultValue}
+					secureTextEntry={secure}
 				/>
 
 				{children}
+
+				{password && !showDoneButton ? (
+					<DoneButton
+						dnone={false}
+						background={theme.colors.backdrop}
+						onPress={() => setSecure(!secure)}
+					>
+						<DoneButtonText color={theme.colors.accent}>
+							{secure ? 'Показать' : 'Скрыть'}
+						</DoneButtonText>
+					</DoneButton>
+				) : null}
 
 				{showDoneButton && (
 					<DoneButton

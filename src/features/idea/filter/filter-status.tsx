@@ -10,9 +10,10 @@ import { ScrollView } from 'react-native'
 import styled from 'styled-components/native'
 
 const Container = styled.View`
-	height: 40px;
+	height: 60px;
+	justify-content: center;
+	padding: 0 0 20px 0;
 	width: 100%;
-	padding: 0 10px;
 `
 
 const FilterItem = styled.TouchableOpacity<TouchableOpacityWithThemeProps>`

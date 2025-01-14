@@ -1,11 +1,10 @@
-import { LocationDepartment, setCurrentFilter } from '@/entities/idea'
+import { LocationDepartment } from '@/entities/idea'
 import { mappingDepartment } from '@/entities/idea/lib/mapIdea'
 import {
 	TextWithThemeProps,
 	ThemeContext,
 	TouchableOpacityWithThemeProps,
 } from '@/shared/colors.styled'
-import { useAppDispatch, useAppSelector } from '@/shared/hooks/hooks'
 import { memo, ReactNode, useCallback, useContext, useState } from 'react'
 import { ScrollView } from 'react-native'
 import styled from 'styled-components/native'
@@ -34,12 +33,11 @@ const FilterItemText = styled.Text<TextWithThemeProps & { active: boolean }>`
 
 interface Props {
 	sortingSlot?: ReactNode
+	onChangeFilter: (department: LocationDepartment | undefined) => void
 }
 
-function FilterComponent({ sortingSlot }: Props): JSX.Element {
+function FilterComponent({ sortingSlot, onChangeFilter }: Props): JSX.Element {
 	const { theme } = useContext(ThemeContext)
-	const query = useAppSelector(({ ideaSlice }) => ideaSlice.currentFilter)
-	const dispatch = useAppDispatch()
 	const [activeItem, setActiveItem] = useState<LocationDepartment | undefined>(
 		undefined
 	)
@@ -48,11 +46,11 @@ function FilterComponent({ sortingSlot }: Props): JSX.Element {
 		(item: LocationDepartment) => {
 			if (activeItem === item) {
 				setActiveItem(prev => undefined)
-				dispatch(setCurrentFilter({ ...query, department: undefined }))
+				onChangeFilter(undefined)
 				return
 			}
 			setActiveItem(prev => item)
-			dispatch(setCurrentFilter({ ...query, department: item }))
+			onChangeFilter(item)
 		},
 		[activeItem]
 	)
@@ -77,4 +75,4 @@ function FilterComponent({ sortingSlot }: Props): JSX.Element {
 	)
 }
 
-export const Filter = memo(FilterComponent)
+export const UserFilter = memo(FilterComponent)

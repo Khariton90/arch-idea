@@ -28,7 +28,7 @@ export function LoginPage({ navigation }: any): JSX.Element {
 	const [isLocalAuth, setIsLocalAuth] = useState(false)
 
 	if (isLocalAuth) {
-		return <SignInLocal onChangeScreen={() => setIsLocalAuth(() => false)} />
+		return <SignInLocal onChangeScreen={() => setIsLocalAuth(false)} />
 	}
 
 	if (!isOpenCamera) {

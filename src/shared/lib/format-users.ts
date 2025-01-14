@@ -1,10 +1,10 @@
 export function formatUsers(count: number) {
 	let ending
-
 	const lastTwoDigits = count % 100
+	const defaultTitle = 'участников'
 
 	if (lastTwoDigits >= 11 && lastTwoDigits <= 19) {
-		ending = 'участников'
+		ending = defaultTitle
 	} else {
 		switch (count % 10) {
 			case 1:
@@ -16,7 +16,7 @@ export function formatUsers(count: number) {
 				ending = 'участника'
 				break
 			default:
-				ending = 'участников'
+				ending = count >= 1000 ? `${defaultTitle.slice(0, 2)}.` : defaultTitle
 		}
 	}
 

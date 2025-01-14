@@ -9,6 +9,7 @@ interface UserState {
 	status: UserStatus
 	role: UserRole
 	login: string
+	totalCount: number
 }
 
 const initialState: UserState = {
@@ -17,6 +18,7 @@ const initialState: UserState = {
 	role: UserRole.Admin,
 	status: UserStatus.NotVerified,
 	login: '',
+	totalCount: 0,
 }
 
 export const userSlice = createSlice({
@@ -45,6 +47,12 @@ export const userSlice = createSlice({
 					state.firstName = payload.firstName
 					state.lastName = payload.lastName
 					state.status = payload.status
+				}
+			),
+			builder.addMatcher(
+				userApi.endpoints.findTotalCount.matchFulfilled,
+				(state, { payload }) => {
+					state.totalCount = payload
 				}
 			)
 	},
