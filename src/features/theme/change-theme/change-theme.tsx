@@ -15,17 +15,16 @@ const Box = styled.View<ViewWithThemeProps>`
 	overflow: hidden;
 	margin: 10px 0 20px;
 	border-width: 1px;
-	border-color: #ccc;
+	border-color: ${({ theme }) => theme.colors.secondary};
 `
 
 const RadioButton = styled.TouchableOpacity<{ active: boolean }>`
-	padding: 6px 0 10px;
 	flex-direction: row;
 	align-items: center;
 	gap: 6px;
 	padding: 10px;
 	background-color: ${({ active }) =>
-		active ? darkTheme.colors.success : 'none'};
+		active ? darkTheme.colors.success : 'transparent'};
 `
 
 export function ChangeTheme(): JSX.Element {
@@ -33,8 +32,8 @@ export function ChangeTheme(): JSX.Element {
 	const [selectedTheme, setSelectedTheme] = useState(currentTheme)
 
 	const handleChange = async (theme: ThemeList) => {
-		toggleTheme(theme)
 		setSelectedTheme(() => theme)
+		toggleTheme(theme)
 	}
 
 	return (

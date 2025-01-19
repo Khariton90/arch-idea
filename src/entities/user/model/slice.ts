@@ -2,6 +2,7 @@ import { sessionApi } from '@/entities/session/api'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { UserRole, UserStatus } from './types'
 import { userApi } from '../api'
+import { LocationDepartment } from '@/entities/idea'
 
 interface UserState {
 	firstName: string
@@ -10,6 +11,7 @@ interface UserState {
 	role: UserRole
 	login: string
 	totalCount: number
+	department: LocationDepartment | null
 }
 
 const initialState: UserState = {
@@ -19,6 +21,7 @@ const initialState: UserState = {
 	status: UserStatus.NotVerified,
 	login: '',
 	totalCount: 0,
+	department: null,
 }
 
 export const userSlice = createSlice({
@@ -39,6 +42,7 @@ export const userSlice = createSlice({
 				state.lastName = payload.lastName
 				state.status = payload.status
 				state.login = payload.login
+				state.department = payload.department as LocationDepartment
 			}
 		),
 			builder.addMatcher(
@@ -53,6 +57,12 @@ export const userSlice = createSlice({
 				userApi.endpoints.findTotalCount.matchFulfilled,
 				(state, { payload }) => {
 					state.totalCount = payload
+				}
+			),
+			builder.addMatcher(
+				userApi.endpoints.fetchUsers.matchFulfilled,
+				(state, { payload }) => {
+					state.totalCount = payload.count
 				}
 			)
 	},

@@ -58,7 +58,11 @@ export function CreateSolutionAboutIdea({ id, fetchData }: Props): JSX.Element {
 
 	return (
 		<Box theme={theme} border={theme.colors.border}>
-			<Typography variant='h1' align='center' text='Итоговое решение' />
+			<Typography
+				variant='h1'
+				align='center'
+				text='Реализация идеи: план действий'
+			/>
 
 			<Picker
 				selectedValue={form.status}

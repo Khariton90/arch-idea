@@ -24,7 +24,7 @@ function BaseIdeasListComponent({ filterSlot }: Props): JSX.Element {
 	const { theme } = useContext(ThemeContext)
 	const query = useAppSelector(({ ideaSlice }) => ideaSlice.currentFilter)
 	const dispatch = useAppDispatch()
-	const { data: totalCount = 0 } = useFindTotalCountIdeasQuery(query)
+	const { data: totalCount } = useFindTotalCountIdeasQuery(query)
 
 	const {
 		data: ideas,
@@ -35,7 +35,7 @@ function BaseIdeasListComponent({ filterSlot }: Props): JSX.Element {
 	} = useFindIdeasQuery(query)
 
 	const loadMore = () => {
-		if (query.limit < totalCount && !isFetching) {
+		if (totalCount && query.limit < totalCount && !isFetching) {
 			dispatch(
 				setCurrentFilter({
 					...query,
@@ -53,6 +53,7 @@ function BaseIdeasListComponent({ filterSlot }: Props): JSX.Element {
 			</View>
 		)
 	}
+
 	return (
 		<View style={{ flex: 1 }}>
 			{filterSlot}

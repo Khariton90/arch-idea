@@ -8,33 +8,21 @@ import { CommentsPage } from '@/pages/comments-page/comments-page'
 import { AppRoutes, RootStackParamList } from '@/shared/model/types'
 import { ProfileIdeasPage } from '@/pages/profile-ideas-page/profile-ideas-page'
 import { darkTheme, ThemeContext } from '@/shared/colors.styled'
-import { useAppDispatch, useAppSelector } from '@/shared/hooks/hooks'
+import { useAppSelector } from '@/shared/hooks/hooks'
 import { AuthorizationStatus } from '@/entities/session/model/types'
-import React, { memo, useContext, useEffect } from 'react'
+import React, { memo, useContext, useEffect, useState } from 'react'
 import { LoadingIndicator } from '@/shared/ui/loading-indicator'
-import { getToken, saveToken } from '@/entities/session/api/session-api'
-import { useSendRefreshTokenMutation } from '@/entities/session/api'
-import {
-	addSessionData,
-	clearSessionData,
-} from '@/entities/session/model/slice'
-import { delay } from '@/shared/lib/delay'
 import { StatusBar } from 'react-native'
 import { UserRole } from '@/entities/user'
 import { DashboardPage } from '@/pages/dashboard-page/dashboard-page'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
+import { useFirstAuthorization } from '@/features/authentication'
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
 function NavigationComponent() {
 	const { theme } = useContext(ThemeContext)
-	const authStatus = useAppSelector(
-		({ sessionSlice }) => sessionSlice.isAuthorized
-	)
-	const role = useAppSelector(({ userSlice }) => userSlice.role)
-	const dispatch = useAppDispatch()
-	const [sendRefreshToken] = useSendRefreshTokenMutation()
 
 	const styles = {
 		headerStyle: {
@@ -47,27 +35,17 @@ function NavigationComponent() {
 		headerTintColor: '#6e6e6e',
 	}
 
-	const getTokenByAuth = async () => {
-		const token = await getToken()
-		await delay()
-
-		if (token) {
-			await sendRefreshToken(token).then(async ({ data }) => {
-				if (data) {
-					await saveToken(data)
-					dispatch(addSessionData(data))
-				}
-			})
-		} else {
-			dispatch(clearSessionData())
-		}
-	}
+	const authStatus = useAppSelector(
+		({ sessionSlice }) => sessionSlice.isAuthorized
+	)
+	const role = useAppSelector(({ userSlice }) => userSlice.role)
+	const { getTokenByAuth, isLoading } = useFirstAuthorization()
 
 	useEffect(() => {
 		getTokenByAuth()
 	}, [])
 
-	if (authStatus === AuthorizationStatus.Unknown) {
+	if (authStatus === AuthorizationStatus.Unknown || isLoading) {
 		return <LoadingIndicator />
 	}
 

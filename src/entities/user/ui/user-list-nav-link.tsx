@@ -11,6 +11,7 @@ import { View } from 'react-native'
 import styled from 'styled-components/native'
 import { useFindTotalCountQuery } from '../api'
 import { formatUsers } from '@/shared/lib/format-users'
+import { useAppSelector } from '@/shared/hooks/hooks'
 
 const NavLink = styled.TouchableOpacity<TouchableOpacityWithThemeProps>`
 	flex: 1;
@@ -25,8 +26,9 @@ const NavLink = styled.TouchableOpacity<TouchableOpacityWithThemeProps>`
 export function UserListNavLink(): JSX.Element {
 	const { theme } = useContext(ThemeContext)
 	const navigation = useCustomNavigation()
-	const { data: totalCount } = useFindTotalCountQuery()
+	const totalCount = useAppSelector(({ userSlice }) => userSlice.totalCount)
 
+	useFindTotalCountQuery()
 	return (
 		<NavLink
 			theme={theme}

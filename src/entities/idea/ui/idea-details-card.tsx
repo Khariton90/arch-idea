@@ -147,7 +147,7 @@ function IdeaDetailsCardComponent({
 					<Typography variant='p' text={idea.description} />
 					{idea.solution && (
 						<Box theme={theme} border={theme.colors.border}>
-							<Typography variant='h2' text='Итоговое решение' />
+							<Typography variant='h2' text='Реализация идеи: план действий' />
 							<Typography variant='p' text={idea.solution} />
 						</Box>
 					)}
