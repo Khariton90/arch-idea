@@ -1,7 +1,10 @@
 import dayjs from 'dayjs'
+import relativeTime from 'dayjs/plugin/relativeTime'
+import locale from 'dayjs/locale/ru'
 
-const FORMAT_DATE = 'DD.MM.YYYY'
+dayjs.extend(relativeTime)
+dayjs.locale(locale)
 
-export function formatDate(dateISO: string) {
-	return dayjs(dateISO).format(FORMAT_DATE)
+export function formatDate(dateISO: Date | string) {
+	return dayjs().to(dayjs(dateISO))
 }

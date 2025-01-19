@@ -4,10 +4,10 @@ import { Typography } from '@/shared/ui/typography/typography'
 import { useContext } from 'react'
 import styled from 'styled-components/native'
 import { CommentRdo } from '../model/types'
-import { setCommentFormatDate } from '../lib/set-comment-format-date'
 import { View } from 'react-native'
 import { mappingUserStatus } from '@/entities/user/lib/map-user-status'
 import { UserStatus } from '@/entities/user'
+import { formatDate } from '@/shared/lib/format-date'
 
 const Box = styled.View<{ background: string }>`
 	background-color: ${({ background }) => background};
@@ -52,7 +52,7 @@ export function CommentItem({ comment }: Props): JSX.Element {
 				align='right'
 				variant='span'
 				soft
-				text={setCommentFormatDate(comment.createdAt)}
+				text={formatDate(comment.createdAt)}
 			/>
 		</Box>
 	)

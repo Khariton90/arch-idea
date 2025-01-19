@@ -92,7 +92,7 @@ function IdeaDetailsCardComponent({
 					<Typography
 						variant='span'
 						soft
-						text={`Идея от ${formatDate(idea.createdAt)}`}
+						text={`Опубликовано ${formatDate(idea.createdAt)}`}
 					/>
 					<Row style={{ marginVertical: 8 }}>
 						<Chip
