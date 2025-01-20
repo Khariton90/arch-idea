@@ -19,11 +19,10 @@ const Container = styled.TouchableOpacity<
 	min-height: 200px;
 	background: ${({ background }) => background};
 	border: 1px solid ${({ border }) => border};
-	border-radius: 20px;
+	border-radius: 10px;
 	padding: 16px 20px;
 	justify-content: space-between;
 	gap: 8px;
-	box-shadow: 0px 0px 1px #6e6e6e;
 `
 
 const Row = styled.View<{ direction?: boolean }>`
@@ -82,12 +81,12 @@ function IdeaCardComponent({
 			</Row>
 
 			<Row direction>
-				<Chip title={`Статус: ${idea.status}`} size='sm' color='success' />
-				<Chip title={`Приоритет: ${idea.priority}`} size='sm' color='success' />
+				<Chip title={`Статус: ${idea.status}`} size='sm' color='info' />
+				<Chip title={`Приоритет: ${idea.priority}`} size='sm' color='info' />
 				<Chip
 					title={`Категория: ${idea.subDepartment}`}
 					size='sm'
-					color='success'
+					color='info'
 				/>
 			</Row>
 

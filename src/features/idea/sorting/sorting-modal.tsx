@@ -2,6 +2,7 @@ import { setCurrentFilter } from '@/entities/idea'
 import { darkTheme, ThemeContext } from '@/shared/colors.styled'
 import { useAppDispatch, useAppSelector } from '@/shared/hooks/hooks'
 import { Typography } from '@/shared/ui/typography/typography'
+import { UniversalButton } from '@/shared/ui/universal-button/universal-button'
 import { MainBottomSheet } from '@/widgets/bottom-sheet/main-bottom-sheet'
 import { useContext } from 'react'
 import styled from 'styled-components/native'
@@ -27,20 +28,27 @@ enum SortDirectionOptions {
 
 interface Props {
 	isOpen: boolean
-	toggleSortingModal: () => void
+	index: number
+	toggleSortingModal: (index: number) => void
 }
 
 export function SortingModal({
 	isOpen,
 	toggleSortingModal,
+	index,
 }: Props): JSX.Element {
 	const { theme } = useContext(ThemeContext)
 	const query = useAppSelector(({ ideaSlice }) => ideaSlice.currentFilter)
 	const dispatch = useAppDispatch()
 
 	const handleSelect = (item: string) => {
-		dispatch(setCurrentFilter({ ...query, sortOptions: item }))
-		toggleSortingModal()
+		dispatch(
+			setCurrentFilter({
+				...query,
+				sortOptions: item !== query.sortOptions ? item : undefined,
+			})
+		)
+		toggleSortingModal(index)
 	}
 
 	return (
@@ -57,6 +65,11 @@ export function SortingModal({
 						/>
 					</RadioButton>
 				))}
+
+				<UniversalButton
+					title='Закрыть'
+					onPress={() => toggleSortingModal(index)}
+				/>
 			</Box>
 		</MainBottomSheet>
 	)

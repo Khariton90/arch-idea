@@ -48,7 +48,7 @@ export function SignOutModal(): JSX.Element {
 		<>
 			<Typography variant='h1' text='Выход из профиля' />
 			<UniversalButton
-				outlined
+				type={'error'}
 				title='Выйти'
 				onPress={handleSignOut}
 				fullWidth

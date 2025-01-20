@@ -84,7 +84,7 @@ export function SignInLocal({ onChangeScreen }: Props): JSX.Element {
 					fullWidth
 					onPress={onChangeScreen}
 					title='Назад'
-					outlined
+					type={'warning'}
 				/>
 				{error && (
 					<Typography

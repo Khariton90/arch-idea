@@ -2,6 +2,7 @@ import React, { useContext } from 'react'
 import { StyleSheet, Text } from 'react-native'
 import { ITheme, ThemeContext } from '../colors.styled'
 import styled from 'styled-components/native'
+import { LinearGradient } from 'expo-linear-gradient'
 
 function getSize(size: 'sm' | 'lg' | 'md') {
 	switch (size) {
@@ -34,6 +35,8 @@ const Box = styled.View<{ background: string; border: string }>`
 	border-radius: 6px;
 	background-color: ${({ background }) => background};
 	border: 1px solid ${({ border }) => border};
+	overflow: hidden;
+	position: relative;
 `
 
 interface Props {
@@ -54,6 +57,18 @@ export function Chip({ title, size, color }: Props): JSX.Element {
 			<Text style={[styles.text, { color: getColor(color, theme) }]}>
 				{title}
 			</Text>
+			<LinearGradient
+				colors={[theme.colors.backdrop, theme.colors.border]}
+				style={{
+					position: 'absolute',
+					left: 0,
+					right: 0,
+					top: 0,
+					bottom: 0,
+					flex: 1,
+					zIndex: -1,
+				}}
+			/>
 		</Box>
 	)
 }

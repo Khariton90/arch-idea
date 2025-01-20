@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 import { ideaApi } from '../api'
 import { sessionApi } from '@/entities/session/api'
-import { IdeaQuery } from './types'
+import { IdeaQuery, LocationDepartment } from './types'
 
 interface State {
 	myIdeasCount: number
@@ -37,6 +37,8 @@ export const ideaSlice = createSlice({
 				sessionApi.endpoints.getAccount.matchFulfilled,
 				(state, { payload }) => {
 					state.myIdeasCount = payload.myIdeasCount
+					state.currentFilter.department =
+						payload.department as LocationDepartment
 				}
 			)
 		builder.addMatcher(

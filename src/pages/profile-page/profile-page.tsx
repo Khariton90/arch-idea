@@ -13,6 +13,7 @@ import { useAppSelector } from '@/shared/hooks/hooks'
 import { QrCodeModal } from '@/widgets/qr-code-modal/qr-code-modal'
 import { SignOutModal } from '@/entities/session/ui/sing-out.modal'
 import { mappingUserStatus } from '@/entities/user/lib/map-user-status'
+import { UserRole } from '@/entities/user'
 
 const Container = styled.View<ViewProps & { background: string }>`
 	flex: 1;
@@ -35,7 +36,7 @@ const Box = styled.View<
 
 export function ProfilePage(): JSX.Element {
 	const { theme } = useContext(ThemeContext)
-	const { firstName, lastName, status } = useAppSelector(
+	const { firstName, lastName, status, role } = useAppSelector(
 		({ userSlice }) => userSlice
 	)
 
@@ -72,11 +73,13 @@ export function ProfilePage(): JSX.Element {
 				</Box>
 
 				<Box background={theme.colors.backdrop} bottom>
-					<BottomSheetButton
-						title={'QR Code'}
-						subTitle={'Пригласить коллегу'}
-						onPress={() => toggleModal(2)}
-					/>
+					{role !== UserRole.User && (
+						<BottomSheetButton
+							title={'QR Code'}
+							subTitle={'Пригласить коллегу'}
+							onPress={() => toggleModal(2)}
+						/>
+					)}
 					<BottomSheetButton
 						title={'Тема'}
 						subTitle={'Сменить тему'}

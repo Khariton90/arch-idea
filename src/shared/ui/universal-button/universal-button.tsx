@@ -34,7 +34,7 @@ interface Props {
 	width?: number
 	fullWidth?: boolean
 	disabled?: boolean
-	outlined?: boolean
+	type?: 'primary' | 'warning' | 'highlight' | 'error' | 'success'
 }
 
 export function UniversalButton({
@@ -42,15 +42,13 @@ export function UniversalButton({
 	title,
 	fullWidth,
 	disabled,
-	outlined,
+	type = 'primary',
 }: Props) {
 	const { theme } = useContext(ThemeContext)
 
-	const background = outlined ? theme.colors.backdrop : theme.colors.primary
-
 	return (
 		<ButtonContainer
-			background={background}
+			background={theme.colors[type]}
 			theme={theme}
 			onPress={onPress}
 			fillWidth={fullWidth}

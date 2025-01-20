@@ -19,6 +19,8 @@ import { ImageUploadIcon } from '@/shared/ui/icons/image-upload-icon'
 import { MainBottomSheet } from '../bottom-sheet/main-bottom-sheet'
 import React from 'react'
 import { CameraIcon } from '@/shared/ui/icons/camera-icon'
+import { useAppSelector } from '@/shared/hooks/hooks'
+import { UserRole } from '@/entities/user'
 
 const Container = styled.View<{ background: string }>`
 	flex: 1;
@@ -79,11 +81,15 @@ const initialFormValues: Idea = {
 
 export function NewIdeaForm(): JSX.Element {
 	const { theme } = useContext(ThemeContext)
-	const [form, setForm] = useState<Idea>(initialFormValues)
-	const navigation = useCustomNavigation()
+	const role = useAppSelector(({ userSlice }) => userSlice.role)
+	const department = useAppSelector(({ userSlice }) => userSlice.department)
+	const [form, setForm] = useState<Idea>({
+		...initialFormValues,
+		department: department ?? '',
+	})
 	const [isActiveForm, setIsActiveForm] = useState(false)
-	const [createIdea, { data, isLoading, isError, isSuccess, error }] =
-		useCreateIdeaMutation()
+	const navigation = useCustomNavigation()
+	const [createIdea, { data, isLoading, isError }] = useCreateIdeaMutation()
 
 	const handleChange = (key: keyof Idea, value: string) => {
 		setForm(prevForm => ({ ...prevForm, [key]: value }))
@@ -108,6 +114,8 @@ export function NewIdeaForm(): JSX.Element {
 			}
 		})
 	}
+
+	const accordionList = role !== UserRole.User ? accordion : accordion.slice(1)
 
 	return (
 		<Container background={theme.colors.backdrop}>
@@ -134,7 +142,7 @@ export function NewIdeaForm(): JSX.Element {
 						multiline
 					/>
 				</View>
-				{accordion.map(item => (
+				{accordionList.map(item => (
 					<Accordion
 						title={item.title}
 						onSelected={onSelected}
