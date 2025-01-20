@@ -73,6 +73,8 @@ export interface IdeaQuery {
 	department?: LocationDepartment
 	sortOptions?: string
 	status?: IdeaStatus
+	priority?: Priority
+	subDepartment?: SubDepartment
 }
 
 export interface CreateIdeaSolution {

@@ -65,6 +65,9 @@ function BaseIdeasListComponent(): JSX.Element {
 		}
 	}
 
+	const { department, priority, subDepartment } = query
+	const isActiveButton = !!department || !!priority || !!subDepartment
+
 	if (isError) {
 		return (
 			<View>
@@ -86,8 +89,8 @@ function BaseIdeasListComponent(): JSX.Element {
 						role !== UserRole.User && (
 							<FilterButton
 								style={{ flexDirection: 'row', gap: 6 }}
-								active={Boolean(query.department)}
-								slotWithIcon={<FilterIcon active={Boolean(query.department)} />}
+								active={isActiveButton}
+								slotWithIcon={<FilterIcon active={isActiveButton} />}
 								text='Фильтры'
 								onPress={() => toggleSortingModal(1)}
 							/>
