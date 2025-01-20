@@ -6,7 +6,7 @@ import {
 import { LikeDislikeButtons } from '@/features/vote'
 import { WishListToggle } from '@/features/wishlist'
 import { ThemeContext } from '@/shared/colors.styled'
-import React, { memo, ReactNode, useContext, useState } from 'react'
+import React, { memo, useContext, useState } from 'react'
 import { RefreshControl, View } from 'react-native'
 import { FlatList } from 'react-native'
 import { EmptyIdeasList } from '../empty-ideas-list/empty-ideas-list'
@@ -18,20 +18,18 @@ import { SortingButton } from '@/features/idea/sorting/sorting-button'
 import { SortingModal } from '@/features/idea/sorting/sorting-modal'
 import { FilterModal } from '@/features/idea/filter/filter-modal'
 import { FilterIcon } from '@/shared/ui/icons/filter-icon'
-import { UserRole } from '@/entities/user'
 import { FilterButton } from '@/entities/idea/ui/filter-button'
+import { UserRole } from '@/entities/user'
 
 const PAGE_LIMIT_COUNT = 10
-
-interface Props {
-	filterSlot: ReactNode
-}
 
 function BaseIdeasListComponent(): JSX.Element {
 	const { theme } = useContext(ThemeContext)
 	const [modalList, setModalList] = useState([false, false])
 	const query = useAppSelector(({ ideaSlice }) => ideaSlice.currentFilter)
-	const role = useAppSelector(({ userSlice }) => userSlice.role)
+	const isAdmin = useAppSelector(
+		({ userSlice }) => userSlice.role !== UserRole.User
+	)
 	const dispatch = useAppDispatch()
 	const { data: totalCount } = useFindTotalCountIdeasQuery(query)
 
@@ -39,7 +37,7 @@ function BaseIdeasListComponent(): JSX.Element {
 		const array = modalList.map((element, idx) =>
 			idx === index ? (element = !element) : false
 		)
-		setModalList(prev => [...array])
+		setModalList(() => [...array])
 	}
 
 	const onChangeFilterStatus = (status?: IdeaStatus) => {
@@ -65,7 +63,8 @@ function BaseIdeasListComponent(): JSX.Element {
 		}
 	}
 
-	const { department, priority, subDepartment } = query
+	const { priority, subDepartment } = query
+	const department = isAdmin ? query.department : undefined
 	const isActiveButton = !!department || !!priority || !!subDepartment
 
 	if (isError) {
@@ -86,15 +85,13 @@ function BaseIdeasListComponent(): JSX.Element {
 						<SortingButton toggleSortingModal={toggleSortingModal} index={0} />
 					}
 					slotWithAllFilter={
-						role !== UserRole.User && (
-							<FilterButton
-								style={{ flexDirection: 'row', gap: 6 }}
-								active={isActiveButton}
-								slotWithIcon={<FilterIcon active={isActiveButton} />}
-								text='Фильтры'
-								onPress={() => toggleSortingModal(1)}
-							/>
-						)
+						<FilterButton
+							style={{ flexDirection: 'row', gap: 6 }}
+							active={isActiveButton}
+							slotWithIcon={<FilterIcon active={isActiveButton} />}
+							text='Фильтры'
+							onPress={() => toggleSortingModal(1)}
+						/>
 					}
 				/>
 

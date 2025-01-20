@@ -1,6 +1,6 @@
 import { View } from 'react-native'
 import styled from 'styled-components/native'
-import { memo, ReactNode, useContext } from 'react'
+import { memo, ReactNode, useContext, useState } from 'react'
 import React from 'react'
 import { IdeaRdo } from '../model/types'
 import { Avatar } from '@/shared/ui/avatar/avatar'
@@ -9,7 +9,10 @@ import { formatDate } from '@/shared/lib/format-date'
 import { Typography } from '@/shared/ui/typography/typography'
 import { Chip } from '@/shared/ui/chip'
 import { mappingUserStatus } from '@/entities/user/lib/map-user-status'
-import { UserStatus } from '@/entities/user'
+import { UserRole, UserStatus } from '@/entities/user'
+import { UniversalButton } from '@/shared/ui/universal-button/universal-button'
+import { MainBottomSheet } from '@/widgets/bottom-sheet/main-bottom-sheet'
+import { useAppSelector } from '@/shared/hooks/hooks'
 
 const Container = styled.View<{ background: string }>`
 	flex: 1;
@@ -56,8 +59,6 @@ const CardFooter = styled.View`
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
-	padding: 10px;
-	margin-top: auto;
 `
 
 const FavoriteBox = styled.View`
@@ -83,83 +84,109 @@ function IdeaDetailsCardComponent({
 	solutionSlot,
 }: Props): JSX.Element {
 	const { theme } = useContext(ThemeContext)
+	const [isOpen, setIsOpen] = useState(false)
+	const isAdmin = useAppSelector(
+		({ userSlice }) => userSlice.role !== UserRole.User
+	)
 
 	return (
-		<Container background={theme.colors.background}>
-			<Card background={theme.colors.backdrop} border={theme.colors.border}>
-				<CardHeader border={theme.colors.border}>
-					<FavoriteBox>{wishListSlot}</FavoriteBox>
-					<Typography
-						variant='span'
-						soft
-						text={`Опубликовано ${formatDate(idea.createdAt)}`}
-					/>
-					<Row style={{ marginVertical: 8 }}>
-						<Chip
-							title={`Cтатус: ${idea.status}`}
-							size={'lg'}
-							color={'success'}
+		<>
+			<Container background={theme.colors.background}>
+				<Card background={theme.colors.backdrop} border={theme.colors.border}>
+					<CardHeader border={theme.colors.border}>
+						<FavoriteBox>{wishListSlot}</FavoriteBox>
+						<Typography
+							variant='span'
+							soft
+							text={`Опубликовано ${formatDate(idea.createdAt)}`}
 						/>
-					</Row>
-				</CardHeader>
-
-				<CardContent>
-					<Row style={{ gap: 10, paddingVertical: 10 }}>
-						<Avatar size='sm' name={idea.user.firstName} />
-						<View>
-							<Typography
-								variant='span'
-								soft
-								text={mappingUserStatus[idea.user.status as UserStatus]}
+						<Row style={{ marginVertical: 8 }}>
+							<Chip
+								title={`Cтатус: ${idea.status}`}
+								size={'lg'}
+								color={'success'}
 							/>
-							<Typography
-								variant='span'
-								soft
-								text={`${idea.user.firstName} ${idea.user.lastName}`}
+						</Row>
+					</CardHeader>
+
+					<CardContent>
+						<Row style={{ gap: 10, paddingVertical: 10 }}>
+							<Avatar size='sm' name={idea.user.firstName} />
+							<View>
+								<Typography
+									variant='span'
+									soft
+									text={mappingUserStatus[idea.user.status as UserStatus]}
+								/>
+								<Typography
+									variant='span'
+									soft
+									text={`${idea.user.firstName} ${idea.user.lastName}`}
+								/>
+							</View>
+						</Row>
+						<Row>
+							<Chip
+								title={`Приоритет: ${idea.priority}`}
+								size={'md'}
+								color={'success'}
 							/>
-						</View>
-					</Row>
-					<Row>
-						<Chip
-							title={`Приоритет: ${idea.priority}`}
-							size={'md'}
-							color={'success'}
-						/>
-					</Row>
-					<Row>
-						<Chip
-							title={`Подразделение: ${idea.department}`}
-							size={'md'}
-							color={'success'}
-						/>
-					</Row>
-					<Row>
-						<Chip
-							title={`Категория: ${idea.subDepartment}`}
-							size={'md'}
-							color={'success'}
-						/>
-					</Row>
-				</CardContent>
+						</Row>
+						<Row>
+							<Chip
+								title={`Подразделение: ${idea.department}`}
+								size={'md'}
+								color={'success'}
+							/>
+						</Row>
+						<Row>
+							<Chip
+								title={`Категория: ${idea.subDepartment}`}
+								size={'md'}
+								color={'success'}
+							/>
+						</Row>
+					</CardContent>
 
-				<CardContent>
-					<Typography variant='h1' text={idea.title} />
-					<Typography variant='p' text={idea.description} />
-					{idea.solution && (
-						<Box theme={theme} border={theme.colors.border}>
-							<Typography variant='h2' text='Реализация идеи: план действий' />
-							<Typography variant='p' text={idea.solution} />
-						</Box>
-					)}
+					<CardContent>
+						<Typography variant='h1' text={idea.title} />
+						<Typography variant='p' text={idea.description} />
+						{idea.solution && (
+							<Box theme={theme} border={theme.colors.border}>
+								<Typography
+									variant='h2'
+									text='Реализация идеи: план действий'
+								/>
+								<Typography variant='p' text={idea.solution} />
+							</Box>
+						)}
+					</CardContent>
+					<View style={{ marginTop: 'auto', paddingHorizontal: 10, gap: 20 }}>
+						{isAdmin && (
+							<UniversalButton
+								title='Решение по идее'
+								onPress={() => setIsOpen(!isOpen)}
+							/>
+						)}
+						<CardFooter>
+							{commentsSlot}
+							{likesDisLakesSlot}
+						</CardFooter>
+					</View>
+				</Card>
+			</Container>
 
+			{isAdmin && (
+				<MainBottomSheet isOpen={isOpen}>
 					{solutionSlot}
-				</CardContent>
-				<CardFooter>
-					{commentsSlot}
-					{likesDisLakesSlot}
-				</CardFooter>
-			</Card>
-		</Container>
+					<UniversalButton
+						type='warning'
+						title='Закрыть'
+						onPress={() => setIsOpen(!isOpen)}
+					/>
+				</MainBottomSheet>
+			)}
+		</>
 	)
 }
 

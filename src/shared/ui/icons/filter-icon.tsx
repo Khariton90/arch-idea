@@ -11,8 +11,8 @@ export function FilterIcon({ active }: Props) {
 
 	return (
 		<Svg
-			width={20}
-			height={20}
+			width={18}
+			height={18}
 			fill={active ? theme.colors.primary : theme.colors.text}
 			viewBox='0 0 24 24'
 		>

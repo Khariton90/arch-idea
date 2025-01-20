@@ -45,6 +45,12 @@ export function MainBottomSheet({ children, isOpen }: Props): JSX.Element {
 			ref={bottomSheetRef}
 			index={-1}
 			enableContentPanningGesture={false}
+			containerStyle={{
+				shadowOffset: { width: 0, height: 2 },
+				shadowOpacity: 1,
+				shadowRadius: 4,
+				elevation: 10,
+			}}
 		>
 			<BottomSheetView style={{ height: 'auto' }}>
 				<ContainerModal>{children}</ContainerModal>

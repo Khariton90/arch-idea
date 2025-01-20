@@ -4,6 +4,7 @@ import {
 	ThemeContext,
 	TouchableOpacityWithThemeProps,
 } from '@/shared/colors.styled'
+import { TouchableOpacityProps } from 'react-native'
 
 const ButtonContainer = styled.TouchableOpacity<
 	TouchableOpacityWithThemeProps & {
@@ -28,9 +29,8 @@ const ButtonText = styled.Text`
 	font-weight: 500;
 `
 
-interface Props {
+interface Props extends TouchableOpacityProps {
 	title: string
-	onPress: () => void
 	width?: number
 	fullWidth?: boolean
 	disabled?: boolean
@@ -43,11 +43,13 @@ export function UniversalButton({
 	fullWidth,
 	disabled,
 	type = 'primary',
+	...props
 }: Props) {
 	const { theme } = useContext(ThemeContext)
 
 	return (
 		<ButtonContainer
+			{...props}
 			background={theme.colors[type]}
 			theme={theme}
 			onPress={onPress}

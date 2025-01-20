@@ -11,13 +11,13 @@ import {
 	mappingSubDepartment,
 } from '@/entities/idea/lib/mapIdea'
 import { FilterButton } from '@/entities/idea/ui/filter-button'
+import { UserRole } from '@/entities/user'
 import { ThemeContext } from '@/shared/colors.styled'
 import { useAppSelector, useAppDispatch } from '@/shared/hooks/hooks'
 import { Typography } from '@/shared/ui/typography/typography'
 import { UniversalButton } from '@/shared/ui/universal-button/universal-button'
 import { MainBottomSheet } from '@/widgets/bottom-sheet/main-bottom-sheet'
 import React, { useContext, useState } from 'react'
-import { TouchableOpacity } from 'react-native'
 import { styled } from 'styled-components/native'
 
 const Box = styled.View<{ background: string }>`
@@ -42,6 +42,9 @@ export function FilterModal({
 	const { theme } = useContext(ThemeContext)
 	const dispatch = useAppDispatch()
 	const query = useAppSelector(({ ideaSlice }) => ideaSlice.currentFilter)
+	const isAdmin = useAppSelector(
+		({ userSlice }) => userSlice.role !== UserRole.User
+	)
 	const [currentStateFilter, setCurrentStateFilter] = useState(query)
 	const [isDirty, setIsDirty] = useState(false)
 
@@ -69,19 +72,23 @@ export function FilterModal({
 
 	return (
 		<MainBottomSheet isOpen={isOpen}>
-			<Typography variant='h2' text={'Фильтр по базе'} />
-			<Box background={theme.colors.backdrop}>
-				{Object.entries(mappingDepartment).map(([key, value]) => (
-					<FilterButton
-						key={key}
-						onPress={() =>
-							handleSelect('department', key as LocationDepartment)
-						}
-						active={key === currentStateFilter.department}
-						text={value}
-					/>
-				))}
-			</Box>
+			{isAdmin && (
+				<>
+					<Typography variant='h2' text={'Фильтр по базе'} />
+					<Box background={theme.colors.backdrop}>
+						{Object.entries(mappingDepartment).map(([key, value]) => (
+							<FilterButton
+								key={key}
+								onPress={() =>
+									handleSelect('department', key as LocationDepartment)
+								}
+								active={key === currentStateFilter.department}
+								text={value}
+							/>
+						))}
+					</Box>
+				</>
+			)}
 
 			<Typography variant='h2' text={'Фильтр по приоритету'} />
 			<Box background={theme.colors.backdrop}>
