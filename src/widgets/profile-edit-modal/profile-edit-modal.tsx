@@ -1,5 +1,5 @@
 import { UserChangeForm } from '@/features/user'
-import { Typography } from '@/shared/ui/typography/typography'
+import { Typography } from '@/shared/ui'
 import React from 'react'
 
 export function ProfileEditModal(): JSX.Element {

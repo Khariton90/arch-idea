@@ -1,25 +1,27 @@
-import { IdeaCard, IdeaStatus, setCurrentFilter } from '@/entities/idea'
+import { UserRole } from '@/entities/user'
 import {
 	useFindIdeasQuery,
 	useFindTotalCountIdeasQuery,
-} from '@/entities/idea/api'
+	IdeaCard,
+	IdeaStatus,
+	setCurrentFilter,
+} from '@/entities/idea'
 import { LikeDislikeButtons } from '@/features/vote'
 import { WishListToggle } from '@/features/wishlist'
 import { ThemeContext } from '@/shared/colors.styled'
 import React, { memo, useContext, useState } from 'react'
-import { RefreshControl, View } from 'react-native'
-import { FlatList } from 'react-native'
+import { RefreshControl, View, FlatList } from 'react-native'
 import { EmptyIdeasList } from '../empty-ideas-list/empty-ideas-list'
-import { Typography } from '@/shared/ui/typography/typography'
-import { UniversalButton } from '@/shared/ui/universal-button/universal-button'
-import { useAppDispatch, useAppSelector } from '@/shared/hooks/hooks'
-import { FilterIdeaStatus } from '@/features/idea/filter/filter-status'
-import { SortingButton } from '@/features/idea/sorting/sorting-button'
-import { SortingModal } from '@/features/idea/sorting/sorting-modal'
-import { FilterModal } from '@/features/idea/filter/filter-modal'
+import { Typography, UniversalButton } from '@/shared/ui'
+import { useAppDispatch, useAppSelector } from '@/shared/hooks'
+import {
+	FilterIdeaStatus,
+	SortingButton,
+	SortingModal,
+	FilterModal,
+} from '@/features/idea'
 import { FilterIcon } from '@/shared/ui/icons/filter-icon'
 import { FilterButton } from '@/entities/idea/ui/filter-button'
-import { UserRole } from '@/entities/user'
 
 const PAGE_LIMIT_COUNT = 10
 

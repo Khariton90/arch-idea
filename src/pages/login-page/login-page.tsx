@@ -36,7 +36,7 @@ export function LoginPage(): JSX.Element {
 				<LayoutLogo />
 				<Row>
 					<UniversalButton
-						onPress={() => setIsOpenCamera(state => true)}
+						onPress={() => setIsOpenCamera(() => true)}
 						title='Войти по QR-коду'
 					/>
 					<Typography align='center' variant='span' soft text='или' />

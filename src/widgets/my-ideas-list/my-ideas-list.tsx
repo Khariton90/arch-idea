@@ -3,13 +3,13 @@ import {
 	IdeaQuery,
 	IdeaStatus,
 	NotFoundMainIdea,
+	useFindMyIdeasQuery,
 } from '@/entities/idea'
-import { useFindMyIdeasQuery } from '@/entities/idea/api'
-import { FilterIdeaStatus } from '@/features/idea/filter/filter-status'
+import { FilterIdeaStatus } from '@/features/idea'
 import { LikeDislikeButtons } from '@/features/vote'
 import { WishListToggle } from '@/features/wishlist'
 import { ThemeContext } from '@/shared/colors.styled'
-import { useAppSelector } from '@/shared/hooks/hooks'
+import { useAppSelector } from '@/shared/hooks'
 import React, { useContext } from 'react'
 import { useState } from 'react'
 import { RefreshControl, View } from 'react-native'

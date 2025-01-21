@@ -1,19 +1,16 @@
-import { UserRole } from '@/entities/user'
-import { UserListNavLink } from '@/entities/user/ui/user-list-nav-link'
+import { UserRole, UserListNavLink } from '@/entities/user'
 import {
 	ThemeContext,
 	TouchableOpacityWithThemeProps,
 	ViewWithThemeProps,
 } from '@/shared/colors.styled'
-import { useAppSelector } from '@/shared/hooks/hooks'
+import { useAppSelector } from '@/shared/hooks'
 import useCustomNavigation from '@/shared/hooks/use-custom-navigation'
-import { formatIdea } from '@/shared/lib/format-idea'
-import { formatUsers } from '@/shared/lib/format-users'
-import { AppRoutes } from '@/shared/model/types'
-import { Avatar } from '@/shared/ui/avatar/avatar'
+import { formatIdea } from '@/shared/lib'
+import { AppRoutes } from '@/shared/model'
+import { Avatar, Typography } from '@/shared/ui'
 import { FavoriteIcon } from '@/shared/ui/icons/favorite-icon'
 import { IdeaIcon } from '@/shared/ui/icons/idea-icon'
-import { Typography } from '@/shared/ui/typography/typography'
 import { useContext } from 'react'
 import { View } from 'react-native'
 import styled from 'styled-components/native'

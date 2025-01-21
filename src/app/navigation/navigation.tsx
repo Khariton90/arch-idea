@@ -4,7 +4,7 @@ import { AppRoutes, RootStackParamList } from '@/shared/model'
 import { darkTheme, ThemeContext } from '@/shared/colors.styled'
 import { useAppSelector } from '@/shared/hooks'
 import { AuthorizationStatus } from '@/entities/session'
-import React, { memo, useContext, useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { LoadingIndicator } from '@/shared/ui'
 import { UserRole } from '@/entities/user'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
@@ -13,7 +13,7 @@ import { useFirstAuthorization } from '@/features/authentication'
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
-function NavigationComponent() {
+export default function Navigation() {
 	const { theme } = useContext(ThemeContext)
 	const authStatus = useAppSelector(
 		({ sessionSlice }) => sessionSlice.isAuthorized
@@ -31,6 +31,8 @@ function NavigationComponent() {
 		return <LoadingIndicator />
 	}
 
+	const isNotAuth = authStatus === AuthorizationStatus.NoAuth
+
 	return (
 		<GestureHandlerRootView>
 			<SafeAreaProvider style={{ backgroundColor: theme.colors.background }}>
@@ -46,7 +48,7 @@ function NavigationComponent() {
 						headerTintColor: theme.colors.border,
 					}}
 				>
-					{authStatus === AuthorizationStatus.NoAuth ? (
+					{isNotAuth ? (
 						<Stack.Screen
 							name={AppRoutes.LoginPage}
 							component={Screens.LoginPage}
@@ -111,5 +113,3 @@ function NavigationComponent() {
 		</GestureHandlerRootView>
 	)
 }
-
-export default memo(NavigationComponent)

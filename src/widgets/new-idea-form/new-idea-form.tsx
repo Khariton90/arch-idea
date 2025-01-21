@@ -1,25 +1,22 @@
 import { ActivityIndicator, View } from 'react-native'
 import styled from 'styled-components/native'
-import { Accordion } from '@/shared/ui/accordion'
-import { ReactNode, useContext, useMemo, useState } from 'react'
-import { Idea } from '@/entities/idea'
-import { useCreateIdeaMutation } from '@/entities/idea/api'
-import { UniversalButton } from '@/shared/ui/universal-button/universal-button'
+import React, { ReactNode, useContext, useMemo, useState } from 'react'
+import { Accordion, UniversalButton, Typography, InputField } from '@/shared/ui'
 import { darkTheme, ThemeContext } from '@/shared/colors.styled'
-import { Typography } from '@/shared/ui/typography/typography'
+import useCustomNavigation from '@/shared/hooks/use-custom-navigation'
+import { AppRoutes } from '@/shared/model'
+import { ImageUploadIcon } from '@/shared/ui/icons/image-upload-icon'
+import { MainBottomSheet } from '../bottom-sheet/main-bottom-sheet'
+import { CameraIcon } from '@/shared/ui/icons/camera-icon'
+import { useAppSelector } from '@/shared/hooks'
+
 import {
+	Idea,
+	useCreateIdeaMutation,
 	mappingDepartment,
 	mappingPriority,
 	mappingSubDepartment,
-} from '@/entities/idea/lib/mapIdea'
-import { InputField } from '@/shared/ui/input-field/input-field'
-import useCustomNavigation from '@/shared/hooks/use-custom-navigation'
-import { AppRoutes } from '@/shared/model/types'
-import { ImageUploadIcon } from '@/shared/ui/icons/image-upload-icon'
-import { MainBottomSheet } from '../bottom-sheet/main-bottom-sheet'
-import React from 'react'
-import { CameraIcon } from '@/shared/ui/icons/camera-icon'
-import { useAppSelector } from '@/shared/hooks/hooks'
+} from '@/entities/idea'
 import { UserRole } from '@/entities/user'
 
 const Container = styled.View<{ background: string }>`

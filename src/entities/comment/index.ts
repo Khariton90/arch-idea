@@ -1,1 +1,3 @@
-export * from './ui/button-to-comments'
+export * from './ui'
+export * from './api'
+export * from './model'

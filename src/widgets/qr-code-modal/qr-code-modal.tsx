@@ -1,9 +1,9 @@
-import { Typography } from '@/shared/ui/typography/typography'
+import { Typography } from '@/shared/ui'
 import React from 'react'
 import { Image } from 'react-native'
 import styled from 'styled-components/native'
 import { BASE_URL } from '@/shared/api/base-api'
-import { useAppSelector } from '@/shared/hooks/hooks'
+import { useAppSelector } from '@/shared/hooks'
 import { UserRole } from '@/entities/user'
 
 const Box = styled.View`

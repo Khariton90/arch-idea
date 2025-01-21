@@ -8,7 +8,9 @@ export function DashboardPage() {
 	const { theme } = useContext(ThemeContext)
 
 	return (
-		<SafeAreaView style={{ ...styles, backgroundColor: theme.colors.backdrop }}>
+		<SafeAreaView
+			style={{ ...styles.container, backgroundColor: theme.colors.backdrop }}
+		>
 			<UserList />
 		</SafeAreaView>
 	)

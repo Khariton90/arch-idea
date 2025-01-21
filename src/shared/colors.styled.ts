@@ -13,7 +13,6 @@ export interface ITheme {
 		secondary: string
 		background: string
 		backdrop: string
-		surface: string
 		text: string
 		border: string
 		shadow: string
@@ -38,7 +37,6 @@ export const lightTheme = {
 		secondary: '#6C757D',
 		background: '#E1E0E0',
 		backdrop: '#F7F6F6',
-		surface: '#F7F6F6',
 		text: '#333',
 		border: '#b3b3b3',
 		shadow: '#b3b3b3',
@@ -56,7 +54,6 @@ export const darkTheme = {
 		secondary: '#333',
 		background: '#191919',
 		backdrop: '#0A0A0A',
-		surface: '#171a21',
 		text: '#EEE',
 		border: '#444',
 		shadow: '#eeeeee',

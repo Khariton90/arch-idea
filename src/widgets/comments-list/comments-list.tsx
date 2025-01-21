@@ -1,10 +1,13 @@
-import { useFindCommentsQuery } from '@/entities/comment/api'
-import { CommentItem, CommentsNotFound } from '@/entities/comment/ui'
+import {
+	CommentItem,
+	CommentsNotFound,
+	useFindCommentsQuery,
+} from '@/entities/comment'
 import { IdeaQuery } from '@/entities/idea'
 import { CreateCommentForm } from '@/features/comment'
 import { ThemeContext } from '@/shared/colors.styled'
 import { useContext, useEffect, useRef, useState } from 'react'
-import { FlatList, RefreshControl } from 'react-native'
+import { FlatList, RefreshControl, StyleSheet } from 'react-native'
 import styled from 'styled-components/native'
 
 const Container = styled.View<{ background: string }>`
@@ -13,7 +16,7 @@ const Container = styled.View<{ background: string }>`
 	padding: 20px 0 100px;
 `
 
-type Props = {
+interface Props {
 	ideaId: string
 }
 
@@ -78,15 +81,19 @@ export function CommentsList({ ideaId }: Props): JSX.Element {
 					renderItem={({ item }) => <CommentItem comment={item} />}
 					onEndReachedThreshold={0.2}
 					onEndReached={loadMore}
-					contentContainerStyle={{
-						height: 'auto',
-						paddingTop: 20,
-						paddingBottom: 100,
-						minHeight: '100%',
-					}}
+					contentContainerStyle={{ ...styles.contentContainer }}
 				/>
 			)}
 			<CreateCommentForm ideaId={ideaId} />
 		</Container>
 	)
 }
+
+const styles = StyleSheet.create({
+	contentContainer: {
+		height: 'auto',
+		paddingTop: 20,
+		paddingBottom: 100,
+		minHeight: '100%',
+	},
+})

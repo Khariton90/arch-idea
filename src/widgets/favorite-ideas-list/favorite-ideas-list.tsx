@@ -3,8 +3,8 @@ import {
 	IdeaQuery,
 	IdeaStatus,
 	NotFoundFavoriteIdea,
+	useFindFavoriteIdeasQuery,
 } from '@/entities/idea'
-import { useFindFavoriteIdeasQuery } from '@/entities/idea/api'
 import { LikeDislikeButtons } from '@/features/vote'
 import { WishListToggle } from '@/features/wishlist'
 import { ThemeContext } from '@/shared/colors.styled'
@@ -12,8 +12,8 @@ import React, { useContext } from 'react'
 import { useState } from 'react'
 import { RefreshControl, View } from 'react-native'
 import { FlatList } from 'react-native'
-import { useAppSelector } from '@/shared/hooks/hooks'
-import { FilterIdeaStatus } from '@/features/idea/filter/filter-status'
+import { useAppSelector } from '@/shared/hooks'
+import { FilterIdeaStatus } from '@/features/idea'
 import { EmptyIdeasList } from '../empty-ideas-list/empty-ideas-list'
 
 export function FavoriteIdeasList(): JSX.Element {

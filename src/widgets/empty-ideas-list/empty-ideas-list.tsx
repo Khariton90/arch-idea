@@ -1,4 +1,4 @@
-import { Typography } from '@/shared/ui/typography/typography'
+import { Typography } from '@/shared/ui'
 import styled from 'styled-components/native'
 
 const Box = styled.View`

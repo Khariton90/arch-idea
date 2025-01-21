@@ -1,12 +1,7 @@
 import { ThemeContext } from '@/shared/colors.styled'
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet'
 import { ReactNode, useContext, useEffect, useRef } from 'react'
-import styled from 'styled-components/native'
-
-const ContainerModal = styled.View`
-	gap: 10px;
-	padding: 20px 10px;
-`
+import { StyleSheet } from 'react-native'
 
 interface Props {
 	children: ReactNode
@@ -45,16 +40,26 @@ export function MainBottomSheet({ children, isOpen }: Props): JSX.Element {
 			ref={bottomSheetRef}
 			index={-1}
 			enableContentPanningGesture={false}
-			containerStyle={{
-				shadowOffset: { width: 0, height: 2 },
-				shadowOpacity: 1,
-				shadowRadius: 4,
-				elevation: 10,
-			}}
+			containerStyle={{ ...styles.container }}
 		>
-			<BottomSheetView style={{ height: 'auto' }}>
-				<ContainerModal>{children}</ContainerModal>
+			<BottomSheetView style={{ ...styles.wrapper }}>
+				{children}
 			</BottomSheetView>
 		</BottomSheet>
 	)
 }
+
+const styles = StyleSheet.create({
+	container: {
+		shadowOffset: { width: 0, height: 2 },
+		shadowOpacity: 1,
+		shadowRadius: 4,
+		elevation: 10,
+	},
+	wrapper: {
+		height: 'auto',
+		gap: 10,
+		paddingVertical: 20,
+		paddingHorizontal: 10,
+	},
+})

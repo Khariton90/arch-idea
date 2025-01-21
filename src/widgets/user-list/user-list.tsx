@@ -1,5 +1,5 @@
-import { LocationDepartment } from '@/entities/idea'
-import { UserOptionsDto } from '@/entities/session/model/types'
+import { type LocationDepartment } from '@/entities/idea'
+import { type UserOptionsDto } from '@/entities/session'
 import {
 	ChangeUserRoleModal,
 	useFetchUsersQuery,
@@ -7,18 +7,17 @@ import {
 	UserRole,
 	useUpdateUserOptionsMutation,
 } from '@/entities/user'
-import { UserFilter } from '@/features/user/user-filter/user-filter'
+import { UserCardItem } from '@/entities/user'
+import { UserFilter } from '@/features/user'
 import { ThemeContext } from '@/shared/colors.styled'
-import { Typography } from '@/shared/ui/typography/typography'
-import { UniversalButton } from '@/shared/ui/universal-button/universal-button'
+import { Typography, UniversalButton } from '@/shared/ui'
 import React, { useState } from 'react'
 import { useContext } from 'react'
 import { View } from 'react-native'
 import { FlatList, RefreshControl } from 'react-native-gesture-handler'
-import styled from 'styled-components/native'
 import { MainBottomSheet } from '../bottom-sheet/main-bottom-sheet'
-import { useAppSelector } from '@/shared/hooks/hooks'
-import { UserCardItem } from '@/entities/user/ui/user-card-item'
+import { useAppSelector } from '@/shared/hooks'
+import styled from 'styled-components/native'
 
 const Container = styled.View<{ background: string }>`
 	width: 100%;
