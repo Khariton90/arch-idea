@@ -1,38 +1,34 @@
 import { AddNewIdeaButton } from '@/features/idea'
 import { BaseIdeasList, LayoutHeader, LayoutLogo } from '@/widgets'
 import { useContext } from 'react'
-import { SafeAreaView } from 'react-native'
-import styled from 'styled-components/native'
-import React from 'react'
+import { SafeAreaView, StyleSheet } from 'react-native'
 import { ThemeContext } from '@/shared/colors.styled'
 import { useGetAccountQuery } from '@/entities/session/api'
-import { LoadingIndicator } from '@/shared/ui/loading-indicator'
-
-const Main = styled.View`
-	gap: 10px;
-	flex: 1;
-`
+import { LoadingIndicator } from '@/shared/ui'
 
 export function HomePage(): JSX.Element {
 	const { theme } = useContext(ThemeContext)
-	const { data, isLoading } = useGetAccountQuery()
+	const { data: account, isLoading } = useGetAccountQuery()
 
-	if (isLoading) {
+	if (isLoading || !account) {
 		return <LoadingIndicator />
 	}
 
 	return (
-		<SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.backdrop }}>
-			<Main>
-				{data && (
-					<>
-						<LayoutHeader />
-						<LayoutLogo />
-						<AddNewIdeaButton />
-						<BaseIdeasList />
-					</>
-				)}
-			</Main>
+		<SafeAreaView
+			style={{ ...styles.container, backgroundColor: theme.colors.backdrop }}
+		>
+			<LayoutHeader />
+			<LayoutLogo />
+			<AddNewIdeaButton />
+			<BaseIdeasList />
 		</SafeAreaView>
 	)
 }
+
+const styles = StyleSheet.create({
+	container: {
+		flex: 1,
+		gap: 10,
+	},
+})

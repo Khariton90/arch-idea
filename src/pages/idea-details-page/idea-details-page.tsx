@@ -1,21 +1,19 @@
 import { useContext, useEffect, useLayoutEffect, useState } from 'react'
-import { SafeAreaView, ScrollView } from 'react-native'
-import { IdeaDetailsCard } from '@/entities/idea'
+import { SafeAreaView, ScrollView, StyleSheet } from 'react-native'
+import { IdeaDetailsCard, useFindByIdeaIdQuery } from '@/entities/idea'
 import { LikeDislikeButtons } from '@/features/vote'
-import { useFindByIdeaIdQuery } from '@/entities/idea/api'
-import { LoadingIndicator } from '@/shared/ui/loading-indicator'
+import { LoadingIndicator } from '@/shared/ui'
 import { WishListToggle } from '@/features/wishlist'
 import { ButtonToComments } from '@/entities/comment'
 import { RouteProp } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
-import { AppRoutes, RootStackParamList } from '@/shared/model/types'
+import { AppRoutes, RootStackParamList } from '@/shared/model'
 import { RefreshControl } from 'react-native-gesture-handler'
 import { ThemeContext } from '@/shared/colors.styled'
-import { delay } from '@/shared/lib/delay'
-import React from 'react'
-import { CreateSolutionAboutIdea } from '@/features/idea/create-solution-about-idea/create-solution-about-idea'
+import { delay } from '@/shared/lib'
+import { CreateSolutionAboutIdea } from '@/features/idea'
 
-const TITLE_LENGTH = 12
+const PAGE_TITLE_LENGTH = 12
 
 type Props = {
 	route: RouteProp<RootStackParamList, AppRoutes.IdeaDetailsPage>
@@ -23,10 +21,9 @@ type Props = {
 }
 
 export function IdeaDetailsPage({ route, navigation }: Props): JSX.Element {
+	const { id, title } = route.params
 	const { theme } = useContext(ThemeContext)
 	const [isLoading, setIsLoading] = useState(false)
-
-	const { id, isFavorite, title } = route.params
 	const { data: idea, refetch, isFetching } = useFindByIdeaIdQuery(id)
 
 	const fetchData = async () => {
@@ -36,11 +33,15 @@ export function IdeaDetailsPage({ route, navigation }: Props): JSX.Element {
 		setIsLoading(() => false)
 	}
 
+	const navigateToCommentsOnIdeaId = (id: string) => {
+		navigation.navigate(AppRoutes.CommentsPage, { id })
+	}
+
 	useLayoutEffect(() => {
 		navigation.setOptions({
 			title:
-				title.length > TITLE_LENGTH
-					? `${title.slice(0, TITLE_LENGTH)}...`
+				title.length > PAGE_TITLE_LENGTH
+					? `${title.slice(0, PAGE_TITLE_LENGTH)}...`
 					: title,
 		})
 	})
@@ -49,13 +50,21 @@ export function IdeaDetailsPage({ route, navigation }: Props): JSX.Element {
 		fetchData()
 	}, [])
 
+	if (isLoading || !idea) {
+		return (
+			<SafeAreaView
+				style={{ flex: 1, backgroundColor: theme.colors.background }}
+			>
+				<LoadingIndicator />
+			</SafeAreaView>
+		)
+	}
+
 	return (
 		<SafeAreaView style={{ flex: 1, backgroundColor: theme.colors.background }}>
 			<ScrollView
 				contentContainerStyle={{
-					height: 'auto',
-					paddingBottom: 80,
-					minHeight: '100%',
+					...styles.container,
 				}}
 				showsVerticalScrollIndicator={false}
 				refreshControl={
@@ -66,44 +75,39 @@ export function IdeaDetailsPage({ route, navigation }: Props): JSX.Element {
 					/>
 				}
 			>
-				{isLoading ? (
-					<LoadingIndicator />
-				) : (
-					<>
-						{idea && (
-							<IdeaDetailsCard
-								idea={idea}
-								likesDisLakesSlot={
-									<LikeDislikeButtons
-										refetch={fetchData}
-										reactionType={idea.reactionType}
-										id={id}
-										likes={idea.likesCount}
-										disLikes={idea.dislikesCount}
-									/>
-								}
-								wishListSlot={
-									<WishListToggle
-										refetch={fetchData}
-										active={idea.isFavorite}
-										ideaId={idea.id}
-									/>
-								}
-								commentsSlot={
-									<ButtonToComments
-										onPress={() =>
-											navigation.navigate(AppRoutes.CommentsPage, { id })
-										}
-									/>
-								}
-								solutionSlot={
-									<CreateSolutionAboutIdea id={idea.id} fetchData={fetchData} />
-								}
-							/>
-						)}
-					</>
-				)}
+				<IdeaDetailsCard
+					idea={idea}
+					likesDisLakesSlot={
+						<LikeDislikeButtons
+							refetch={fetchData}
+							reactionType={idea.reactionType}
+							id={id}
+							likes={idea.likesCount}
+							disLikes={idea.dislikesCount}
+						/>
+					}
+					wishListSlot={
+						<WishListToggle
+							refetch={fetchData}
+							active={idea.isFavorite}
+							ideaId={idea.id}
+						/>
+					}
+					commentsSlot={
+						<ButtonToComments onPress={() => navigateToCommentsOnIdeaId(id)} />
+					}
+					solutionSlot={
+						<CreateSolutionAboutIdea id={idea.id} fetchData={fetchData} />
+					}
+				/>
 			</ScrollView>
 		</SafeAreaView>
 	)
 }
+
+const styles = StyleSheet.create({
+	container: {
+		paddingBottom: 80,
+		minHeight: '100%',
+	},
+})

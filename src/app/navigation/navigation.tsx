@@ -1,20 +1,12 @@
-import { HomePage } from '@/pages/home-page/home-page'
-import { IdeaDetailsPage } from '@/pages/idea-details-page/idea-details-page'
-import { NewIdeaPage } from '@/pages/new-idea-page/new-idea-page'
+import * as Screens from '@/pages'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { LoginPage } from '@/pages/login-page/login-page'
-import { ProfilePage } from '@/pages/profile-page/profile-page'
-import { CommentsPage } from '@/pages/comments-page/comments-page'
-import { AppRoutes, RootStackParamList } from '@/shared/model/types'
-import { ProfileIdeasPage } from '@/pages/profile-ideas-page/profile-ideas-page'
+import { AppRoutes, RootStackParamList } from '@/shared/model'
 import { darkTheme, ThemeContext } from '@/shared/colors.styled'
-import { useAppSelector } from '@/shared/hooks/hooks'
-import { AuthorizationStatus } from '@/entities/session/model/types'
-import React, { memo, useContext, useEffect, useState } from 'react'
-import { LoadingIndicator } from '@/shared/ui/loading-indicator'
-import { StatusBar } from 'react-native'
+import { useAppSelector } from '@/shared/hooks'
+import { AuthorizationStatus } from '@/entities/session'
+import React, { memo, useContext, useEffect } from 'react'
+import { LoadingIndicator } from '@/shared/ui'
 import { UserRole } from '@/entities/user'
-import { DashboardPage } from '@/pages/dashboard-page/dashboard-page'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { useFirstAuthorization } from '@/features/authentication'
@@ -23,22 +15,12 @@ const Stack = createNativeStackNavigator<RootStackParamList>()
 
 function NavigationComponent() {
 	const { theme } = useContext(ThemeContext)
-
-	const styles = {
-		headerStyle: {
-			backgroundColor: theme.colors.background,
-		},
-		headerTitleStyle: {
-			color: darkTheme.colors.primary,
-		},
-
-		headerTintColor: '#6e6e6e',
-	}
-
 	const authStatus = useAppSelector(
 		({ sessionSlice }) => sessionSlice.isAuthorized
 	)
-	const role = useAppSelector(({ userSlice }) => userSlice.role)
+	const isAdmin = useAppSelector(
+		({ userSlice }) => userSlice.role !== UserRole.User
+	)
 	const { getTokenByAuth, isLoading } = useFirstAuthorization()
 
 	useEffect(() => {
@@ -52,16 +34,22 @@ function NavigationComponent() {
 	return (
 		<GestureHandlerRootView>
 			<SafeAreaProvider style={{ backgroundColor: theme.colors.background }}>
-				<StatusBar backgroundColor={theme.colors.backdrop} />
 				<Stack.Navigator
 					screenOptions={{
 						animation: 'fade_from_bottom',
+						headerStyle: {
+							backgroundColor: theme.colors.background,
+						},
+						headerTitleStyle: {
+							color: darkTheme.colors.primary,
+						},
+						headerTintColor: theme.colors.border,
 					}}
 				>
 					{authStatus === AuthorizationStatus.NoAuth ? (
 						<Stack.Screen
 							name={AppRoutes.LoginPage}
-							component={LoginPage}
+							component={Screens.LoginPage}
 							options={{
 								headerBackVisible: false,
 								headerShown: false,
@@ -71,53 +59,49 @@ function NavigationComponent() {
 						<>
 							<Stack.Screen
 								name={AppRoutes.HomePage}
-								component={HomePage}
+								component={Screens.HomePage}
 								options={{
 									title: 'Главная',
-									...styles,
 									headerBackVisible: false,
 								}}
 							/>
-							{role !== UserRole.User && (
+							{isAdmin && (
 								<Stack.Screen
 									name={AppRoutes.DashboardPage}
-									component={DashboardPage}
+									component={Screens.DashboardPage}
 									options={{
 										title: 'Участники',
-										...styles,
 									}}
 								/>
 							)}
 							<Stack.Screen
 								name={AppRoutes.IdeaDetailsPage}
-								component={IdeaDetailsPage}
-								options={{ title: 'Главная', ...styles }}
+								component={Screens.IdeaDetailsPage}
+								options={{ title: 'Главная' }}
 							/>
 							<Stack.Screen
 								name={AppRoutes.NewIdeaPage}
-								component={NewIdeaPage}
-								options={{ title: 'Новая идея', ...styles }}
+								component={Screens.NewIdeaPage}
+								options={{ title: 'Новая идея' }}
 							/>
 							<Stack.Screen
 								name={AppRoutes.ProfilePage}
-								component={ProfilePage}
-								options={{ title: 'Профиль', ...styles }}
+								component={Screens.ProfilePage}
+								options={{ title: 'Профиль' }}
 							/>
 							<Stack.Screen
 								name={AppRoutes.CommentsPage}
-								component={CommentsPage}
+								component={Screens.CommentsPage}
 								options={{
 									title: 'Комментарии',
-									...styles,
 									headerBackTitle: 'Назад',
 								}}
 							/>
 							<Stack.Screen
 								name={AppRoutes.ProfileIdeasPage}
-								component={ProfileIdeasPage}
+								component={Screens.ProfileIdeasPage}
 								options={{
 									title: 'Идеи',
-									...styles,
 								}}
 							/>
 						</>

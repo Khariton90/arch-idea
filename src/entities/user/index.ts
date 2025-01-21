@@ -1,3 +1,4 @@
 export * from './api'
-export * from './model/types'
-export * from './ui/change-user-role-modal'
+export * from './model'
+export * from './ui'
+export * from './lib'

@@ -1,19 +1,18 @@
 import { ViewProps } from 'react-native-svg/lib/typescript/fabric/utils'
 import styled from 'styled-components/native'
 import React, { useContext, useState } from 'react'
-import { MainBottomSheet } from '@/widgets/bottom-sheet/main-bottom-sheet'
-import { UniversalButton } from '@/shared/ui/universal-button/universal-button'
-import { Avatar } from '@/shared/ui/avatar/avatar'
+import { UniversalButton, Avatar, BottomSheetButton } from '@/shared/ui'
 import { ThemeContext } from '@/shared/colors.styled'
-import { BottomSheetButton } from '@/shared/ui/bottom-sheet-button/bottom-sheet-button'
-import { UserStatusModal } from '@/widgets/user-status-modal/user-status-modal'
-import { ThemeModal } from '@/widgets/theme-modal/theme-modal'
-import { ProfileEditModal } from '@/widgets/profile-edit-modal/profile-edit-modal'
-import { useAppSelector } from '@/shared/hooks/hooks'
-import { QrCodeModal } from '@/widgets/qr-code-modal/qr-code-modal'
-import { SignOutModal } from '@/entities/session/ui/sing-out.modal'
-import { mappingUserStatus } from '@/entities/user/lib/map-user-status'
-import { UserRole } from '@/entities/user'
+import {
+	UserStatusModal,
+	MainBottomSheet,
+	ThemeModal,
+	ProfileEditModal,
+	QrCodeModal,
+} from '@/widgets'
+import { useAppSelector } from '@/shared/hooks'
+import { SignOutModal } from '@/entities/session'
+import { mappingUserStatus, UserRole } from '@/entities/user'
 
 const Container = styled.View<ViewProps & { background: string }>`
 	flex: 1;

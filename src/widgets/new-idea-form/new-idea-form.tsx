@@ -1,7 +1,7 @@
 import { ActivityIndicator, View } from 'react-native'
 import styled from 'styled-components/native'
 import { Accordion } from '@/shared/ui/accordion'
-import { useContext, useMemo, useState } from 'react'
+import { ReactNode, useContext, useMemo, useState } from 'react'
 import { Idea } from '@/entities/idea'
 import { useCreateIdeaMutation } from '@/entities/idea/api'
 import { UniversalButton } from '@/shared/ui/universal-button/universal-button'
@@ -79,7 +79,11 @@ const initialFormValues: Idea = {
 	priority: '',
 }
 
-export function NewIdeaForm(): JSX.Element {
+interface Props {
+	slotWithLogo: ReactNode
+}
+
+export function NewIdeaForm({ slotWithLogo }: Props): JSX.Element {
 	const { theme } = useContext(ThemeContext)
 	const role = useAppSelector(({ userSlice }) => userSlice.role)
 	const department = useAppSelector(({ userSlice }) => userSlice.department)
@@ -123,7 +127,7 @@ export function NewIdeaForm(): JSX.Element {
 				<ActivityIndicator size={'large'} color={theme.colors.primary} />
 			)}
 			<Form>
-				<Typography variant='h1' text='Описание идеи' align='center' />
+				{slotWithLogo}
 
 				<View>
 					<InputField

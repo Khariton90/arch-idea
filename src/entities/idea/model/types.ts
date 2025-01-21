@@ -1,4 +1,4 @@
-import { UserRdo } from '@/entities/session/model/types'
+import { type UserRdo } from '@/entities/session'
 
 export type ReactionType = 'None' | 'Like' | 'Dislike'
 
