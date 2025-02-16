@@ -3,7 +3,7 @@
 		"name": "Arch Idea",
 		"displayName": "Arch Idea",
 		"slug": "arch-idea",
-		"version": "1.0.0",
+		"version": "1.2.0",
 		"orientation": "portrait",
 		"icon": "./assets/images/main-logo-200.png",
 		"scheme": "myapp",
@@ -86,6 +86,12 @@
 			"eas": {
 				"projectId": "f1c9b899-3f1d-4ae3-ad40-688fdaaa9db1"
 			}
+		},
+		"runtimeVersion": {
+			"policy": "appVersion"
+		},
+		"updates": {
+			"url": "https://u.expo.dev/f1c9b899-3f1d-4ae3-ad40-688fdaaa9db1"
 		}
 	}
 }
