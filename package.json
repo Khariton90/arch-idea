@@ -57,7 +57,9 @@
     "react-native-webview": "13.12.5",
     "react-redux": "^9.1.2",
     "styled-components": "^6.1.13",
-    "expo-build-properties": "~0.13.2"
+    "expo-build-properties": "~0.13.2",
+    "@shopify/flash-list": "1.7.3",
+    "expo-updates": "~0.26.18"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",

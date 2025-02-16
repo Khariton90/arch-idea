@@ -10,7 +10,6 @@ import { UserRole } from '@/entities/user'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { useFirstAuthorization } from '@/features/authentication'
-import { InternetError } from '@/features/authentication/login/ui'
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
@@ -27,10 +26,6 @@ export default function Navigation() {
 	useEffect(() => {
 		getTokenByAuth()
 	}, [])
-
-	if (isError) {
-		return <InternetError getTokenByAuth={getTokenByAuth} />
-	}
 
 	if (authStatus === AuthorizationStatus.Unknown || isLoading) {
 		return <LoadingIndicator />

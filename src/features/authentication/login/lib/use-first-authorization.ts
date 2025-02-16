@@ -22,11 +22,8 @@ export function useFirstAuthorization() {
 
 	const getTokenByAuth = async () => {
 		try {
+			setIsError(() => false)
 			const token = await getToken()
-
-			if (isError) {
-				setIsError(prev => (prev = false))
-			}
 
 			if (token) {
 				await delay()
@@ -38,7 +35,7 @@ export function useFirstAuthorization() {
 
 				if (response.error) {
 					await delay(RESPONSE_TIMEOUT)
-					setIsError(prev => (prev = true))
+					setIsError(() => true)
 				}
 			} else {
 				dispatch(clearSessionData())

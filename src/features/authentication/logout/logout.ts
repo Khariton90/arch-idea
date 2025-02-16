@@ -13,9 +13,7 @@ export const logoutThunk = createAsyncThunk<void, void, { state: RootState }>(
 	async (_: unknown, { dispatch }) => {
 		dispatch(clearSessionData())
 		await resetToken()
-
 		await delay(10)
-
 		dispatch(sessionApi.util.invalidateTags([SESSION_TAG]))
 		dispatch(wishlistApi.util.invalidateTags([WISHLIST_TAG]))
 		dispatch(ideaApi.util.invalidateTags([IDEA_TAG]))

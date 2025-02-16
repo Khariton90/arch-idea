@@ -43,7 +43,7 @@ export function InputField({
 	password,
 }: Props): JSX.Element {
 	const { theme } = useContext(ThemeContext)
-	const [showDoneButton, setShowDoneButton] = useState(false)
+	const [showDoneButton, setShowDoneButton] = useState<boolean | null>(null)
 	const [secure, setSecure] = useState(password)
 
 	const handleFocus = () => {
@@ -77,11 +77,13 @@ export function InputField({
 
 				{children}
 
-				{password && !showDoneButton ? (
+				{password && showDoneButton ? (
 					<DoneButton
 						dnone={false}
 						background={theme.colors.backdrop}
-						onPress={() => setSecure(!secure)}
+						onPress={() => {
+							setSecure(prev => (prev ? false : true))
+						}}
 					>
 						<DoneButtonText color={theme.colors.accent}>
 							{secure ? 'Показать' : 'Скрыть'}
@@ -89,7 +91,7 @@ export function InputField({
 					</DoneButton>
 				) : null}
 
-				{showDoneButton && (
+				{showDoneButton && !password ? (
 					<DoneButton
 						dnone={disabledButton}
 						background={theme.colors.backdrop}
@@ -97,7 +99,7 @@ export function InputField({
 					>
 						<DoneButtonText color={theme.colors.accent}>Готово</DoneButtonText>
 					</DoneButton>
-				)}
+				) : null}
 			</View>
 		</KeyboardAvoidingView>
 	)

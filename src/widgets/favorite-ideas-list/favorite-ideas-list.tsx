@@ -11,10 +11,10 @@ import { ThemeContext } from '@/shared/colors.styled'
 import React, { useContext } from 'react'
 import { useState } from 'react'
 import { RefreshControl, View } from 'react-native'
-import { FlatList } from 'react-native'
 import { useAppSelector } from '@/shared/hooks'
 import { FilterIdeaStatus } from '@/features/idea'
 import { EmptyIdeasList } from '../empty-ideas-list/empty-ideas-list'
+import { FlashList } from '@shopify/flash-list'
 
 export function FavoriteIdeasList(): JSX.Element {
 	const { theme } = useContext(ThemeContext)
@@ -56,49 +56,45 @@ export function FavoriteIdeasList(): JSX.Element {
 			{ideas && (
 				<>
 					<FilterIdeaStatus onChangeFilterStatus={onChangeFilterStatus} />
-					<FlatList
-						style={{
-							flex: 1,
-							paddingHorizontal: 10,
-							backgroundColor: theme.colors.background,
-						}}
-						ListEmptyComponent={<EmptyIdeasList />}
-						refreshControl={
-							<RefreshControl
-								tintColor={theme.colors.primary}
-								refreshing={isLoading}
-								onRefresh={refetch}
-							/>
-						}
-						refreshing={isLoading}
-						data={ideas}
-						renderItem={({ item }) => (
-							<IdeaCard
-								key={item.id}
-								idea={item}
-								likeDislikeSlot={
-									<LikeDislikeButtons
-										id={item.id}
-										likes={item.likesCount}
-										disLikes={item.dislikesCount}
-										reactionType={item.reactionType}
-									/>
-								}
-								wishlistSlot={
-									<WishListToggle ideaId={item.id} active={item.isFavorite} />
-								}
-							/>
-						)}
-						onEndReached={loadMore}
-						onEndReachedThreshold={0.5}
-						ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
-						contentContainerStyle={{
-							height: 'auto',
-							paddingTop: 20,
-							paddingBottom: 100,
-							minHeight: '100%',
-						}}
-					/>
+					<View style={{ flex: 1, width: '100%' }}>
+						<FlashList
+							ListEmptyComponent={<EmptyIdeasList />}
+							contentContainerStyle={{
+								paddingHorizontal: 10,
+								paddingBottom: 60,
+								backgroundColor: theme.colors.background,
+							}}
+							estimatedItemSize={200}
+							refreshControl={
+								<RefreshControl
+									tintColor={theme.colors.primary}
+									refreshing={isLoading}
+									onRefresh={refetch}
+								/>
+							}
+							refreshing={isLoading}
+							data={ideas}
+							renderItem={({ item }) => (
+								<IdeaCard
+									key={item.id}
+									idea={item}
+									likeDislikeSlot={
+										<LikeDislikeButtons
+											id={item.id}
+											likes={item.likesCount}
+											disLikes={item.dislikesCount}
+											reactionType={item.reactionType}
+										/>
+									}
+									wishlistSlot={
+										<WishListToggle ideaId={item.id} active={item.isFavorite} />
+									}
+								/>
+							)}
+							onEndReached={loadMore}
+							onEndReachedThreshold={0.7}
+						/>
+					</View>
 				</>
 			)}
 		</>

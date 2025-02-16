@@ -108,6 +108,10 @@ function IdeaDetailsCardComponent({
 	}
 
 	const handleSubmit = async () => {
+		if (!ideaForm.title || !ideaForm.description) {
+			return
+		}
+
 		await updateIdea({
 			id: idea.id,
 			title: ideaForm.title,
@@ -208,7 +212,11 @@ function IdeaDetailsCardComponent({
 									multiline
 									onChangeText={handleChangeIdea}
 								/>
-								<UniversalButton title={'Изменить'} onPress={handleSubmit} />
+								<UniversalButton
+									disabled={!ideaForm.title || !ideaForm.description}
+									title={'Изменить'}
+									onPress={handleSubmit}
+								/>
 							</>
 						)}
 

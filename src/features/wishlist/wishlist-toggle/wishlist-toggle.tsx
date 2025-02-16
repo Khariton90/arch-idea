@@ -26,10 +26,6 @@ export function WishListToggle({
 		useRemoveFromWishlistMutation()
 
 	const toggleToWishlist = async () => {
-		if (isLoadingAddTo || isLoadingRemoveFrom) {
-			return
-		}
-
 		if (!active) {
 			await addToWishlist({ id: ideaId })
 		} else {

@@ -23,6 +23,8 @@ const Container = styled.TouchableOpacity<
 	padding: 16px 20px;
 	justify-content: space-between;
 	gap: 8px;
+	margin-bottom: 20px;
+	overflow: hidden;
 `
 
 const Row = styled.View<{ direction?: boolean }>`

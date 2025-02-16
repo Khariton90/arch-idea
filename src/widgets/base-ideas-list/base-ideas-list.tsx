@@ -10,7 +10,7 @@ import { LikeDislikeButtons } from '@/features/vote'
 import { WishListToggle } from '@/features/wishlist'
 import { ThemeContext } from '@/shared/colors.styled'
 import React, { memo, useContext, useState } from 'react'
-import { RefreshControl, View, FlatList } from 'react-native'
+import { RefreshControl, View } from 'react-native'
 import { EmptyIdeasList } from '../empty-ideas-list/empty-ideas-list'
 import { Typography, UniversalButton } from '@/shared/ui'
 import { useAppDispatch, useAppSelector } from '@/shared/hooks'
@@ -22,6 +22,7 @@ import {
 } from '@/features/idea'
 import { FilterIcon } from '@/shared/ui/icons/filter-icon'
 import { FilterButton } from '@/entities/idea/ui/filter-button'
+import { FlashList } from '@shopify/flash-list'
 
 const PAGE_LIMIT_COUNT = 10
 
@@ -98,9 +99,9 @@ function BaseIdeasListComponent(): JSX.Element {
 				/>
 
 				{ideas && (
-					<FlatList
-						style={{
-							flex: 1,
+					<FlashList
+						contentContainerStyle={{
+							paddingVertical: 20,
 							paddingHorizontal: 10,
 							backgroundColor: theme.colors.background,
 						}}
@@ -132,11 +133,8 @@ function BaseIdeasListComponent(): JSX.Element {
 							/>
 						)}
 						onEndReached={loadMore}
-						onEndReachedThreshold={0.5}
-						ItemSeparatorComponent={() => <View style={{ height: 20 }} />}
-						contentContainerStyle={{
-							paddingVertical: 20,
-						}}
+						onEndReachedThreshold={0.7}
+						estimatedItemSize={200}
 					/>
 				)}
 			</View>

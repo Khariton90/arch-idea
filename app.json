@@ -68,6 +68,12 @@
 						"usesCleartextTraffic": true
 					}
 				}
+			],
+			[
+				"expo-updates",
+				{
+					"username": "olgapau"
+				}
 			]
 		],
 		"experiments": {
