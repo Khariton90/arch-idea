@@ -1,3 +1,4 @@
+import { commentSlice } from '@/entities/comment/model/slice'
 import { ideaSlice } from '@/entities/idea/model/slice'
 import { sessionSlice } from '@/entities/session/model/slice'
 import { userSlice } from '@/entities/user/model/slice'
@@ -11,4 +12,5 @@ export default combineReducers({
 	[sessionSlice.name]: sessionSlice.reducer,
 	[wishlistSlice.name]: wishlistSlice.reducer,
 	[userSlice.name]: userSlice.reducer,
+	[commentSlice.name]: commentSlice.reducer,
 })

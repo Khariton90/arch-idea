@@ -2,12 +2,9 @@ import { ActivityIndicator, View } from 'react-native'
 import styled from 'styled-components/native'
 import React, { ReactNode, useContext, useMemo, useState } from 'react'
 import { Accordion, UniversalButton, Typography, InputField } from '@/shared/ui'
-import { darkTheme, ThemeContext } from '@/shared/colors.styled'
+import { ThemeContext } from '@/shared/colors.styled'
 import useCustomNavigation from '@/shared/hooks/use-custom-navigation'
 import { AppRoutes } from '@/shared/model'
-import { ImageUploadIcon } from '@/shared/ui/icons/image-upload-icon'
-import { MainBottomSheet } from '../bottom-sheet/main-bottom-sheet'
-import { CameraIcon } from '@/shared/ui/icons/camera-icon'
 import { useAppSelector } from '@/shared/hooks'
 
 import {
@@ -34,19 +31,6 @@ const Form = styled.View`
 	justify-content: center;
 `
 
-const Row = styled.View`
-	flex-direction: row;
-	justify-content: space-evenly;
-`
-
-const ModalButton = styled.TouchableOpacity`
-	padding: 10px 20px;
-	width: 100px;
-	align-items: center;
-	border-radius: 10px;
-	border: 1px solid ${darkTheme.colors.border};
-`
-
 const accordion = [
 	{
 		id: 1,
@@ -57,7 +41,7 @@ const accordion = [
 	{
 		id: 2,
 		title: 'subDepartment',
-		value: 'Отдел',
+		value: 'Категория',
 		content: Object.entries(mappingSubDepartment),
 	},
 	{
@@ -82,7 +66,9 @@ interface Props {
 
 export function NewIdeaForm({ slotWithLogo }: Props): JSX.Element {
 	const { theme } = useContext(ThemeContext)
-	const role = useAppSelector(({ userSlice }) => userSlice.role)
+	const isAdmin = useAppSelector(
+		({ userSlice }) => userSlice.role !== UserRole.User
+	)
 	const department = useAppSelector(({ userSlice }) => userSlice.department)
 	const [form, setForm] = useState<Idea>({
 		...initialFormValues,
@@ -100,6 +86,8 @@ export function NewIdeaForm({ slotWithLogo }: Props): JSX.Element {
 		setForm(prevForm => ({ ...prevForm, [key]: value }))
 	}
 
+	const [isOpenModal, setIsOpenModal] = useState(false)
+
 	const disabled = useMemo(
 		() => Object.values(form).some(item => item === ''),
 		[form]
@@ -116,7 +104,7 @@ export function NewIdeaForm({ slotWithLogo }: Props): JSX.Element {
 		})
 	}
 
-	const accordionList = role !== UserRole.User ? accordion : accordion.slice(1)
+	const accordionList = isAdmin ? accordion : accordion.slice(1)
 
 	return (
 		<Container background={theme.colors.backdrop}>
@@ -180,29 +168,42 @@ export function NewIdeaForm({ slotWithLogo }: Props): JSX.Element {
 	)
 }
 
-type ModalProps = {
-	isOpen: boolean
-	uploadImage: (mode: any) => void
-	uploadImageFromGallery: (mode: string) => void
-}
+// type ModalProps = {
+// 	isOpen: boolean
+// 	downloadImage: (image: string) => void
+// }
 
-export function ModalUploadImage({
-	isOpen,
-	uploadImage,
-	uploadImageFromGallery,
-}: ModalProps): JSX.Element {
-	return (
-		<MainBottomSheet isOpen={isOpen}>
-			<Row>
-				<ModalButton onPress={() => uploadImage('')}>
-					<CameraIcon />
-					<Typography soft variant='span' text={'Камера'} />
-				</ModalButton>
-				<ModalButton onPress={() => uploadImageFromGallery('gallery')}>
-					<ImageUploadIcon />
-					<Typography soft variant='p' text={'Галерея'} />
-				</ModalButton>
-			</Row>
-		</MainBottomSheet>
-	)
-}
+// export function ModalUploadImage({
+// 	isOpen,
+// 	downloadImage,
+// }: ModalProps): JSX.Element {
+// 	const uploadImage = (mode: any) => {}
+
+// 	const uploadImageFromGallery = async (mode: any) => {
+// 		let result = await ImagePicker.launchImageLibraryAsync({
+// 			mediaTypes: ['images', 'videos'],
+// 			allowsEditing: true,
+// 			aspect: [4, 3],
+// 			quality: 1,
+// 		})
+
+// 		if (!result.canceled) {
+// 			downloadImage(result.assets[0].uri)
+// 		}
+// 	}
+
+// 	return (
+// 		<MainBottomSheet isOpen={isOpen}>
+// 			<Row>
+// 				<ModalButton onPress={() => uploadImage('')}>
+// 					<CameraIcon />
+// 					<Typography soft variant='span' text={'Камера'} />
+// 				</ModalButton>
+// 				<ModalButton onPress={() => uploadImageFromGallery('gallery')}>
+// 					<ImageUploadIcon />
+// 					<Typography soft variant='p' text={'Галерея'} />
+// 				</ModalButton>
+// 			</Row>
+// 		</MainBottomSheet>
+// 	)
+// }

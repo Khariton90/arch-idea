@@ -1,4 +1,4 @@
-import { CreateIdea, CreateIdeaSolution } from './../model/types'
+import { CreateIdea, CreateIdeaSolution, UpdateIdeaDto } from './../model/types'
 import { baseApi } from '@/shared/api/base-api'
 import { IdeaQuery, IdeaRdo } from '../model/types'
 import { IDEA_TAG, ONE_IDEA, VOTE_TAG, WISHLIST_TAG } from '@/shared/api/tags'
@@ -89,6 +89,19 @@ export const ideaApi = baseApi.injectEndpoints({
 				body: dto,
 			}),
 		}),
+		updateIdea: build.mutation<IdeaRdo, UpdateIdeaDto>({
+			query: ({ id, ...body }) => ({
+				url: `/idea/update/${id}`,
+				method: 'PUT',
+				body,
+				invalidatesTags: (
+					result: any,
+					error: any,
+					arg: Pick<IdeaRdo, 'id'>
+				) => [{ type: ONE_IDEA, id: arg.id }, IDEA_TAG],
+				transformResponse: (response: IdeaRdo) => mapIdea(response),
+			}),
+		}),
 	}),
 })
 
@@ -101,6 +114,7 @@ export const {
 	useFindTotalCountIdeasQuery,
 	useCreateIdeaSolutionMutation,
 	useUploadImageMutation,
+	useUpdateIdeaMutation,
 } = ideaApi
 
 export { ideasSelector, ideasAdapter }

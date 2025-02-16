@@ -54,7 +54,7 @@ export function InputField({
 		setShowDoneButton(() => false)
 	}
 
-	const activeColor = !value ? theme.colors.secondary : theme.colors.success
+	const activeColor = !value ? theme.colors.text : theme.colors.success
 
 	return (
 		<KeyboardAvoidingView behavior={'padding'} style={{ width: '100%' }}>
@@ -68,7 +68,7 @@ export function InputField({
 						{ borderColor: activeColor, color: activeColor },
 					]}
 					onChangeText={text => onChangeText(textKey, text)}
-					placeholderTextColor={theme.colors.secondary}
+					placeholderTextColor={theme.colors.text}
 					placeholder={placeholder}
 					value={value}
 					defaultValue={defaultValue}

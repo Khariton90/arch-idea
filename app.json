@@ -13,6 +13,7 @@
 			"supportsTablet": true
 		},
 		"android": {
+			"useCleartextTraffic": true,
 			"adaptiveIcon": {
 				"foregroundImage": "./assets/images/main-logo-200.png",
 				"backgroundColor": "#191919",
@@ -58,6 +59,14 @@
 				"expo-image-picker",
 				{
 					"photosPermission": "The app accesses your photos to let you share them with your friends."
+				}
+			],
+			[
+				"expo-build-properties",
+				{
+					"android": {
+						"usesCleartextTraffic": true
+					}
 				}
 			]
 		],

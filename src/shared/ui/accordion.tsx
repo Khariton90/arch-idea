@@ -15,6 +15,7 @@ import { TouchableOpacityProps } from 'react-native'
 import { useContext, useEffect, useState } from 'react'
 import { Idea } from '@/entities/idea'
 import { darkTheme, ThemeContext } from '../colors.styled'
+import { delay } from '../lib'
 
 const Container = styled.View<{ border: string }>`
 	border-radius: 10px;
@@ -40,12 +41,11 @@ const Content = styled.TouchableOpacity<
 >`
 	padding: 10px;
 	background-color: ${({ activeLink }) =>
-		activeLink ? darkTheme.colors.primary : darkTheme.colors.success};
+		activeLink ? darkTheme.colors.success : 'transparent'};
 `
 
 const TextContent = styled.Text`
 	font-size: 14px;
-	color: #fff;
 `
 
 interface Props {
@@ -81,9 +81,21 @@ export function Accordion({
 		),
 	}))
 
-	const handleSelect = (value: string) => {
+	const handleSelect = async (value: string) => {
 		onSelected(title as keyof Idea, value)
 		setActiveSelect(prev => value)
+		await delay(500)
+		openAccordion()
+	}
+
+	const openAccordion = () => {
+		if (heightValue.value === 0) {
+			runOnUI(() => {
+				'worklet'
+				heightValue.value = measure(listRef)!.height
+			})()
+		}
+		open.value = !open.value
 	}
 
 	useEffect(() => {
@@ -92,24 +104,15 @@ export function Accordion({
 		}
 	}, [isActiveForm])
 
-	const activeColor = !activeSelect
-		? theme.colors.secondary
-		: theme.colors.success
+	const activeColor = !activeSelect ? theme.colors.text : theme.colors.success
+	const accordionTitle = content.find(item => item[0] === activeSelect)
 
 	return (
 		<Container border={activeColor}>
-			<Pressable
-				onPress={() => {
-					if (heightValue.value === 0) {
-						runOnUI(() => {
-							'worklet'
-							heightValue.value = measure(listRef)!.height
-						})()
-					}
-					open.value = !open.value
-				}}
-			>
-				<TextTitle color={activeColor}>{value}</TextTitle>
+			<Pressable onPress={openAccordion}>
+				<TextTitle color={activeColor}>
+					{accordionTitle ? `${value}: ${accordionTitle[1]}` : value}
+				</TextTitle>
 				<Chevron progress={progress} />
 			</Pressable>
 
@@ -120,6 +123,7 @@ export function Accordion({
 						width: '100%',
 						position: 'absolute',
 						top: 0,
+						backgroundColor: theme.colors.background,
 					}}
 				>
 					{content.map(([key, value]) => (
@@ -128,7 +132,9 @@ export function Accordion({
 							key={key}
 							onPress={() => handleSelect(key)}
 						>
-							<TextContent>{value}</TextContent>
+							<TextContent style={{ color: theme.colors.text }}>
+								{value}
+							</TextContent>
 						</Content>
 					))}
 				</Animated.View>

@@ -20,10 +20,16 @@ export function WishListToggle({
 	ideaId,
 	refetch,
 }: WishListToggleProps) {
-	const [addToWishlist] = useAddToWishlistMutation()
-	const [removeFromWishlist] = useRemoveFromWishlistMutation()
+	const [addToWishlist, { isLoading: isLoadingAddTo }] =
+		useAddToWishlistMutation()
+	const [removeFromWishlist, { isLoading: isLoadingRemoveFrom }] =
+		useRemoveFromWishlistMutation()
 
 	const toggleToWishlist = async () => {
+		if (isLoadingAddTo || isLoadingRemoveFrom) {
+			return
+		}
+
 		if (!active) {
 			await addToWishlist({ id: ideaId })
 		} else {

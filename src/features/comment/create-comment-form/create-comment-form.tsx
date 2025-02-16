@@ -8,7 +8,7 @@ import { Keyboard } from 'react-native'
 
 const Form = styled.View<{ background: string }>`
 	position: absolute;
-	bottom: 80px;
+	bottom: 60px;
 	width: 100%;
 	height: 80px;
 	background-color: ${({ background }) => background};
@@ -44,7 +44,13 @@ export function CreateCommentForm({ ideaId }: Props): JSX.Element {
 	}
 
 	const handleSubmit = async () => {
-		await createComment({ ideaId, content: value.comment.trim() })
+		const content = value.comment.trim()
+
+		if (!content) {
+			return
+		}
+
+		await createComment({ ideaId, content })
 		Keyboard.dismiss()
 	}
 
@@ -62,6 +68,7 @@ export function CreateCommentForm({ ideaId }: Props): JSX.Element {
 				value={value.comment || ''}
 				onChangeText={handleChange}
 				placeholder={'Комментарий...'}
+				multiline
 			>
 				<Button onPress={handleSubmit} disabled={!value.comment}>
 					<ArrowUpCircleIcon />

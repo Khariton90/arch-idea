@@ -76,6 +76,7 @@ export function IdeaDetailsPage({ route, navigation }: Props): JSX.Element {
 				}
 			>
 				<IdeaDetailsCard
+					refetch={fetchData}
 					idea={idea}
 					likesDisLakesSlot={
 						<LikeDislikeButtons
@@ -94,7 +95,10 @@ export function IdeaDetailsPage({ route, navigation }: Props): JSX.Element {
 						/>
 					}
 					commentsSlot={
-						<ButtonToComments onPress={() => navigateToCommentsOnIdeaId(id)} />
+						<ButtonToComments
+							ideaId={idea.id}
+							onPress={() => navigateToCommentsOnIdeaId(id)}
+						/>
 					}
 					solutionSlot={
 						<CreateSolutionAboutIdea id={idea.id} fetchData={fetchData} />

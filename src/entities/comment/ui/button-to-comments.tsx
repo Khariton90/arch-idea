@@ -1,10 +1,12 @@
-/* eslint-disable */
 import { ThemeContext } from '@/shared/colors.styled'
 import { CommentsIcon } from '@/shared/ui/icons/comments-icon'
 import { Typography } from '@/shared/ui/typography/typography'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { TouchableOpacityProps } from 'react-native'
 import styled from 'styled-components/native'
+import { commentApi } from '../api'
+
+import { useAppDispatch, useAppSelector } from '@/shared/hooks'
 
 const CommentBox = styled.TouchableOpacity<{
 	background: string
@@ -19,9 +21,11 @@ const CommentBox = styled.TouchableOpacity<{
 	gap: 6px;
 `
 
-type Props = TouchableOpacityProps
+interface Props extends TouchableOpacityProps {
+	ideaId: string
+}
 
-export function ButtonToComments({ onPress }: Props): JSX.Element {
+export function ButtonToComments({ onPress, ideaId }: Props): JSX.Element {
 	const { theme } = useContext(ThemeContext)
 
 	return (
@@ -31,7 +35,23 @@ export function ButtonToComments({ onPress }: Props): JSX.Element {
 			border={theme.colors.border}
 		>
 			<CommentsIcon />
-			<Typography variant='span' text='Комментарии' />
+			<CommentsCount ideaId={ideaId} />
 		</CommentBox>
 	)
+}
+
+export function CommentsCount({ ideaId }: { ideaId: string }): JSX.Element {
+	const count = useAppSelector(({ commentSlice }) => commentSlice.commentCount)
+	const dispatch = useAppDispatch()
+
+	useEffect(() => {
+		dispatch(
+			commentApi.endpoints.findCommentCount.initiate(
+				{ ideaId },
+				{ forceRefetch: true }
+			)
+		)
+	}, [ideaId])
+
+	return <Typography variant='span' text={`Комментарии ${count}`} />
 }

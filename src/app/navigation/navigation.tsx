@@ -5,11 +5,12 @@ import { darkTheme, ThemeContext } from '@/shared/colors.styled'
 import { useAppSelector } from '@/shared/hooks'
 import { AuthorizationStatus } from '@/entities/session'
 import React, { useContext, useEffect } from 'react'
-import { LoadingIndicator } from '@/shared/ui'
+import { LoadingIndicator, Typography, UniversalButton } from '@/shared/ui'
 import { UserRole } from '@/entities/user'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { SafeAreaProvider } from 'react-native-safe-area-context'
 import { useFirstAuthorization } from '@/features/authentication'
+import { InternetError } from '@/features/authentication/login/ui'
 
 const Stack = createNativeStackNavigator<RootStackParamList>()
 
@@ -21,11 +22,15 @@ export default function Navigation() {
 	const isAdmin = useAppSelector(
 		({ userSlice }) => userSlice.role !== UserRole.User
 	)
-	const { getTokenByAuth, isLoading } = useFirstAuthorization()
+	const { getTokenByAuth, isLoading, isError } = useFirstAuthorization()
 
 	useEffect(() => {
 		getTokenByAuth()
 	}, [])
+
+	if (isError) {
+		return <InternetError getTokenByAuth={getTokenByAuth} />
+	}
 
 	if (authStatus === AuthorizationStatus.Unknown || isLoading) {
 		return <LoadingIndicator />

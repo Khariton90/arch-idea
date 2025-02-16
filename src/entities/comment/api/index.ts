@@ -24,7 +24,17 @@ export const commentApi = baseApi.injectEndpoints({
 			}),
 			invalidatesTags: [COMMENT_TAG],
 		}),
+		findCommentCount: build.query<number, { ideaId: string }>({
+			query: ({ ideaId }) => ({
+				url: `/comment/totalCount/${ideaId}`,
+				method: 'GET',
+			}),
+		}),
 	}),
 })
 
-export const { useCreateCommentMutation, useFindCommentsQuery } = commentApi
+export const {
+	useCreateCommentMutation,
+	useFindCommentsQuery,
+	useFindCommentCountQuery,
+} = commentApi

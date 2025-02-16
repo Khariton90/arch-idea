@@ -10,32 +10,43 @@ import {
 } from '@/entities/session/model/slice'
 import { useAppDispatch } from '@/shared/hooks/hooks'
 import { delay } from '@/shared/lib/delay'
+import { useState } from 'react'
+
+const RESPONSE_TIMEOUT = 5000
 
 export function useFirstAuthorization() {
 	const dispatch = useAppDispatch()
 	const [sendRefreshToken, { isLoading }] = useSendRefreshTokenMutation()
 
+	const [isError, setIsError] = useState(false)
+
 	const getTokenByAuth = async () => {
 		try {
 			const token = await getToken()
 
+			if (isError) {
+				setIsError(prev => (prev = false))
+			}
+
 			if (token) {
 				await delay()
 				const response = await sendRefreshToken(token)
-
 				if (response.data) {
-					const sessionData = response.data
-					await saveToken(sessionData)
-					dispatch(addSessionData(sessionData))
-				} else {
-					await resetToken()
-					dispatch(clearSessionData())
+					await saveToken(response.data)
+					dispatch(addSessionData(response.data))
+				}
+
+				if (response.error) {
+					await delay(RESPONSE_TIMEOUT)
+					setIsError(prev => (prev = true))
 				}
 			} else {
 				dispatch(clearSessionData())
 			}
-		} catch {}
+		} catch (error) {
+			await resetToken()
+		}
 	}
 
-	return { getTokenByAuth, isLoading }
+	return { getTokenByAuth, isLoading, isError }
 }

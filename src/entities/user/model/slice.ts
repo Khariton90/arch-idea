@@ -58,12 +58,6 @@ export const userSlice = createSlice({
 				(state, { payload }) => {
 					state.totalCount = payload
 				}
-			),
-			builder.addMatcher(
-				userApi.endpoints.fetchUsers.matchFulfilled,
-				(state, { payload }) => {
-					state.totalCount = payload.count
-				}
 			)
 	},
 })

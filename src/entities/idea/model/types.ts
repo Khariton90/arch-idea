@@ -82,3 +82,9 @@ export interface CreateIdeaSolution {
 	status: IdeaStatus
 	solution: string
 }
+
+export interface UpdateIdeaDto {
+	id: string
+	title: string
+	description: string
+}

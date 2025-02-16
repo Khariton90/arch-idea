@@ -1,8 +1,8 @@
-import { View } from 'react-native'
+import { TouchableOpacity, View } from 'react-native'
 import styled from 'styled-components/native'
 import { memo, ReactNode, useContext, useState } from 'react'
 import React from 'react'
-import { IdeaRdo } from '../model/types'
+import { IdeaRdo } from '../model'
 import { Avatar } from '@/shared/ui/avatar/avatar'
 import { ThemeContext } from '@/shared/colors.styled'
 import { formatDate } from '@/shared/lib/format-date'
@@ -13,6 +13,9 @@ import { UserRole, UserStatus } from '@/entities/user'
 import { UniversalButton } from '@/shared/ui/universal-button/universal-button'
 import { MainBottomSheet } from '@/widgets/bottom-sheet/main-bottom-sheet'
 import { useAppSelector } from '@/shared/hooks/hooks'
+import { UpdateTextIcon } from '@/shared/ui/icons/update-text-icon'
+import { InputField, LoadingIndicator } from '@/shared/ui'
+import { useUpdateIdeaMutation } from '../api'
 
 const Container = styled.View<{ background: string }>`
 	flex: 1;
@@ -74,6 +77,7 @@ interface Props {
 	wishListSlot: ReactNode
 	commentsSlot: ReactNode
 	solutionSlot: ReactNode
+	refetch: () => void
 }
 
 function IdeaDetailsCardComponent({
@@ -82,12 +86,41 @@ function IdeaDetailsCardComponent({
 	wishListSlot,
 	commentsSlot,
 	solutionSlot,
+	refetch,
 }: Props): JSX.Element {
 	const { theme } = useContext(ThemeContext)
 	const [isOpen, setIsOpen] = useState(false)
+	const [isUpdated, setIsUpdated] = useState(false)
+
 	const isAdmin = useAppSelector(
 		({ userSlice }) => userSlice.role !== UserRole.User
 	)
+
+	const userId = useAppSelector(({ sessionSlice }) => sessionSlice.userId)
+
+	const [updateIdea, { isLoading, isError, isSuccess }] =
+		useUpdateIdeaMutation()
+
+	const [ideaForm, setIdeaForm] = useState(idea)
+
+	const handleChangeIdea = (key: string, value: string) => {
+		setIdeaForm(state => ({ ...state, [key]: value.trimStart() }))
+	}
+
+	const handleSubmit = async () => {
+		await updateIdea({
+			id: idea.id,
+			title: ideaForm.title,
+			description: ideaForm.description,
+		}).then(() => {
+			setIsUpdated(prev => false)
+			refetch()
+		})
+	}
+
+	if (isLoading) {
+		return <LoadingIndicator />
+	}
 
 	return (
 		<>
@@ -97,14 +130,13 @@ function IdeaDetailsCardComponent({
 						<FavoriteBox>{wishListSlot}</FavoriteBox>
 						<Typography
 							variant='span'
-							soft
 							text={`Опубликовано ${formatDate(idea.createdAt)}`}
 						/>
 						<Row style={{ marginVertical: 8 }}>
 							<Chip
 								title={`Cтатус: ${idea.status}`}
-								size={'lg'}
-								color={'success'}
+								size={'sm'}
+								color={'primary'}
 							/>
 						</Row>
 					</CardHeader>
@@ -115,42 +147,71 @@ function IdeaDetailsCardComponent({
 							<View>
 								<Typography
 									variant='span'
-									soft
-									text={mappingUserStatus[idea.user.status as UserStatus]}
+									text={`${idea.user.firstName} ${idea.user.lastName}`}
 								/>
 								<Typography
 									variant='span'
 									soft
-									text={`${idea.user.firstName} ${idea.user.lastName}`}
+									text={mappingUserStatus[idea.user.status as UserStatus]}
 								/>
 							</View>
 						</Row>
 						<Row>
 							<Chip
 								title={`Приоритет: ${idea.priority}`}
-								size={'md'}
-								color={'success'}
+								size={'sm'}
+								color={'primary'}
 							/>
 						</Row>
 						<Row>
 							<Chip
 								title={`Подразделение: ${idea.department}`}
-								size={'md'}
-								color={'success'}
+								size={'sm'}
+								color={'primary'}
 							/>
 						</Row>
 						<Row>
 							<Chip
 								title={`Категория: ${idea.subDepartment}`}
-								size={'md'}
-								color={'success'}
+								size={'sm'}
+								color={'primary'}
 							/>
 						</Row>
 					</CardContent>
 
 					<CardContent>
-						<Typography variant='h1' text={idea.title} />
-						<Typography variant='p' text={idea.description} />
+						{userId === idea.user.id && (
+							<Row style={{ justifyContent: 'flex-end' }}>
+								<TouchableOpacity onPress={() => setIsUpdated(!isUpdated)}>
+									<UpdateTextIcon />
+								</TouchableOpacity>
+							</Row>
+						)}
+						{!isUpdated ? (
+							<>
+								<Typography variant='h1' text={idea.title} />
+								<Typography variant='p' text={idea.description} />
+							</>
+						) : (
+							<>
+								<InputField
+									textKey={'title'}
+									value={ideaForm.title}
+									placeholder={'Заголовок...'}
+									multiline
+									onChangeText={handleChangeIdea}
+								/>
+								<InputField
+									textKey={'description'}
+									value={ideaForm.description}
+									placeholder={'Описание...'}
+									multiline
+									onChangeText={handleChangeIdea}
+								/>
+								<UniversalButton title={'Изменить'} onPress={handleSubmit} />
+							</>
+						)}
+
 						{idea.solution && (
 							<Box theme={theme} border={theme.colors.border}>
 								<Typography
